@@ -127,6 +127,7 @@ export default class GetPaidScreen extends React.Component {
             />
             <br />
             <TextField
+              type='number'
               fullWidth={true}
               style = {textFieldStyle}
               hintText='Amount to pay'
@@ -138,6 +139,9 @@ export default class GetPaidScreen extends React.Component {
               style = {textFieldStyle}
               hintText='What for'
               floatingLabelText='What did you purchase'
+              multiLine={true}
+              rows={1}
+              rowsMax={4}
             />
             <br />
             <SelectField

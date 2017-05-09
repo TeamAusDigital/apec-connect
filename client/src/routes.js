@@ -5,6 +5,7 @@ import actions from './state/actions';
 import Home from './routes/landing-page';
 import Scroll from 'react-scroll';
 import GetPaidScreen from './components/getPaidScreen';
+import PayScreen from './components/payScreen';
 /**
  * The main application component that contains the routing configuration.
  */
@@ -59,6 +60,7 @@ const routes = (
     <IndexRoute component={Home} />
     <Route path='/' component={Home} />
     <Route path='/getPaid' component={GetPaidScreen} />
+    <Route path='/pay' component={PayScreen} />
 
   </Route>
 );
