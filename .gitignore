@@ -1,5 +1,5 @@
 #mk_dot.sh
 *~
 *.zip
-./idea
+.idea/
 /out/
