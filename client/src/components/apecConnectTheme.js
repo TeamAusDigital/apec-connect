@@ -21,8 +21,8 @@ const apecConnectTheme = getMuiTheme({
   palette: {
     primary1Color: blue900,
     primary2Color: indigo900,
-    accent2Color: lightBlue500,
-    accent1Color: indigo900,
+    accent1Color: lightBlue500,
+    accent2Color: indigo900,
   },
 });
 

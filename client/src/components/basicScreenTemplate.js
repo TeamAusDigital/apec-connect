@@ -15,7 +15,7 @@ This is the basic elements for a main view in the app.
 const paperStyle = {
   padding: 10,
   textAlign: 'center',
-  height: '50%'
+  height: '100vh'
 };
 
 const getPaidStyle = {
@@ -58,7 +58,6 @@ export default class HomeScreen extends React.Component {
         <Paper
           zDepth={1}
           style={paperStyle}
-          height='100%'
         >
           <img src={Logo} style={logoStyle} />
           <br />

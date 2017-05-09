@@ -8,6 +8,10 @@ import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import Divider from 'material-ui/Divider';
 import ActionInfo from 'material-ui/svg-icons/action/info';
 import Paper from 'material-ui/Paper';
+import {Link} from 'react-router';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import actions from 'state/actions';
 
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 
@@ -16,14 +20,32 @@ const paperStyle = {
   textAlign: 'left'
 };
 
-const MenuList = () => (
+
+@withRouter
+@connect((state) => {
+  return {
+    dispatch: state.dispatch,
+    ui: state.ui
+  };
+})
+export default class MenuList extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  handleClick = () => this.props.dispatch(
+    this.props.ui.mainMenuOpen ?  actions.closeMainMenu() : actions.openMainMenu()
+  );
+
+  render() {
+      return (
   <div>
     <Divider />
     <List>
-      <ListItem primaryText="Inbox" leftIcon={<ContentInbox />} />
-      <ListItem primaryText="Starred" leftIcon={<ActionGrade />} />
-      <ListItem primaryText="Sent mail" leftIcon={<ContentSend />} />
-      <ListItem primaryText="Drafts" leftIcon={<ContentDrafts />} />
+      <ListItem primaryText="Home" leftIcon={<ContentInbox />} containerElement={<Link to='/' />} onTouchTap={this.handleClick} />
+      <ListItem primaryText="Get Paid" leftIcon={<ActionGrade />} containerElement={<Link to='/getPaid' />} onTouchTap={this.handleClick}/>
+      <ListItem primaryText="Pay" leftIcon={<ContentSend />} containerElement={<Link to='/pay' />} onTouchTap={this.handleClick}/>
       <ListItem primaryText="Inbox" leftIcon={<ContentInbox />} />
     </List>
     <Divider />
@@ -34,6 +56,5 @@ const MenuList = () => (
       <ListItem primaryText="Follow up" rightIcon={<ActionInfo />} />
     </List>
   </div>
-);
-
-export default MenuList;
+  );}
+}
