@@ -1,0 +1,77 @@
+import React from 'react';
+import { IndexRoute, Route } from 'react-router';
+import { connect } from 'react-redux';
+import actions from './state/actions';
+import Home from './routes/landing-page';
+import Scroll from 'react-scroll';
+import GetPaidScreen from './components/getPaidScreen';
+/**
+ * The main application component that contains the routing configuration.
+ */
+@connect((state) => {
+  return {
+    dispatch: state.dispatch
+  };
+})
+class App extends React.Component {
+
+  /**
+   * Loads the Vendor data on component mount.
+   * The Vendor data load here is to prevent data lost upon page fresh.
+   * @see https://facebook.github.io/react/docs/react-component.html#componentdidmount
+   */
+  componentDidMount() {
+    let { router, dispatch } = this.props;
+
+    setTimeout(function () {
+      //dispatch(actions.getVendor());
+    });
+
+    // Make sure the window scroll to top on route change.
+    router.listen(function () {
+      Scroll.animateScroll.scrollToTop({smooth: false, duration: 0});
+    });
+
+  }
+
+  /**
+   * @see https://facebook.github.io/react/docs/react-component.html#render
+   */
+  render() {
+    return (
+      <div>
+        <div id='body'>
+          {this.props.children}
+        </div>
+      </div>
+    );
+  }
+}
+
+const basicRoutes = (
+  <Route>
+  </Route>
+);
+
+const routes = (
+  <Route path='/' component={App}>
+
+    <IndexRoute component={Home} />
+    <Route path='/' component={Home} />
+    <Route path='/getPaid' component={GetPaidScreen} />
+
+  </Route>
+);
+
+const combinedRoutes = (
+  <Route>
+    <Route>
+      {routes}
+    </Route>
+    <Route>
+      {basicRoutes}
+    </Route>
+  </Route>
+);
+
+export default combinedRoutes;

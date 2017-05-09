@@ -1,0 +1,14 @@
+{
+  "name": "apec-connect-client",
+  "description": "D61+ Expert Connect - Client",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
