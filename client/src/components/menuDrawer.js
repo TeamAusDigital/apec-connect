@@ -1,4 +1,5 @@
-import React , { Component, PropTypes} from 'react';
+import React , { Component} from 'react';
+import PropTypes from 'prop-types';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -13,12 +14,12 @@ import Background from '../common/assets/bg-bottom.png';
 import StarRating from './starRating';
 
 const textStyleBig = {
-    fontSize: '30',
+    fontSize: '30pt',
     padding: '2px',
 };
 
 const textStyleSmall = {
-    fontSize: '20',
+    fontSize: '20pt',
     padding: '2px',
 };
 

@@ -117,6 +117,7 @@
     "material-ui": "^0.18.0",
     "modernizr": "^3.5.0",
     "moment": "2.15.2",
+    "prop-types": "^15.5.8",
     "pug": "2.0.0-beta6",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
