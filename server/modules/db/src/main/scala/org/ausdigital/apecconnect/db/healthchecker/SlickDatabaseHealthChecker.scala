@@ -8,9 +8,9 @@ import play.api.db.slick.DatabaseConfigProvider
 import play.api.inject.{ BindingKey, Injector }
 import play.api.{ Application, Configuration }
 import play.db.NamedDatabaseImpl
-import slick.backend.DatabaseConfig
+import slick.basic.DatabaseConfig
 import slick.dbio
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.duration.{ FiniteDuration, _ }
 import scala.concurrent.{ ExecutionContext, Future }
@@ -18,20 +18,20 @@ import scala.language.postfixOps
 import scalaz.\/
 
 /**
-  * Creates instances of the [[SlickDatabaseHealthChecker]].
-  */
+ * Creates instances of the [[SlickDatabaseHealthChecker]].
+ */
 class SlickDatabaseHealthCheckerFactory @Inject() (application: Application, injector: Injector) extends HealthCheckerFactory {
   override def createHealthChecker(checkerConfiguration: Configuration): HealthChecker =
     new SlickDatabaseHealthChecker(application, injector, checkerConfiguration)
 }
 
 /**
-  * Health checker that executes the configured SQL against the configured database.
-  *
-  * @param application the application to be checked.
-  * @param injector the injector that will be used to acquired the database config provider.
-  * @param configuration the configuration for this checker.
-  */
+ * Health checker that executes the configured SQL against the configured database.
+ *
+ * @param application the application to be checked.
+ * @param injector the injector that will be used to acquired the database config provider.
+ * @param configuration the configuration for this checker.
+ */
 class SlickDatabaseHealthChecker(application: Application, injector: Injector, override val configuration: Configuration)
     extends BaseHealthChecker with ConfigurationBasedHealthChecker {
 
@@ -71,7 +71,7 @@ class SlickDatabaseHealthChecker(application: Application, injector: Injector, o
   }
 
   private def executeCheckStatement(databaseConfig: DatabaseConfig[JdbcProfile])(implicit ec: ExecutionContext): Future[HealthCheckOutcome] = {
-    import databaseConfig.driver.api._
+    import databaseConfig.profile.api._
     val query: dbio.DBIOAction[Vector[Int], NoStream, Effect] = sql"#$checkSql".as[Int]
 
     val config = databaseConfig.config.withoutPath("db.password")
