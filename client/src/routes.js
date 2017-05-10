@@ -36,6 +36,14 @@ class App extends React.Component {
       Scroll.animateScroll.scrollToTop({smooth: false, duration: 0});
     });
 
+    if (this.props.ui.alreadyUser) {
+      {/** If token is valid proceed to home **/}
+      this.props.router.push('/home');
+    } else {
+      {/** proceed to join **/}
+      this.props.router.push('/join');
+    };
+
   }
 
   /**
