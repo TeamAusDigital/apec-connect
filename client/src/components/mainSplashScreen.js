@@ -8,6 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {grey,red,indigo,white} from './apecConnectTheme';
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import actions from 'state/actions';
+import {Link} from 'react-router';
 
 import Background from '../common/assets/bg-bottom.png';
 
@@ -30,23 +31,38 @@ const divStyle = {
    backgroundSize: 'cover',
    textColor: {white},
    position: 'relative',
-   textAlign: 'center',
 };
 
 const bStyle ={
-  width: '50%',
+  width: '100%',
   textAlign: 'center',
   color: `${white}`,
-  marginLeft: 'auto',
-  marginRight: 'auto',
- position: 'fixed',
-  bottom: 0,
+  position: 'fixed',
+  bottom: '50px',
+  left: '0px',
+  alignItems: 'center',
 };
 
-const bStyleInner ={
-
+const textStyle ={
+  width: '60%',
+  textAlign: 'center',
+  position: 'relative',
+  margin: '0 auto',
 };
 
+const buttonStyle = {
+  position: 'relative',
+  width:'80%',
+  margin: '0 auto',
+};
+
+@withRouter
+@connect((state) => {
+  return {
+    dispatch: state.dispatch,
+    ui: state.ui
+  };
+})
 export default class MainSplashScreen extends React.Component {
   render() {
     return (
@@ -58,9 +74,17 @@ export default class MainSplashScreen extends React.Component {
       <div style={divStyle}>
 
         <div style={bStyle}>
-          <div>This app was developed during the APEC App Challenge</div>
-
-          <RaisedButton label='Join' backgroundColor={red} labelColor={white} />
+          <div style={textStyle}>This app was developed during the APEC App Challenge</div>
+          <br/>
+          <div style={buttonStyle}>
+            <RaisedButton
+              label='Join'
+              backgroundColor={red}
+              labelColor={white}
+              fullWidth={true}
+              containerElement={<Link to='/signUp' />}
+            />
+          </div>
         </div>
 
       </div>
