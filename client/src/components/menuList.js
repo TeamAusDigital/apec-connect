@@ -1,5 +1,5 @@
-import React , { Component, PropTypes } from 'react';
-
+import React , { Component } from 'react';
+import PropTypes from 'prop-types';
 import {List, ListItem} from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';

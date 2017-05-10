@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AppBarMain from '../components/AppBarMain';
 import Paper from 'material-ui/Paper';
 import StarRating from '../components/starRating';
@@ -64,10 +65,12 @@ export default class PayScreen extends React.Component {
           <br />
           <Paper
             zDepth={1}
+            style={paperStyle}
           >
             {/** container for to pay elements **/}
-            <ToPayItem />
-            <ToPayItem />
+            <ToPayItem message={'15 Beanie Hats'} amount={100.0}/>
+            <ToPayItem message={'3 Beret'} amount={91.15}/>
+            <ToPayItem message={'A Really long item name that may or may not wrap lets test it okay cool lets go'} amount={200.0}/>
           </Paper>
           <br />
         </Paper>
