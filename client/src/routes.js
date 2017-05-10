@@ -6,6 +6,9 @@ import Home from './routes/landing-page';
 import Scroll from 'react-scroll';
 import GetPaidScreen from './components/getPaidScreen';
 import PayScreen from './components/payScreen';
+import MainSplashScreen from './components/mainSplashScreen';
+import SignUpScreen from './components/signUpScreen';
+import HomeScreen from './components/homeScreen';
 /**
  * The main application component that contains the routing configuration.
  */
@@ -59,8 +62,11 @@ const routes = (
 
     <IndexRoute component={Home} />
     <Route path='/' component={Home} />
+    <Route path='/home' component={HomeScreen} />
     <Route path='/getPaid' component={GetPaidScreen} />
     <Route path='/pay' component={PayScreen} />
+    <Route path='/join' component={MainSplashScreen} />
+    <Route path='/signUp' component={SignUpScreen} />
 
   </Route>
 );

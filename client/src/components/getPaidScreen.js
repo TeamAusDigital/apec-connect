@@ -67,10 +67,6 @@ export default class GetPaidScreen extends React.Component {
     super(props);
   }
 
-  state = {
-      values: [],
-  };
-
   handleChange = (event, index, value) => this.props.dispatch(
     actions.termsMenuValue(value)
   );

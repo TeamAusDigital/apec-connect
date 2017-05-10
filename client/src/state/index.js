@@ -2,6 +2,7 @@ import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
 import reducers from './reducers';
 import saga from './sagas';
 import createSagaMiddleware from 'redux-saga';
+import {persistStore, autoRehydrate} from 'redux-persist';
 /**
  * Main configuration of redux
  * Configures reducers and middleware.
@@ -16,8 +17,11 @@ const store = createStore(
   combineReducers(reducers),
   {},
   composeEnhancers(
-    applyMiddleware(sagaMiddleware)
+    applyMiddleware(sagaMiddleware),
+    autoRehydrate()
   )
 );
+
+persistStore(store);
 
 export default store;

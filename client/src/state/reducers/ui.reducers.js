@@ -28,14 +28,24 @@ const ui = handleActions({
       /** Array of booleans  ***/
       acceptedPayments: action.payload
     });
-  }
-
+  },
+  REMEMBER_USER: (state, action) => {
+    return Object.assign({}, state, {
+      alreadyUser: true
+    });
+  },
+  FORGET_USER: (state, action) => {
+    return Object.assign({}, state, {
+      alreadyUser: false
+    });
+  },
 },
   /*** initial state  ***/
   {
     mainMenuOpen: false,
     termsMenuValue: 1,
     acceptedPayments: [],
+    alreadyUser: false,
   }
 );
 

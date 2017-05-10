@@ -64,6 +64,7 @@ export default class MenuDrawer extends React.Component {
           open={this.props.ui.mainMenuOpen}
           docked={false}
           onRequestChange={this.toggleDrawer}
+          zDepth={3}
         >
           <div style={divStyle}>
 

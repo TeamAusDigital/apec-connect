@@ -38,12 +38,18 @@ export default class MenuList extends React.Component {
     this.props.ui.mainMenuOpen ?  actions.closeMainMenu() : actions.openMainMenu()
   );
 
+  handleForgetMe = () => {
+    this.props.router.push('/');
+    this.props.dispatch(actions.forgetUser());
+    this.props.dispatch(actions.closeMainMenu());
+  };
+
   render() {
       return (
   <div>
     <Divider />
     <List>
-      <ListItem primaryText="Home" leftIcon={<ContentInbox />} containerElement={<Link to='/' />} onTouchTap={this.handleClick} />
+      <ListItem primaryText="Home" leftIcon={<ContentInbox />} containerElement={<Link to='/home' />} onTouchTap={this.handleClick} />
       <ListItem primaryText="Get Paid" leftIcon={<ActionGrade />} containerElement={<Link to='/getPaid' />} onTouchTap={this.handleClick}/>
       <ListItem primaryText="Pay" leftIcon={<ContentSend />} containerElement={<Link to='/pay' />} onTouchTap={this.handleClick}/>
       <ListItem primaryText="Inbox" leftIcon={<ContentInbox />} />
@@ -53,7 +59,7 @@ export default class MenuList extends React.Component {
       <ListItem primaryText="All mail" rightIcon={<ActionInfo />} />
       <ListItem primaryText="Trash" rightIcon={<ActionInfo />} />
       <ListItem primaryText="Spam" rightIcon={<ActionInfo />} />
-      <ListItem primaryText="Follow up" rightIcon={<ActionInfo />} />
+      <ListItem primaryText="Forget Me" rightIcon={<ActionInfo />} onTouchTap={this.handleForgetMe}/>
     </List>
   </div>
   );}
