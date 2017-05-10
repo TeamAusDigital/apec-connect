@@ -1,4 +1,5 @@
-import React , { Component, PropTypes } from 'react';
+import React , { Component } from 'react';
+import PropTypes from 'prop-types';
 import FullStarIcon from 'material-ui/svg-icons/toggle/star';
 import EmptyStarIcon from 'material-ui/svg-icons/toggle/star-border';
 import {amber} from './apecConnectTheme';

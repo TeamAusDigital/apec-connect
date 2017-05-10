@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import AppBarMain from '../components/AppBarMain';
@@ -66,10 +67,6 @@ export default class GetPaidScreen extends React.Component {
     super(props);
   }
 
-  state = {
-      values: [],
-  };
-
   handleChange = (event, index, value) => this.props.dispatch(
     actions.termsMenuValue(value)
   );
@@ -127,6 +124,7 @@ export default class GetPaidScreen extends React.Component {
             />
             <br />
             <TextField
+              type='number'
               fullWidth={true}
               style = {textFieldStyle}
               hintText='Amount to pay'
@@ -138,6 +136,9 @@ export default class GetPaidScreen extends React.Component {
               style = {textFieldStyle}
               hintText='What for'
               floatingLabelText='What did you purchase'
+              multiLine={true}
+              rows={1}
+              rowsMax={4}
             />
             <br />
             <SelectField

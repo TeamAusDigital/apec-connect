@@ -6,6 +6,7 @@ import StarRating from '../components/starRating';
 import RaisedButton from 'material-ui/RaisedButton';
 import {indigo,white} from './apecConnectTheme';
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
+import ToPayItem from '../components/toPayItem';
 
 /***
 
@@ -16,18 +17,17 @@ This is the basic elements for a main view in the app.
 const paperStyle = {
   padding: 10,
   textAlign: 'center',
-  height: '100vh'
+  height: '100vh',
+  position: 'relative'
 };
 
-const getPaidStyle = {
-  width: '50%',
+const headerDivStyle = {
+  position: 'relative',
+  width: '30%',
 };
 
 const payStyle = {
   width: '50%',
-};
-
-const inboxStyle ={
 };
 
 const businessNameStyle ={
@@ -48,13 +48,13 @@ const CompanyName = 'David\'s Hat Co.';
 const userName = 'DHat72';
 const userStarRating = 1;
 
-export default class HomeScreen extends React.Component {
+export default class PayScreen extends React.Component {
 
   render() {
     return (
       <div>
         {/** AppBarMain contains the app bar and menu drawer **/}
-        <AppBarMain title={'Home'}/>
+        <AppBarMain title={'Pay'}/>
         {/** Paper containing the logo **/}
         <Paper
           zDepth={1}
@@ -63,17 +63,15 @@ export default class HomeScreen extends React.Component {
           <img src={Logo} style={logoStyle} />
           <br />
           <br />
-
-          {/** Username and rating **/}
-
-          <div style={businessNameStyle}>{CompanyName}</div>
-          <div style={userDetailsStyle}> {userName} <StarRating rating={userStarRating} /> </div>
-          <br />
-
-          {/** Action buttons  **/}
-          <RaisedButton label='Get Paid' style={getPaidStyle} secondary={true} />
-          <RaisedButton label='Pay' style={payStyle} primary={true} />
-          <RaisedButton label='Inbox' style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} />
+          <Paper
+            zDepth={1}
+            style={paperStyle}
+          >
+            {/** container for to pay elements **/}
+            <ToPayItem message={'15 Beanie Hats'} amount={100.0}/>
+            <ToPayItem message={'3 Beret'} amount={91.15}/>
+            <ToPayItem message={'A Really long item name that may or may not wrap lets test it okay cool lets go'} amount={200.0}/>
+          </Paper>
           <br />
         </Paper>
       </div>
