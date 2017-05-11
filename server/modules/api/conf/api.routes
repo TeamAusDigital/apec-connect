@@ -4,3 +4,5 @@ GET        /hc                          org.ausdigital.apecconnect.system.contro
 
 # APEC Connect Participants
 POST       /v1/participants/sign-up      org.ausdigital.apecconnect.participants.controllers.ParticipantsController.signUp()
+
+GET        /v1/participants/current      org.ausdigital.apecconnect.participants.controllers.ParticipantsController.participant()
