@@ -32,7 +32,7 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
 
       Logger.warn(s"We have a response ${response.body}")
 
-      if (response.status === Status.OK) {
+      if (response.status === Status.CREATED || response.status === Status.OK) {
         try {
           response.json
             .validate[ParticipantRegistrationResponse]
@@ -48,7 +48,7 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
           case NonFatal(ex) => throw new ApecConnectBusinessRegisterException(s"Failed to sign up with APEC Connect Business Register.", ex)
         }
       } else {
-        s"Failed to register this participant with APEC Connect Business Register. ${response.body}".left
+        s"Failed to register this participant with APEC Connect Business Register. Got response code [${response.status}] - [${response.body}]".left
       }
     }
 

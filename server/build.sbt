@@ -100,10 +100,12 @@ lazy val core = (project in file("modules/core"))
   .settings(
     version := (version in LocalProject("root")).value,
     name := ProjectName + "-core",
-    coverageEnabled.in(Test, test) := true
+    coverageEnabled.in(Test, test) := true,
+    libraryDependencies ++= Dependencies.SilhouetteDependencies
   )
   .dependsOn(
-    common % Dependencies.CompileAndTest
+    common % Dependencies.CompileAndTest,
+    participants % Dependencies.CompileAndTest
   )
 
 lazy val db = (project in file("modules/db"))

@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 import com.google.inject.Singleton
 import org.ausdigital.apecconnect.db.dao.RecordDao
-import org.ausdigital.apecconnect.participants.model.Participant.ParticipantData
+import org.ausdigital.apecconnect.participants.model.Participant.{ Participant, ParticipantData }
 import play.api.db.slick.DatabaseConfigProvider
 
 @Singleton
@@ -19,5 +19,8 @@ class ParticipantDao @Inject() (override val dbConfigProvider: DatabaseConfigPro
   override def tableQuery: TableQuery[Participants] = TableQuery[Participants]
 
   private implicit def recordIdMapperHighPriority[A] = recordIdMapper[A]
+
+  def findByIdentifier(identifier: String): DBIO[Option[Participant]] =
+    baseQuery.filter(_.identifier === identifier).result.headOption
 
 }

@@ -1,9 +1,11 @@
 package org.ausdigital.apecconnect.participants.model
 
+import com.mohiva.play.silhouette.api.{ Identity, LoginInfo }
 import enumeratum.{ EnumEntry, PlayEnum }
 import org.ausdigital.apecconnect.common.model.ApecConnectEnumEntry
 import org.ausdigital.apecconnect.db.model.{ Record, RecordId }
-import play.api.libs.json.{ Json, OFormat }
+import org.ausdigital.apecconnect.participants.model.Participant.{ ParticipantData, ParticipantId }
+import play.api.libs.json.{ Format, Json, OFormat }
 
 import scala.collection.immutable.IndexedSeq
 import scalaz.Equal
@@ -32,6 +34,12 @@ object AccountStatus extends PlayEnum[AccountStatus] {
   override val values: IndexedSeq[AccountStatus] = findValues
 
   implicit val equal: Equal[AccountStatus] = Equal.equalA
+}
+
+final case class ParticipantIdentity(id: ParticipantId, loginInfo: LoginInfo) extends Identity
+
+object ParticipantIdentity {
+  implicit val format: OFormat[ParticipantIdentity] = Json.format[ParticipantIdentity]
 }
 
 object Participant {

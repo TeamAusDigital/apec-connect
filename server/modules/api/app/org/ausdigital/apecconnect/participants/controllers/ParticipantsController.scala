@@ -6,18 +6,26 @@ import au.com.agiledigital.rest.controllers.transport.{ JsonApiResponse, Message
 import au.com.agiledigital.rest.security.BodyParsers
 import io.kanaka.monadic.dsl._
 import io.kanaka.monadic.dsl.compat.scalaz._
+import org.ausdigital.apecconnect.db.model.RecordOps._
+import org.ausdigital.apecconnect.admin.controllers.AuthorisingController
+import org.ausdigital.apecconnect.auth.{ ApecConnectSilhouette, ParticipantTokenService }
 import org.ausdigital.apecconnect.businessregister.ApecConnectBusinessRegister
 import org.ausdigital.apecconnect.businessregister.model.ParticipantRegistrationPayload
 import org.ausdigital.apecconnect.participants.model.Participant.ParticipantData
 import org.ausdigital.apecconnect.participants.services.ParticipantService
 import play.api.libs.json.Json
-import play.api.mvc.{ Action, Controller, Result }
+import play.api.mvc.{ Action, AnyContent, Controller, Result }
 
 import scala.concurrent.ExecutionContext
 import scalaz.NonEmptyList
 
-class ParticipantsController @Inject() (apecConnectBusinessRegister: ApecConnectBusinessRegister, participantService: ParticipantService)(implicit val ec: ExecutionContext)
-    extends Controller {
+class ParticipantsController @Inject() (
+  apecConnectBusinessRegister: ApecConnectBusinessRegister,
+  participantService: ParticipantService,
+  participantTokenService: ParticipantTokenService,
+  override val apecConnectSilhouette: ApecConnectSilhouette
+)(override implicit val executionContext: ExecutionContext)
+    extends AuthorisingController with Controller {
 
   def signUp(): Action[ParticipantRegistrationPayload] = Action.async(BodyParsers.whitelistingJson[ParticipantRegistrationPayload]) { implicit request =>
     for {
@@ -32,7 +40,14 @@ class ParticipantsController @Inject() (apecConnectBusinessRegister: ApecConnect
         email = request.body.email,
         phone = request.body.phone
       )) ?| nelAsResponse
-    } yield JsonApiResponse.buildResponse("Successfully signed up the participant.", participant)
+      participantToken <- participantTokenService.generateParticipantToken(participant.identifier) ?| JsonApiResponse.internalServerErrorResponse("Failed to generate auth token for registered participant.")
+    } yield JsonApiResponse.buildResponse("Successfully signed up the participant.", participantToken)
+  }
+
+  def participant(): Action[AnyContent] = participantAction.async { implicit request =>
+    for {
+      participant <- participantService.findById(request.identity.id)
+    } yield JsonApiResponse.buildResponse(s"Successfully found participant.", participant)
   }
 
   /**
