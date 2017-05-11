@@ -1,8 +1,8 @@
-import { fork } from 'redux-saga/effects';
-import authSaga from './auth.saga';
+import { all, fork } from 'redux-saga/effects';
+import participantSaga from './participant.saga';
 
 export default function* saga () {
-  yield [
-    fork(authSaga)
-  ];
+  yield all([
+    fork(participantSaga)
+  ]);
 };
