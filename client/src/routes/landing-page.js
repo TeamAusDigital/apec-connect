@@ -24,7 +24,8 @@ import MainSplashScreen from '../components/mainSplashScreen';
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
+    participant: state.participant
   };
 })
 export default class Home extends React.Component {
@@ -35,11 +36,12 @@ export default class Home extends React.Component {
 
   componentWillReceiveProps(props) {
     {/** Check token is valid **/}
-    if (props.ui.alreadyUser) {
+    if (props && props.participant && props.participant.accountStatus === 'Enabled') {
 
       {/** If token is valid proceed to home **/}
       props.router.push('/home');
-    } else {
+    }
+    else {
       {/** proceed to join **/}
       props.router.push('/join');
     };
