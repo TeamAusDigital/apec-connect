@@ -15,6 +15,3 @@ addSbtPlugin("org.danielnixon" % "sbt-playwarts" % "0.18")
 
 // For running the project with Kamon metrics that require weaving
 addSbtPlugin("io.kamon" % "aspectj-play-runner" % "0.1.3")
-
-// For formatting of the source code.
-addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0")

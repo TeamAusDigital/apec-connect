@@ -8,6 +8,9 @@ import org.ausdigital.apecconnect.db.dao.RecordDao
 import org.ausdigital.apecconnect.participants.model.Participant.{ Participant, ParticipantData }
 import play.api.db.slick.DatabaseConfigProvider
 
+/**
+  * Responsible for persistence of [[Participant]].
+  */
 @Singleton
 class ParticipantDao @Inject() (override val dbConfigProvider: DatabaseConfigProvider, override val clock: Clock)
     extends RecordDao[ParticipantData] with ParticipantDbTableDefinitions {
@@ -23,4 +26,6 @@ class ParticipantDao @Inject() (override val dbConfigProvider: DatabaseConfigPro
   def findByIdentifier(identifier: String): DBIO[Option[Participant]] =
     baseQuery.filter(_.identifier === identifier).result.headOption
 
+  def findByUsername(username: String): DBIO[Option[Participant]] =
+    baseQuery.filter(_.username === username).result.headOption
 }
