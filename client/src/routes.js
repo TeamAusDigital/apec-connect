@@ -5,6 +5,10 @@ import actions from './state/actions';
 import Home from './routes/landing-page';
 import Scroll from 'react-scroll';
 import GetPaidScreen from './components/getPaidScreen';
+import PayScreen from './components/payScreen';
+import MainSplashScreen from './components/mainSplashScreen';
+import SignUpScreen from './components/signUpScreen';
+import HomeScreen from './components/homeScreen';
 /**
  * The main application component that contains the routing configuration.
  */
@@ -32,6 +36,14 @@ class App extends React.Component {
       Scroll.animateScroll.scrollToTop({smooth: false, duration: 0});
     });
 
+    if (this.props.ui.alreadyUser) {
+      {/** If token is valid proceed to home **/}
+      this.props.router.push('/home');
+    } else {
+      {/** proceed to join **/}
+      this.props.router.push('/join');
+    };
+
   }
 
   /**
@@ -58,7 +70,11 @@ const routes = (
 
     <IndexRoute component={Home} />
     <Route path='/' component={Home} />
+    <Route path='/home' component={HomeScreen} />
     <Route path='/getPaid' component={GetPaidScreen} />
+    <Route path='/pay' component={PayScreen} />
+    <Route path='/join' component={MainSplashScreen} />
+    <Route path='/signUp' component={SignUpScreen} />
 
   </Route>
 );

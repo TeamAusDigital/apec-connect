@@ -1,4 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -17,9 +20,35 @@ import GetPaidScreen from '../components/getPaidScreen';
 import MainSplashScreen from '../components/mainSplashScreen';
 
 
-
+@withRouter
+@connect((state) => {
+  return {
+    dispatch: state.dispatch,
+    ui: state.ui
+  };
+})
 export default class Home extends React.Component {
+
+  constructor(props) {
+    super(props);
+  };
+
+  componentWillReceiveProps(props) {
+    {/** Check token is valid **/}
+    if (props.ui.alreadyUser) {
+
+      {/** If token is valid proceed to home **/}
+      props.router.push('/home');
+    } else {
+      {/** proceed to join **/}
+      props.router.push('/join');
+    };
+    console.log(props.ui);
+  };
+
   render() {
-    return ( <HomeScreen />);
-  }
+    console.log(this.props.ui);
+    return (<MainSplashScreen /> );
+  };
+
 }

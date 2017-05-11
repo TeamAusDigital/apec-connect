@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AppBarMain from '../components/AppBarMain';
 import Paper from 'material-ui/Paper';
 import StarRating from '../components/starRating';
@@ -71,8 +72,8 @@ export default class HomeScreen extends React.Component {
           <br />
 
           {/** Action buttons  **/}
-          <RaisedButton label='Get Paid' style={getPaidStyle} secondary={true} containerElement={<Link to="/getPaid" />}/>
-          <RaisedButton label='Pay' style={payStyle} primary={true} />
+          <RaisedButton label='Get Paid' style={getPaidStyle} secondary={true} containerElement={<Link to='/getPaid' />}/>
+          <RaisedButton label='Pay' style={payStyle} primary={true} containerElement={<Link to='/pay' />} />
           <RaisedButton label='Inbox' style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} />
           <br />
         </Paper>
