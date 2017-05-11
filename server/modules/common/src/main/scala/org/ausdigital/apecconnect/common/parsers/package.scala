@@ -1,4 +1,4 @@
-package au.com.agiledigital.common
+package org.ausdigital.apecconnect.common
 
 package object parsers {
 

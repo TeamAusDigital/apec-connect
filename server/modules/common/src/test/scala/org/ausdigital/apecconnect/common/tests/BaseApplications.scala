@@ -1,4 +1,4 @@
-package au.com.agiledigital.common.tests
+package org.ausdigital.apecconnect.common.tests
 
 import akka.actor.ActorSystem
 import au.com.agiledigital.healthchecker.{ HealthCheckManager, HealthCheckerModule }

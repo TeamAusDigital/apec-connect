@@ -5,6 +5,6 @@ package org.ausdigital.apecconnect.db.model
   */
 object RecordDataProvider {
 
-  def record[D](data: D, id: Long = 1L): Record[D] = Record(id, data, MetaDataDataProvider.metaData)
+  def record[D](data: D, id: Long = 1L): Record[D] = Record(RecordId(id), data, MetaDataDataProvider.metaData)
 
 }
