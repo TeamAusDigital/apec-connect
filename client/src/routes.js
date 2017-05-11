@@ -16,7 +16,8 @@ import ViewInvoice from './components/viewInvoice';
  */
 @connect((state) => {
   return {
-    dispatch: state.dispatch
+    dispatch: state.dispatch,
+    participant: state.participant
   };
 })
 class App extends React.Component {
@@ -27,25 +28,16 @@ class App extends React.Component {
    * @see https://facebook.github.io/react/docs/react-component.html#componentdidmount
    */
   componentDidMount() {
-    let { router, dispatch } = this.props;
+    let { router, dispatch, participant} = this.props;
 
     setTimeout(function () {
-      //dispatch(actions.getVendor());
+      dispatch(actions.getParticipant());
     });
 
     // Make sure the window scroll to top on route change.
     router.listen(function () {
       Scroll.animateScroll.scrollToTop({smooth: false, duration: 0});
     });
-
-    if (this.props.ui.alreadyUser) {
-      {/** If token is valid proceed to home **/}
-      this.props.router.push('/home');
-    } else {
-      {/** proceed to join **/}
-      this.props.router.push('/join');
-    };
-
   }
 
   /**
