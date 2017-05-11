@@ -9,6 +9,8 @@ import PayScreen from './components/payScreen';
 import MainSplashScreen from './components/mainSplashScreen';
 import SignUpScreen from './components/signUpScreen';
 import HomeScreen from './components/homeScreen';
+import Inbox from './components/inbox';
+import ViewInvoice from './components/viewInvoice';
 /**
  * The main application component that contains the routing configuration.
  */
@@ -75,6 +77,8 @@ const routes = (
     <Route path='/pay' component={PayScreen} />
     <Route path='/join' component={MainSplashScreen} />
     <Route path='/signUp' component={SignUpScreen} />
+    <Route path='/inbox' component={Inbox} />
+    <Route path='/viewInvoice' component={ViewInvoice} />
 
   </Route>
 );

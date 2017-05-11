@@ -74,7 +74,7 @@ export default class HomeScreen extends React.Component {
           {/** Action buttons  **/}
           <RaisedButton label='Get Paid' style={getPaidStyle} secondary={true} containerElement={<Link to='/getPaid' />}/>
           <RaisedButton label='Pay' style={payStyle} primary={true} containerElement={<Link to='/pay' />} />
-          <RaisedButton label='Inbox' style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} />
+          <RaisedButton label='Inbox' style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} containerElement={<Link to='/inbox' />} />
           <br />
         </Paper>
       </div>
