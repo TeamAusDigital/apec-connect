@@ -13,7 +13,7 @@ import actions from 'state/actions';
 import TextField from 'material-ui/TextField';
 import Background from '../common/assets/bg-bottom.png';
 
-/***
+/***`
 
 This is the basic elements for a main view in the app.
 
