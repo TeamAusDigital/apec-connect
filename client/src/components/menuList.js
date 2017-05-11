@@ -45,22 +45,22 @@ export default class MenuList extends React.Component {
   };
 
   render() {
-      return (
-  <div>
-    <Divider />
-    <List>
-      <ListItem primaryText="Home" leftIcon={<ContentInbox />} containerElement={<Link to='/home' />} onTouchTap={this.handleClick} />
-      <ListItem primaryText="Get Paid" leftIcon={<ActionGrade />} containerElement={<Link to='/getPaid' />} onTouchTap={this.handleClick}/>
-      <ListItem primaryText="Pay" leftIcon={<ContentSend />} containerElement={<Link to='/pay' />} onTouchTap={this.handleClick}/>
-      <ListItem primaryText="Inbox" leftIcon={<ContentInbox />} />
-    </List>
-    <Divider />
-    <List>
-      <ListItem primaryText="All mail" rightIcon={<ActionInfo />} />
-      <ListItem primaryText="Trash" rightIcon={<ActionInfo />} />
-      <ListItem primaryText="Spam" rightIcon={<ActionInfo />} />
-      <ListItem primaryText="Forget Me" rightIcon={<ActionInfo />} onTouchTap={this.handleForgetMe}/>
-    </List>
-  </div>
+    return (
+      <div>
+        <Divider />
+        <List>
+          <ListItem primaryText="Home" leftIcon={<ContentInbox />} containerElement={<Link to='/home' />} onTouchTap={this.handleClick} />
+          <ListItem primaryText="Get Paid" leftIcon={<ActionGrade />} containerElement={<Link to='/getPaid' />} onTouchTap={this.handleClick}/>
+          <ListItem primaryText="Pay" leftIcon={<ContentSend />} containerElement={<Link to='/pay' />} onTouchTap={this.handleClick}/>
+          <ListItem primaryText="Inbox" leftIcon={<ContentInbox />} containerElement={<Link to='/inbox' />} onTouchTap={this.handleClick}/>
+        </List>
+        <Divider />
+        <List>
+          <ListItem primaryText="All mail" rightIcon={<ActionInfo />} />
+          <ListItem primaryText="Trash" rightIcon={<ActionInfo />} />
+          <ListItem primaryText="Spam" rightIcon={<ActionInfo />} />
+          <ListItem primaryText="Forget Me" rightIcon={<ActionInfo />} onTouchTap={this.handleForgetMe}/>
+        </List>
+      </div>
   );}
 }

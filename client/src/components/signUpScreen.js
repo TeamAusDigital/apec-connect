@@ -50,11 +50,6 @@ const btnStyle ={
   width: '100%',
 };
 
-{/** User information that will be pulled from the database **/}
-const CompanyName = 'David\'s Hat Co.';
-const userName = 'DHat72';
-const userStarRating = 1;
-
 @withRouter
 @connect((state) => {
   return {
