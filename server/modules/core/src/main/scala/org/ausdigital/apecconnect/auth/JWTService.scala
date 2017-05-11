@@ -14,7 +14,6 @@ import scala.concurrent.Future
  * @param service The authenticator service.
  * @param crypter The cypter used to create the authentication encoder.
  * @param settings The authenticator settings.
- * Created by danixon on 26/11/2015.
  */
 class JWTService @Inject() (service: JWTAuthenticatorService, crypter: Crypter, settings: JWTAuthenticatorSettings) {
 

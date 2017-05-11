@@ -11,5 +11,4 @@ trait AuthorisingController {
   implicit def executionContext: ExecutionContext
 
   def participantAction = apecConnectSilhouette.SecuredAction
-
 }
