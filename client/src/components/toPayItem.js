@@ -5,6 +5,7 @@ import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-rig
 import CommunicationEmail from 'material-ui/svg-icons/communication/email';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
+import {white,red} from './apecConnectTheme';
 
 const ItemStyle ={
   width: '75%',
@@ -66,7 +67,7 @@ export default class ToPayItem extends React.Component {
           />
         </div>
         <div style={cellDivStyle}>
-          <RaisedButton style={ButtonStyle} label={'Pay'}/>
+          <RaisedButton style={ButtonStyle} label={'Pay'} backgroundColor={red} labelColor={white}/>
         </div>
       </div>
     );
