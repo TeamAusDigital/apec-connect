@@ -88,6 +88,9 @@ const routes = (
     <Route path='/inbox' component={Inbox} />
     <Route path='/viewInvoice' component={ViewInvoice} />
 
+    <Route path='/viewReceipt' component={ReceiptScreen}/>
+
+
   </Route>
 );
 
