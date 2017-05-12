@@ -7,7 +7,9 @@ import {
 import apis from 'apis';
 
 /**
- *
+ * Handles sign up action's side effects:
+ *  # lodge the successfully signed in authentication token (JWT).
+ *  # retrieve current participant using the lodeged token.
  */
 export function* signUp (action) {
   try {
@@ -16,9 +18,7 @@ export function* signUp (action) {
       email: action.payload.email,
       phone: action.payload.phone
     });
-
     yield put(actions.authResponse({token: token}));
-
     yield put(actions.getParticipant());
   }
   catch (error) {
@@ -27,7 +27,9 @@ export function* signUp (action) {
 }
 
 /**
- *
+ * Handles side effects of get participant action:
+ *  # stores updated participant into the application store, or.
+ *  # error message for participant.
  */
 export function* getParticipant () {
   try {
