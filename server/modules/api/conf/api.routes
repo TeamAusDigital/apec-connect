@@ -1,13 +1,8 @@
-GET        /v1/time               au.com.agiledigital.seed.time.controllers.TimeController.time
-GET        /v1/remote-time        au.com.agiledigital.seed.time.controllers.TimeController.remoteTime
-
 # Health Check
-GET        /hc                    au.com.agiledigital.seed.system.controllers.HealthCheckerController.checkHealth(serverErrorOnFailure: Boolean ?= true)
+GET        /hc                          org.ausdigital.apecconnect.system.controllers.HealthCheckerController.checkHealth(serverErrorOnFailure: Boolean ?= true)
 
 
-# Authentication
-POST       /v1/current-user/sign-out                org.ausdigital.apecconnect.users.controllers.AuthenticationController.signOut
-POST       /v1/current-user/credentials/sign-in     org.ausdigital.apecconnect.users.controllers.AuthenticationController.authenticateWithCredentials
-POST       /v1/current-user/:provider/sign-in       org.ausdigital.apecconnect.users.controllers.AuthenticationController.authenticateByOauth(provider: String)
+# APEC Connect Participants
+POST       /v1/participants/sign-up      org.ausdigital.apecconnect.participants.controllers.ParticipantsController.signUp()
 
-GET        /v1/test                                 org.ausdigital.apecconnect.users.controllers.AuthenticationController.test
+GET        /v1/participants/current      org.ausdigital.apecconnect.participants.controllers.ParticipantsController.participant()

@@ -1,7 +1,7 @@
 import fetchIt from 'fetch-it';
-import Store from 'state';
-
-import authentication from './auth.api';
+import store from 'state';
+import participantApi from './participant.api';
+import actions from '../state/actions';
 
 let apiMiddleware = {
   // TODO: central place to handle remote server error here: i.e. 4XX, 5XX.
@@ -22,12 +22,10 @@ let apiMiddleware = {
   },
 
   request (req) {
-    var state = Store.getState();
-
-    if(state.authentication.loggedIn) {
+    var state = store.getState();
+    if(state.authentication.token) {
       req.headers.append('X-Auth-Token', state.authentication.token);
     }
-
     return req;
   }
 };
@@ -35,5 +33,5 @@ let apiMiddleware = {
 fetchIt.addMiddlewares([apiMiddleware]);
 
 module.exports = {
-  authentication
+  ...participantApi
 };

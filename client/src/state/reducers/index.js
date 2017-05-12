@@ -1,7 +1,9 @@
-import auth from './auth.reducers';
+import authentication from './auth.reducers';
 import ui from './ui.reducers';
+import participant from './participant.reducers';
 
 module.exports = {
-  ...auth,
-  ...ui
+  ...ui,
+  ...authentication,
+  ...participant
 };

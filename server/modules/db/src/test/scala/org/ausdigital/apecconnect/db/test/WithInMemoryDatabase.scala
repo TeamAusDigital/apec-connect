@@ -1,15 +1,12 @@
 package org.ausdigital.apecconnect.db.test
 
 import au.com.agiledigital.rest.tests.WithApplicationBuilder
-import au.com.agiledigital.common.tests.BaseApplications
-import org.ausdigital.apecconnect.db.dao.SlickDao
-import org.specs2.execute.{ AsResult, Result }
-import play.api.Logger
+import org.ausdigital.apecconnect.common.tests.BaseApplications
+import org.specs2.execute.{AsResult, Result}
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.inject.BindingKey
 import play.api.test.Helpers
 import play.db.NamedDatabaseImpl
-import slick.driver.JdbcProfile
 
 import scala.concurrent.ExecutionContext
 

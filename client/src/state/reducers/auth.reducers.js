@@ -18,7 +18,8 @@ const authentication = handleActions({
   },
   NOT_AUTHENTICATED: (state, action) => {
     return Object.assign({}, state, {
-      loggedIn: false
+      loggedIn: false,
+      token: null
     });
   }
 }, {});

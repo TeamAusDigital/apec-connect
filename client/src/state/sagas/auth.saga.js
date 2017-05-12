@@ -1,48 +1,21 @@
-import { takeLatest } from 'redux-saga';
-import { call, put } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import actions from 'state/actions';
+import { browserHistory } from 'react-router';
 import {
-  CREDENTIALS_LOGIN,
-  LOGOUT
+  NOT_AUTHENTICATED
 } from 'state/actions/actionTypes';
-import apis from 'apis';
 
 /**
- * Handles the credentials based login request action.
- * The success authentication puts an auth cookie with valid browser session.
- * @param action the action contains the login credentials for payload.
+ * Handles any side effects that the application will apply when participant authentication failed.
+ * E.g. navigate to landing page.
+ * @return {Generator} [description]
  */
-export function* credentialsLogin (action) {
-  try {
-    const authenticateResponse = yield call(apis.authentication.authenticateWithCredentials, action.payload.email, action.payload.password);
-    yield put(actions.closeLoginModal());
-    yield put(actions.authResponse({loggedIn: true, token: authenticateResponse.result.token}));
-  }
-  catch (error) {
-    yield put(actions.authResponse(error));
-  }
+export function* handleNotLoggedIn () {
+  browserHistory.push('/');
 }
 
-/**
- * Handles the logout request action.
- * The success logout removes the auth cookie from current session.
- */
-export function* logout () {
-  try {
-    yield call(apis.authentication.signOut);
-    yield put(actions.authResponse({loggedIn: false}));
-  }
-  catch (error) {
-    yield put(actions.authResponse(error));
-  }
-}
-
-/**
- * Sagas that watches client specific actions.
- */
-export default function* clientSaga () {
-  yield [
-    takeLatest(CREDENTIALS_LOGIN, credentialsLogin),
-    takeLatest(LOGOUT, logout)
-  ];
+export default function* authSaga () {
+  yield all([
+    takeLatest(NOT_AUTHENTICATED, handleNotLoggedIn)
+  ]);
 }

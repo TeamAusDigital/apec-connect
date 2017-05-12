@@ -4,16 +4,16 @@ import java.time.Clock
 
 import au.com.agiledigital.rest.tests.BaseSpec
 import org.ausdigital.apecconnect.common.query.Query
-import org.ausdigital.apecconnect.db.model.Record
+import org.ausdigital.apecconnect.db.model.{Record, RecordId}
 import org.ausdigital.apecconnect.db.test.WithInMemoryDatabase
 import org.specs2.concurrent.ExecutionEnv
 import play.api.db.slick.DatabaseConfigProvider
-import play.api.libs.json.{ JsObject, Json }
+import play.api.libs.json.{JsObject, Json}
 import slick.dbio._
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.duration._
-import scala.concurrent.{ Await, ExecutionContext }
+import scala.concurrent.{Await, ExecutionContext}
 import scala.language.postfixOps
 
 trait RecordDaoSpec[M, D <: RecordDao[M]] extends BaseSpec {
@@ -29,7 +29,7 @@ trait RecordDaoSpec[M, D <: RecordDao[M]] extends BaseSpec {
       "return none if no instance with that id exists" in new WithDao {
         val result = db.run(for {
           created <- context.create(context.pending(0))
-          found <- dao.findOptionById(created.id + 1000)
+          found <- dao.findOptionById(RecordId(created.id.value + 1000))
         } yield found)
 
         result must beNone.awaitFor(defaultAwait)
@@ -80,62 +80,27 @@ trait RecordDaoSpec[M, D <: RecordDao[M]] extends BaseSpec {
       }
     }
 
-    "Querying records" should {
+    "Finding all instances" should {
       "return nothing if no instances have been created" in new WithDao {
         val result = db.run(for {
-          found <- dao.query(Query(None, None, None, None, Json.obj()))
+          found <- dao.fetchAll()
         } yield found)
 
-        result must beLike[(Int, Seq[Record[M]])] {
-          case (total: Int, results: Seq[Record[M]]) =>
-            (total must_=== 0) and
-              (results must_=== Seq())
-        }.awaitFor(defaultAwait)
+        result must beEmpty[Seq[Record[M]]].awaitFor(defaultAwait)
       }
-      "support filtering by id" in new WithDao {
+      "return the active instances" in new WithDao {
         val result = db.run(for {
-          _ <- context.create(pending(0))
-          _ <- context.create(pending(1))
-          created <- context.create(pending(2))
-          _ <- context.create(pending(3))
-          found <- dao.query(Query(None, None, None, None, Json.obj("id" -> created.id)))
-        } yield (created, found))
+          created1 <- context.create(context.pending(0))
+          created2 <- context.create(context.pending(1))
+          created3 <- context.create(context.pending(2))
+          _ <- dao.delete(created3)
+          created4 <- context.create(context.pending(3))
+          found <- dao.fetchAll()
+        } yield (created1, created2, created4, found))
 
-        result must beLike[(Record[M], (Int, Seq[Record[M]]))] {
-          case (created: Record[M], (total: Int, results: Seq[Record[M]])) =>
-            (total must_=== 1) and
-              (results must_=== Seq(created))
-        }.awaitFor(defaultAwait)
-      }
-      "support filtering by id and getting no matches" in new WithDao {
-        val result = db.run(for {
-          _ <- context.create(pending(0))
-          _ <- context.create(pending(1))
-          created <- context.create(pending(2))
-          _ <- context.create(pending(3))
-          found <- dao.query(Query(None, None, None, None, Json.obj("id" -> (created.id + 1000))))
-        } yield found)
+        val (created1, created2, created4, found) = Await.result(result, defaultAwait)
 
-        result must beLike[(Int, Seq[Record[M]])] {
-          case (total: Int, results: Seq[Record[M]]) =>
-            (total must_=== 0) and
-              (results must_=== Seq())
-        }.awaitFor(defaultAwait)
-      }
-      "support paging" in new WithDao {
-        val result = db.run(for {
-          _ <- context.create(pending(0))
-          _ <- context.create(pending(1))
-          _ <- context.create(pending(2))
-          _ <- context.create(pending(3))
-          found <- dao.query(Query(Some(1), Some(2), None, None, Json.obj()))
-        } yield found)
-
-        result must beLike[(Int, Seq[Record[M]])] {
-          case (total: Int, results: Seq[Record[M]]) =>
-            (total must_=== 4) and
-              (results.size must_=== 2)
-        }.awaitFor(defaultAwait)
+        found must_=== Seq(created1, created2, created4)
       }
     }
 
@@ -221,7 +186,7 @@ trait DaoContext[M, D <: RecordDao[M]] {
 
   def dbConfigProvider: DatabaseConfigProvider
 
-  lazy val driver = dbConfigProvider.get[JdbcProfile].driver
+  lazy val driver = dbConfigProvider.get[JdbcProfile].profile
 
   lazy val db = dbConfigProvider.get[JdbcProfile].db
 

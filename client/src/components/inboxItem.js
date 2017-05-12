@@ -8,6 +8,7 @@ import StarRating from '../components/starRating';
 import {Link} from 'react-router';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 
 import {
   Table,
@@ -49,11 +50,11 @@ export default class InboxItem extends React.Component {
 }
 
 InboxItem.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  who: React.PropTypes.string.isRequired,
-  rating: React.PropTypes.number,
-  issueDate: React.PropTypes.string.isRequired,
-  dueDate: React.PropTypes.string,
-  what: React.PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  who: PropTypes.string.isRequired,
+  rating: PropTypes.number,
+  issueDate:  PropTypes.string.isRequired,
+  dueDate:  PropTypes.string,
+  what: PropTypes.string.isRequired,
 };
 InboxItem.muiName = 'TableRow';
