@@ -34,9 +34,11 @@ lazy val commonSettings = Seq(
   ),
   dependencyOverrides ++= Dependencies.Overrides,
   libraryDependencies ++= Seq(
-    "org.scalaz"          %% "scalaz-core"               % "7.2.9",
-    "au.com.agiledigital" %% "play-rest-support"         % "0.0.3",
-    "au.com.agiledigital" %% "play-rest-support-testkit" % "0.0.3" % Test
+    "org.scalaz"              %% "scalaz-core"               % "7.2.9",
+    "com.github.nscala-money" %% "nscala-money"              % "0.12.3",
+    "com.github.nscala-money" %% "nscala-money-play-json"    % "0.12.3",
+    "au.com.agiledigital"     %% "play-rest-support"         % "0.0.3",
+    "au.com.agiledigital"     %% "play-rest-support-testkit" % "0.0.3" % Test
   ),
   libraryDependencies ++= Dependencies.PlayDependencies,
   libraryDependencies ++= Dependencies.KamonDependencies,
@@ -104,7 +106,7 @@ lazy val core = (project in file("modules/core"))
     libraryDependencies ++= Dependencies.SilhouetteDependencies
   )
   .dependsOn(
-    common % Dependencies.CompileAndTest,
+    common       % Dependencies.CompileAndTest,
     participants % Dependencies.CompileAndTest
   )
 
