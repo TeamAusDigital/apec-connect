@@ -28,6 +28,10 @@ import MainSplashScreen from '../components/mainSplashScreen';
     participant: state.participant
   };
 })
+
+/**
+ * Responsible for the rendering of splash screen.
+ */
 export default class Home extends React.Component {
 
   constructor(props) {
@@ -35,21 +39,15 @@ export default class Home extends React.Component {
   };
 
   componentWillReceiveProps(props) {
-    {/** Check token is valid **/}
     if (props && props.participant && props.participant.accountStatus === 'Enabled') {
-
-      {/** If token is valid proceed to home **/}
       props.router.push('/home');
     }
     else {
-      {/** proceed to join **/}
       props.router.push('/join');
     };
-    console.log(props.ui);
   };
 
   render() {
-    console.log(this.props.ui);
     return (<MainSplashScreen /> );
   };
 

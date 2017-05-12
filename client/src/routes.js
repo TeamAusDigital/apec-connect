@@ -11,31 +11,39 @@ import SignUpScreen from './components/signUpScreen';
 import HomeScreen from './components/homeScreen';
 import Inbox from './components/inbox';
 import ViewInvoice from './components/viewInvoice';
+import {persistStore} from 'redux-persist';
+
 /**
  * The main application component that contains the routing configuration.
  */
 @connect((state) => {
-  return {
-    dispatch: state.dispatch,
-    participant: state.participant
-  };
+  return {dispatch: state.dispatch, participant: state.participant};
 })
 class App extends React.Component {
 
-  /**
-   * Loads the Vendor data on component mount.
-   * The Vendor data load here is to prevent data lost upon page fresh.
-   * @see https://facebook.github.io/react/docs/react-component.html#componentdidmount
-   */
-  componentDidMount() {
-    let { router, dispatch, participant} = this.props;
+  constructor() {
+    super();
+    this.state = {
+      rehydrated: false,
+      isParticipantRefreshed: false
+    };
+  }
 
-    setTimeout(function () {
-      dispatch(actions.getParticipant());
+  componentWillMount() {
+    const store = require('state');
+
+    // Emit store hydrated state change to make sure the store's
+    // values have been loaded successfully.
+    persistStore(store.default, {}, () => {
+      this.setState({rehydrated: true});
     });
+  }
+
+  componentDidMount() {
+    let {router} = this.props;
 
     // Make sure the window scroll to top on route change.
-    router.listen(function () {
+    router.listen(function() {
       Scroll.animateScroll.scrollToTop({smooth: false, duration: 0});
     });
   }
@@ -44,19 +52,27 @@ class App extends React.Component {
    * @see https://facebook.github.io/react/docs/react-component.html#render
    */
   render() {
+    let {rehydrated} = this.state;
+
     return (
       <div>
-        <div id='body'>
-          {this.props.children}
-        </div>
+        {
+          rehydrated ?
+            <div>
+              <div id='body'>
+                {this.props.children}
+              </div>
+            </div>
+          : ''
+        }
       </div>
     );
+
   }
 }
 
 const basicRoutes = (
-  <Route>
-  </Route>
+  <Route></Route>
 );
 
 const routes = (

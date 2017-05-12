@@ -79,7 +79,7 @@ object Dependencies {
   )
 
   val HealthCheckDependencies = Seq(
-    "au.com.agiledigital" %% "play2-health-checker" % "3.2.32"
+    "au.com.agiledigital" %% "play2-health-checker" % "4.0.34"
   )
 
   val SpecsDependencies = Seq(

@@ -3,6 +3,7 @@ import reducers from './reducers';
 import saga from './sagas';
 import createSagaMiddleware from 'redux-saga';
 import {persistStore, autoRehydrate} from 'redux-persist';
+
 /**
  * Main configuration of redux
  * Configures reducers and middleware.
