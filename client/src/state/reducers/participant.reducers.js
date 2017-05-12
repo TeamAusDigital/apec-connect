@@ -13,8 +13,7 @@ const participant = handleActions({
     return Object.assign({}, state, {isFetching: true});
   },
   HANDLE_PARTICIPANT_RESPONSE: (state, action) => {
-    let nextState = Object.assign({}, action.payload, {isFetching: false});
-    return Object.assign({}, state, nextState);
+    return Object.assign({}, action.payload, {isFetching: false});
   }
 }, {isFetching: false});
 

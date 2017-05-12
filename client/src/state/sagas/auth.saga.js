@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, put, takeEvery } from 'redux-saga/effects';
 import actions from 'state/actions';
 import { browserHistory } from 'react-router';
 import {
@@ -8,14 +8,13 @@ import {
 /**
  * Handles any side effects that the application will apply when participant authentication failed.
  * E.g. navigate to landing page.
- * @return {Generator} [description]
  */
-export function* handleNotLoggedIn () {
-  browserHistory.push('/');
+export function* notAuthenticated (action) {
+  yield browserHistory.push('/');
 }
 
 export default function* authSaga () {
   yield all([
-    takeLatest(NOT_AUTHENTICATED, handleNotLoggedIn)
+    takeEvery(NOT_AUTHENTICATED, notAuthenticated)
   ]);
 }

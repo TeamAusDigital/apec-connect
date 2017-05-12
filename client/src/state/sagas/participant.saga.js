@@ -37,7 +37,7 @@ export function* getParticipant () {
     yield put(actions.handleParticipantResponse(participant));
   }
   catch (error) {
-    yield put(actions.handleParticipantResponse(error));
+    yield put(actions.handleParticipantResponse({error: error}));
   }
 }
 
