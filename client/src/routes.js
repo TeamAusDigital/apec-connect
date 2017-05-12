@@ -11,6 +11,8 @@ import SignUpScreen from './components/signUpScreen';
 import HomeScreen from './components/homeScreen';
 import Inbox from './components/inbox';
 import ViewInvoice from './components/viewInvoice';
+import ReceiptScreen from './components/receiptScreen';
+import FeedbackScreen from './components/feedbackScreen';
 import {persistStore} from 'redux-persist';
 
 /**
@@ -88,6 +90,7 @@ const routes = (
     <Route path='/inbox' component={Inbox} />
     <Route path='/viewInvoice' component={ViewInvoice} />
     <Route path='/viewReceipt' component={ReceiptScreen}/>
+    <Route path='/feedback' component={FeedbackScreen}/>
 
 
   </Route>

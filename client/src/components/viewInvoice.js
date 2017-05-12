@@ -74,6 +74,14 @@ export default class ViewInvoice extends React.Component {
     this.forceUpdate();
   };
 
+  handleViewReceipt = () => {
+    this.props.router.push('/viewReceipt');
+  };
+
+  handleFeedback = () => {
+    this.props.router.push('/feedback');
+  };
+
   payButton = () => {
     if (this.buyerID===this.yourID && this.invoicePaid === false) {
       return(<RaisedButton label='Pay' backgroundColor={red} labelColor={white} fullWidth={true} onTouchTap={this.handlePay}/>);
@@ -99,7 +107,7 @@ export default class ViewInvoice extends React.Component {
 
   feedbackButton = () => {
     if (this.invoiceAccepted && this.invoicePaid) {
-      return(<RaisedButton label='Send Feedback' disabled={false} fullWidth={true}/>);
+      return(<RaisedButton label='Send Feedback' disabled={false} fullWidth={true} onTouchTap={this.handleFeedback}/>);
     } else {
       return(<RaisedButton label='Send Feedback' disabled={true} fullWidth={true}/>);
     }
@@ -108,7 +116,7 @@ export default class ViewInvoice extends React.Component {
 
   receiptButton = () => {
     if (this.invoiceAccepted && this.invoicePaid) {
-      return(<RaisedButton label='View Receipt' disabled={false} fullWidth={true}/>);
+      return(<RaisedButton label='View Receipt' disabled={false} fullWidth={true} onTouchTap={this.handleViewReceipt}/>);
     } else {
       return(<RaisedButton label='View Receipt' disabled={true} fullWidth={true}/>);
     }
