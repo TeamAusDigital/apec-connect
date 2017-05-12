@@ -87,7 +87,6 @@ const routes = (
     <Route path='/signUp' component={SignUpScreen} />
     <Route path='/inbox' component={Inbox} />
     <Route path='/viewInvoice' component={ViewInvoice} />
-
     <Route path='/viewReceipt' component={ReceiptScreen}/>
 
 
