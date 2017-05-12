@@ -7,6 +7,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {indigo,white,red} from './apecConnectTheme';
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 /***
 
@@ -18,6 +20,10 @@ const invoiceViewStyle ={
   margin: '0 auto',
   position: 'relative',
   padding: '10px',
+};
+
+const starStyle = {
+  width: '25%',
 };
 
 const feedbackStyle ={
@@ -62,6 +68,12 @@ export default class FeedbackScreen extends React.Component {
     this.invoiceDueDate = '19/05/2017';
 
     this.toName = this.yourID === this.sellerID ? this.buyerID : this.sellerID;
+    this.starRating = 0;
+  };
+
+  handleStarRatingChange =(event, index, value) => {
+    this.starRating = value;
+    this.forceUpdate();
   };
 
   render() {
@@ -85,7 +97,8 @@ export default class FeedbackScreen extends React.Component {
               zDepth={1}
               style={invoiceViewStyle}
             >
-              <div style={divStyle}> <div style={divStyle}>{this.toName}</div> <div style={divStyle}>{this.invoiceSentDate}</div > <div style={divStyle}>{this.invoiceAmount}</div > </div>
+              <div > Invoice quick view: </div>
+              <div style={divStyle}> <div style={divStyle}>{this.toName}</div> <div style={divStyle}>{this.invoiceSentDate}</div > <div style={divStyle}>${this.invoiceAmount}</div > </div>
               <div> {this.invoiceWhat}</div>
             </Paper>
             <br/>
@@ -96,8 +109,19 @@ export default class FeedbackScreen extends React.Component {
             >
               <div> Give feedback to {this.toName} </div>
               <br />
-              <div>
-                STAR RATING SYSTEM GOES IN HERE
+              <div style={invoiceViewStyle}>
+                <SelectField
+                  floatingLabelText="Rating"
+                  value={this.starRating}
+                  onChange={this.handleStarRatingChange}
+                  style={starStyle}
+                >
+                  <MenuItem value={0} primaryText="0" />
+                  <MenuItem value={1} primaryText="1" />
+                  <MenuItem value={2} primaryText="2" />
+                  <MenuItem value={3} primaryText="3" />
+                </SelectField>
+                <StarRating rating={this.starRating} />
               </div>
               <div style={invoiceViewStyle}>
                 <TextField
