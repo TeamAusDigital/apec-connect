@@ -106,7 +106,7 @@ export default class SignUpScreen extends React.Component {
 
           <div style={divStyle}>
             <div style={textStyle}>
-              <TextField required hintText="Business Name" errorText="This field is required" floatingLabelText='Business Name' onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})} value={participant.businessName}/>
+              <TextField hintText="Business Name" errorText="This field is required" floatingLabelText='Business Name' onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})} value={participant.businessName}/>
 
               <div style={textStyle}>
                 AND
