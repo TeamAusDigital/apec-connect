@@ -1,11 +1,13 @@
 import React , { Component } from 'react';
-import PropTypes from 'prop-types';
 import {List, ListItem} from 'material-ui/List';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import CommunicationEmail from 'material-ui/svg-icons/communication/email';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import {white,red} from './apecConnectTheme';
+import {Link} from 'react-router';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 
 const ItemStyle ={
   width: '75%',
@@ -42,6 +44,13 @@ const DivStyle ={
   verticalAlign: 'middle',
 };
 
+@withRouter
+@connect((state) => {
+  return {
+    dispatch: state.dispatch,
+    ui: state.ui
+  };
+})
 export default class ToPayItem extends React.Component {
 
   constructor(props) {
@@ -54,6 +63,10 @@ export default class ToPayItem extends React.Component {
     );
   };
 
+  handleMsgButton = () => {
+    this.props.router.push('/sendMessage');
+  };
+
   render() {
     return (
       <div style={DivStyle}>
@@ -62,7 +75,7 @@ export default class ToPayItem extends React.Component {
             innerDivStyle ={ListItemStyle}
             secondaryText ={this.props.message}
             primaryText ={'$' + this.props.amount.toFixed(2)}
-            rightIconButton={<IconButton><CommunicationEmail/></IconButton>}
+            rightIconButton={<IconButton onTouchTap={this.handleMsgButton}><CommunicationEmail/></IconButton>}
             secondaryTextLines={1}
           />
         </div>
@@ -75,7 +88,7 @@ export default class ToPayItem extends React.Component {
 }
 
 ToPayItem.propTypes = {
-  message: PropTypes.string,
-  amount: PropTypes.number,
+  message: React.PropTypes.string,
+  amount: React.PropTypes.number,
 };
 

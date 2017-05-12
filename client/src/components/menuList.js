@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React , { Component } from 'react';
 import {List, ListItem} from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
@@ -9,8 +8,8 @@ import Divider from 'material-ui/Divider';
 import ActionInfo from 'material-ui/svg-icons/action/info';
 import Paper from 'material-ui/Paper';
 import {Link} from 'react-router';
-import {withRouter} from 'react-router';
-import {connect} from 'react-redux';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import actions from 'state/actions';
 
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
@@ -23,7 +22,10 @@ const paperStyle = {
 
 @withRouter
 @connect((state) => {
-  return {dispatch: state.dispatch, ui: state.ui};
+  return {
+    dispatch: state.dispatch,
+    ui: state.ui
+  };
 })
 export default class MenuList extends React.Component {
 
@@ -31,9 +33,9 @@ export default class MenuList extends React.Component {
     super(props);
   }
 
-  handleClick = () => this.props.dispatch(this.props.ui.mainMenuOpen
-    ? actions.closeMainMenu()
-    : actions.openMainMenu());
+  handleClick = () => this.props.dispatch(
+    this.props.ui.mainMenuOpen ?  actions.closeMainMenu() : actions.openMainMenu()
+  );
 
   handleForgetMe = () => {
     this.props.dispatch(actions.notAuthenticated());
@@ -44,14 +46,14 @@ export default class MenuList extends React.Component {
   render() {
     return (
       <div>
-        <Divider/>
+        <Divider />
         <List>
-          <ListItem primaryText="Home" leftIcon={< ContentInbox />} containerElement={< Link to = '/home' />} onTouchTap={this.handleClick}/>
-          <ListItem primaryText="Get Paid" leftIcon={< ActionGrade />} containerElement={< Link to = '/getPaid' />} onTouchTap={this.handleClick}/>
-          <ListItem primaryText="Pay" leftIcon={< ContentSend />} containerElement={< Link to = '/pay' />} onTouchTap={this.handleClick}/>
-          <ListItem primaryText="Inbox" leftIcon={< ContentInbox />}/>
+          <ListItem primaryText="Home" leftIcon={<ContentInbox />} containerElement={<Link to='/home' />} onTouchTap={this.handleClick} />
+          <ListItem primaryText="Get Paid" leftIcon={<ActionGrade />} containerElement={<Link to='/getPaid' />} onTouchTap={this.handleClick}/>
+          <ListItem primaryText="Pay" leftIcon={<ContentSend />} containerElement={<Link to='/pay' />} onTouchTap={this.handleClick}/>
+          <ListItem primaryText="Inbox" leftIcon={<ContentInbox />} containerElement={<Link to='/inbox' />} onTouchTap={this.handleClick}/>
         </List>
-        <Divider/>
+        <Divider />
         <List>
           <ListItem primaryText="All mail" rightIcon={< ActionInfo />}/>
           <ListItem primaryText="Trash" rightIcon={< ActionInfo />}/>
@@ -59,6 +61,5 @@ export default class MenuList extends React.Component {
           <ListItem primaryText="Forget Me" rightIcon={< ActionInfo />} onTouchTap={() => this.handleForgetMe()}/>
         </List>
       </div>
-    );
-  }
+  );}
 }
