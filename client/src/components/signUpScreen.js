@@ -54,11 +54,14 @@ const btnStyle = {
 @connect((state) => {
   return {dispatch: state.dispatch, ui: state.ui, participant: state.participant};
 })
+
+/**
+ * Responsible for the rendering and actions on Sign Up screen.
+ */
 export default class SignUpScreen extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       participant: {
         businessName: '',
@@ -75,8 +78,7 @@ export default class SignUpScreen extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.participant.isFetching && nextProps.participant.accountStatus === 'Enabled') {
       nextProps.router.push('/home');
-    }
-    else if (!nextProps.participant.isFetching && !nextProps.participant.accountStatus !== 'Enabled') {
+    } else if (!nextProps.participant.isFetching && !nextProps.participant.accountStatus !== 'Enabled') {
       this.setState({message: 'Please sign up later.'});
     }
   }
@@ -91,12 +93,10 @@ export default class SignUpScreen extends React.Component {
   }
 
   render() {
-
     let {participant} = this.state;
 
     return (
       <div>
-        {/** Paper containing the logo **/}
         <Paper zDepth={1} style={paperStyle}>
           <img src={Logo} style={logoStyle}/>
           <br/>

@@ -86,7 +86,7 @@ trait RecordDaoSpec[M, D <: RecordDao[M]] extends BaseSpec {
           found <- dao.fetchAll()
         } yield found)
 
-        result must beEmpty[Seq[M]].awaitFor(defaultAwait)
+        result must beEmpty[Seq[Record[M]]].awaitFor(defaultAwait)
       }
       "return the active instances" in new WithDao {
         val result = db.run(for {
@@ -186,7 +186,7 @@ trait DaoContext[M, D <: RecordDao[M]] {
 
   def dbConfigProvider: DatabaseConfigProvider
 
-  lazy val driver = dbConfigProvider.get[JdbcProfile].driver
+  lazy val driver = dbConfigProvider.get[JdbcProfile].profile
 
   lazy val db = dbConfigProvider.get[JdbcProfile].db
 
