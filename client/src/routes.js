@@ -14,6 +14,7 @@ import ViewInvoice from './components/viewInvoice';
 import ReceiptScreen from './components/receiptScreen';
 import FeedbackScreen from './components/feedbackScreen';
 import {persistStore} from 'redux-persist';
+import MessageScreen from './components/messageScreen';
 
 /**
  * The main application component that contains the routing configuration.
@@ -91,6 +92,7 @@ const routes = (
     <Route path='/viewInvoice' component={ViewInvoice} />
     <Route path='/viewReceipt' component={ReceiptScreen}/>
     <Route path='/feedback' component={FeedbackScreen}/>
+    <Route path='/sendMessage' component={MessageScreen}/>
 
 
   </Route>
