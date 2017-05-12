@@ -1,4 +1,5 @@
 import React , { Component } from 'react';
+import PropTypes from 'prop-types';
 import {List, ListItem} from 'material-ui/List';
 import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import CommunicationEmail from 'material-ui/svg-icons/communication/email';
@@ -88,7 +89,7 @@ export default class ToPayItem extends React.Component {
 }
 
 ToPayItem.propTypes = {
-  message: React.PropTypes.string,
-  amount: React.PropTypes.number,
+  message: PropTypes.string,
+  amount: PropTypes.number,
 };
 
