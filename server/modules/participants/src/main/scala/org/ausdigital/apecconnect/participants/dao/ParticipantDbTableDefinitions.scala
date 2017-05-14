@@ -16,7 +16,7 @@ trait ParticipantDbTableDefinitions extends BaseDbTableDefinitions {
 
   import profile.api._
 
-  // TODO: use EnumerationMapping.enumeratumMapper instead, fix complie error first.
+  // TODO: use EnumerationMapping.enumeratumMapper instead, fix compile error first.
   implicit val accountStatusMapper: JdbcType[AccountStatus] = MappedColumnType.base[AccountStatus, Int](
     a => a.value,
     id =>
