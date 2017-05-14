@@ -2,16 +2,16 @@ package org.ausdigital.apecconnect.businessregister
 
 import javax.inject.Inject
 
-import org.ausdigital.apecconnect.businessregister.model.{ ApecConnectBusinessRegisterException, ParticipantRegistrationPayload, ParticipantRegistrationResponse }
+import org.ausdigital.apecconnect.businessregister.model.{ApecConnectBusinessRegisterException, LookupParticipantsResponse, ParticipantRegistrationPayload, ParticipantRegistrationResponse}
 import org.ausdigital.apecconnect.common.model.ApecConnectBusinessRegisterConfig
-import play.api.{ Configuration, Logger }
+import play.api.{Configuration, Logger}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 import scalaz._
 import Scalaz._
 import scala.util.control.NonFatal
@@ -32,6 +32,8 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
    */
   def signUp(participantRegistrationPayload: ParticipantRegistrationPayload)(implicit ec: ExecutionContext): Future[\/[String, ParticipantRegistrationResponse]] =
     ws.url(apecBusinessRegisterConfig.createUserApi).post(Json.toJson(participantRegistrationPayload)).map { response =>
+
+      Logger.warn(s"${response.body}")
       if (response.status === Status.CREATED || response.status === Status.OK) {
         try {
           response.json
@@ -49,6 +51,28 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
         }
       } else {
         s"Failed to register this participant with APEC Connect Business Register. Got response code [${response.status}] - [${response.body}]".left
+      }
+    }
+
+  def lookupParticipants(query: String)(implicit ec: ExecutionContext): Future[\/[String, LookupParticipantsResponse]] =
+    ws.url(s"${apecBusinessRegisterConfig.businessLookupApi}?q=$query").get.map { response =>
+      if (response.status === Status.OK) {
+        try {
+          response.json
+            .validate[LookupParticipantsResponse]
+            .fold(
+              error => {
+                s"Invalid response returned when looking up APEC Connect businesses - [$error].".left
+              },
+              lookupBusinessResponse => {
+                lookupBusinessResponse.right
+              }
+            )
+        } catch {
+          case NonFatal(ex) => throw new ApecConnectBusinessRegisterException(s"Failed to look up business with query [$query] on APEC Connect Business Register.", ex)
+        }
+      } else {
+        s"Failed to look up business with query [$query] on APEC Connect Business Register. Got response code [${response.status}] - [${response.body}]".left
       }
     }
 }
