@@ -24,7 +24,7 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
   val apecBusinessRegisterConfig: ApecConnectBusinessRegisterConfig = configuration.underlying.as[ApecConnectBusinessRegisterConfig]("apec-connect-business-register")
 
   /**
-   * Sign up the participant with APEC Connect Business Register.
+   * Sign up the Participant with APEC Connect Business Register.
    * TODO: error handling based on the API response.
    * @see https://github.com/TeamAusDigital/apec-connect-cloud-ledger/blob/master/business-register/API.md
    * @param participantRegistrationPayload payload required to register a participant.
@@ -32,8 +32,6 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
    */
   def signUp(participantRegistrationPayload: ParticipantRegistrationPayload)(implicit ec: ExecutionContext): Future[\/[String, ParticipantRegistrationResponse]] =
     ws.url(apecBusinessRegisterConfig.createUserApi).post(Json.toJson(participantRegistrationPayload)).map { response =>
-
-      Logger.warn(s"${response.body}")
       if (response.status === Status.CREATED || response.status === Status.OK) {
         try {
           response.json
@@ -56,6 +54,11 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
       }
     }
 
+  /**
+    * Looks up the Participants on APEC Connect Business Register.
+    * @param query used to search the APEC Connect Business Register for Participants.
+    * @return either a lookup response or error message if failed.
+    */
   def lookupParticipants(query: String)(implicit ec: ExecutionContext): Future[\/[String, LookupParticipantsResponse]] =
     ws.url(s"${apecBusinessRegisterConfig.businessLookupApi}?q=$query").get.map { response =>
       if (response.status === Status.OK) {

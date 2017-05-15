@@ -46,6 +46,38 @@ function fetchCurrentParticipant() {
   }).then((response) => response.result);
 }
 
+/**
+ * Sending a message to another participant.
+ * @param  {object}    payload            payload of the message to be sent.
+ * @param  {string}    payload.receiverId the identifier of the receiver participant, this is the uuid from IBR system.
+ * @param  {string}    payload.message    the text content of the message, this is optional field.
+ * @param  {rating}    payload.rating     the rating for the receiver, this is optional field.
+ * @param  {invoiceId} payload.invoiceId  the associated id of the invoice that maybe attached with this message, this is optional field.
+ * @return {promise} a created message for the receiver.
+ */
+function sendMessage(payload) {
+  return fetchIt.fetch('/api/v1/participants/current/messages/create', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => response.result);
+}
+
+/**
+ * Fetches all the messages that are related to current participant, both as sender or receiver.
+ * @return {promise} of all the messages related to the current participant.
+ */
+function fetchMessages() {
+  return fetchIt.fetch('/api/v1/participants/current/messages', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => response.result);
+}
+
 module.exports = {
   signUp,
   fetchCurrentParticipant

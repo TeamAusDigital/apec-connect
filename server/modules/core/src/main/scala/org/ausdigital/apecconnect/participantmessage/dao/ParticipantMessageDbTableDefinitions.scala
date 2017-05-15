@@ -5,6 +5,9 @@ import org.ausdigital.apecconnect.invoice.model.Invoice.InvoiceId
 import org.ausdigital.apecconnect.participantmessage.model.ParticipantMessage.{ParticipantMessage, ParticipantMessageData}
 import slick.lifted.ProvenShape
 
+/**
+  * Table definitions and associated slick mappings for a ParticipantMessage.
+  */
 trait ParticipantMessageDbTableDefinitions extends BaseDbTableDefinitions {
 
   import profile.api._

@@ -1,7 +1,6 @@
 package org.ausdigital.apecconnect.businessregister.model
 
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 
 /**
   * Participant registration payload that is required for sign up with APEC Connect Business Register.
@@ -17,18 +16,5 @@ final case class ParticipantRegistrationPayload(businessName: String, email: Opt
   * Provides JSON formatter for the ParticipantRegistrationPayload.
   */
 object ParticipantRegistrationPayload {
-
-  implicit val registrationWrites: Writes[ParticipantRegistrationPayload] = (
-    (JsPath \ "businessName").write[String] and
-    (JsPath \ "email").writeNullable[String] and
-    (JsPath \ "phone").writeNullable[String] and
-    (JsPath \ "username").writeNullable[String]
-  )(unlift(ParticipantRegistrationPayload.unapply))
-
-  implicit val registrationReads: Reads[ParticipantRegistrationPayload] = (
-    (JsPath \ "businessName").read[String] and
-      (JsPath \ "email").readNullable[String] and
-      (JsPath \ "phone").readNullable[String] and
-      (JsPath \ "username").readNullable[String]
-    )(ParticipantRegistrationPayload.apply _)
+  implicit val messageFormatter: OFormat[ParticipantRegistrationPayload] = Json.format[ParticipantRegistrationPayload]
 }

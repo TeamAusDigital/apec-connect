@@ -2,11 +2,13 @@
 
 CREATE TABLE "invoice" (
   "id" BIGSERIAL PRIMARY KEY,
+  "issuer_id" VARCHAR NOT NULL,
   "date_issued" TIMESTAMP NOT NULL,
   "date_due" TIMESTAMP NOT NULL,
   "is_paid" BOOLEAN NOT NULL DEFAULT FALSE,
   "is_accepted" BOOLEAN NOT NULL DEFAULT FALSE,
   "amount" NUMERIC NOT NULL,
+  "currency_code" VARCHAR NOT NULL,
   "payment_reference" VARCHAR,
   "payment_options" VARCHAR NOT NULL,
   "payment_method" VARCHAR,
@@ -31,7 +33,11 @@ CREATE TABLE "participant_message" (
 
 ALTER TABLE ONLY participant_message ADD CONSTRAINT participant_message_invoice_id_fkey FOREIGN KEY (invoice_id) REFERENCES invoice(id);
 
+ALTER TABLE "participant" ADD COLUMN rating INTEGER;
+
 # --- !Downs
 
 DROP TABLE IF EXISTS "participant_message" CASCADE;
 DROP TABLE IF EXISTS "invoice" CASCADE;
+
+ALTER TABLE "participant" DROP COLUMN rating;

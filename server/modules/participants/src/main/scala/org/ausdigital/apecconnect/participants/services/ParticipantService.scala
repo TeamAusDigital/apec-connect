@@ -38,4 +38,8 @@ class ParticipantService @Inject()(override val dao: ParticipantDao, ws: WSClien
   def findByUsername(username: String): Future[Option[Participant]] = dao.run {
     dao.findByUsername(username)
   }
+
+  def queryByBusinessName(businessName: String): Future[Seq[Participant]] = dao.run {
+    dao.queryByBusinessName(businessName)
+  }
 }
