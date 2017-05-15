@@ -16,5 +16,5 @@ final case class ParticipantRegistrationPayload(businessName: String, email: Opt
   * Provides JSON formatter for the ParticipantRegistrationPayload.
   */
 object ParticipantRegistrationPayload {
-  implicit val messageFormatter: OFormat[ParticipantRegistrationPayload] = Json.format[ParticipantRegistrationPayload]
+  implicit val format: OFormat[ParticipantRegistrationPayload] = Json.format[ParticipantRegistrationPayload]
 }

@@ -35,6 +35,10 @@ ALTER TABLE ONLY participant_message ADD CONSTRAINT participant_message_invoice_
 
 ALTER TABLE "participant" ADD COLUMN rating INTEGER;
 
+CREATE INDEX ON participant_message(sender_id) WHERE record_status = 0;
+CREATE INDEX ON participant_message(receiver_id) WHERE record_status = 0;
+CREATE INDEX ON participant_message(invoice_id) WHERE record_status = 0;
+
 # --- !Downs
 
 DROP TABLE IF EXISTS "participant_message" CASCADE;
