@@ -67,6 +67,7 @@ function sendMessage(payload) {
 
 /**
  * Fetches all the messages that are related to current participant, both as sender or receiver.
+ * TODO: currently no filter retriction on the query, add the query filter, e.g. last 30 days.
  * @return {promise} of all the messages related to the current participant.
  */
 function fetchMessages() {
