@@ -9,6 +9,9 @@ import org.ausdigital.apecconnect.invoice.model.Invoice.InvoiceData
 
 import scala.concurrent.ExecutionContext
 
+/**
+  * Finds and creates Invoices.
+  */
 @Singleton
 class InvoiceService @Inject()(override val dao: InvoiceDao)(implicit val executionContext: ExecutionContext)
   extends SimpleRecordService[InvoiceData] {

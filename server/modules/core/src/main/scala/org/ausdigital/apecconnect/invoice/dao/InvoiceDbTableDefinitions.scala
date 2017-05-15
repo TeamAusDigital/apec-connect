@@ -4,15 +4,17 @@ import org.ausdigital.apecconnect.db.dao.BaseDbTableDefinitions
 import org.ausdigital.apecconnect.invoice.model.Invoice.{Invoice, InvoiceData}
 import org.ausdigital.apecconnect.invoice.model.PaymentOption
 import org.ausdigital.apecconnect.participants.model.Participant.ParticipantId
-import org.joda.money.{CurrencyUnit, Money}
+import org.joda.money.Money
 import org.joda.time.DateTime
-import play.api.Logger
 import slick.jdbc.JdbcType
 import slick.lifted.ProvenShape
 
 import scalaz._
 import Scalaz._
 
+/**
+  * Table definitions and associated slick mappings for an Invoice.
+  */
 trait InvoiceDbTableDefinitions extends BaseDbTableDefinitions {
 
   import profile.api._
@@ -31,7 +33,6 @@ trait InvoiceDbTableDefinitions extends BaseDbTableDefinitions {
     paymentOptions => paymentOptions.map(_.name.toString).mkString(","),
     names =>
       names.split(",").map { name =>
-        Logger.warn(s"${PaymentOption.namesToValuesMap}, $name")
         PaymentOption.namesToValuesMap.getOrElse(name, throw new NoSuchElementException(s"[$name] is not a member of PaymentOption - [${PaymentOption.values}]."))
     }
   )
@@ -44,11 +45,12 @@ trait InvoiceDbTableDefinitions extends BaseDbTableDefinitions {
     def isPaid: Rep[Boolean]                      = column[Boolean]("is_paid")
     def isAccepted: Rep[Boolean]                  = column[Boolean]("is_accepted")
     def amount: Rep[Money]                        = column[Money]("amount")
+    def currencyCode: Rep[String]                 = column[String]("currency_code")
     def paymentReference: Rep[Option[String]]     = column[Option[String]]("payment_reference")
     def paymentOptions: Rep[Seq[PaymentOption]]   = column[Seq[PaymentOption]]("payment_options")
     def paymentMethod: Rep[Option[PaymentOption]] = column[Option[PaymentOption]]("payment_method")
 
-    private[dao] def data = (issuerId, dateIssued, dateDue, isPaid, isAccepted, amount, paymentReference, paymentOptions, paymentMethod).mapTo[InvoiceData]
+    private[dao] def data = (issuerId, dateIssued, dateDue, isPaid, isAccepted, amount, currencyCode, paymentReference, paymentOptions, paymentMethod).mapTo[InvoiceData]
 
     override def * : ProvenShape[Invoice] = record(data)
 

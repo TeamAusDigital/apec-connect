@@ -1,6 +1,7 @@
 import fetchIt from 'fetch-it';
 import store from 'state';
 import participantApi from './participant.api';
+import invoiceApi from './invoice.api';
 import actions from '../state/actions';
 
 let apiMiddleware = {
@@ -40,5 +41,6 @@ let apiMiddleware = {
 fetchIt.addMiddlewares([apiMiddleware]);
 
 module.exports = {
-  ...participantApi
+  ...participantApi,
+  ...invoiceApi
 };
