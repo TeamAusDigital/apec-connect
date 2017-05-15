@@ -2,7 +2,8 @@ import {
   OPEN_MAIN_MENU,
   CLOSE_MAIN_MENU,
   CLOSE_TERMS_MENU,
-  OPEN_TERMS_MENU
+  OPEN_TERMS_MENU,
+  SELECT_CURRENCY,
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -39,6 +40,11 @@ const ui = handleActions({
       alreadyUser: false
     });
   },
+  SELECT_CURRENCY: (state, action) => {
+     return Object.assign({}, state, {
+       currencyType: action.payload
+     });
+   },
 },
   /*** initial state  ***/
   {
@@ -46,6 +52,7 @@ const ui = handleActions({
     termsMenuValue: 1,
     acceptedPayments: [],
     alreadyUser: false,
+    currencyType: 'VND',
   }
 );
 

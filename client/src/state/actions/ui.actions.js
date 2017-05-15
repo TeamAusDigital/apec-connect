@@ -5,6 +5,7 @@ import {
   ACCEPTED_PAYMENTS,
   REMEMBER_USER,
   FORGET_USER,
+  SELECT_CURRENCY,
 } from './actionTypes';
 import { createActions } from 'redux-actions';
 
@@ -18,6 +19,7 @@ const uiActions = createActions(
   ACCEPTED_PAYMENTS,
   REMEMBER_USER,
   FORGET_USER,
+  SELECT_CURRENCY,
 );
 
 module.exports = uiActions;

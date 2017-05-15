@@ -106,17 +106,17 @@ export default class SignUpScreen extends React.Component {
 
           <div style={divStyle}>
             <div style={textStyle}>
-              <TextField hintText="Business Name" errorText="This field is required" floatingLabelText='Business Name' onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})} value={participant.businessName}/>
+              <TextField hintText='Business Name' errorText='This field is required' floatingLabelText='Business Name' onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})} value={participant.businessName}/>
 
               <div style={textStyle}>
                 AND
               </div>
-              <TextField hintText="Email Address" floatingLabelText="Email Address" type="email" onChange={(event) => this.onParticipantInfoChange({email: event.target.value})} value={participant.email}/>
+              <TextField hintText='Email Address' floatingLabelText='Email Address' type='email' onChange={(event) => this.onParticipantInfoChange({email: event.target.value})} value={participant.email}/>
 
               <div style={textStyle}>
                 OR
               </div>
-              <TextField hintText="Mobile Phone Number" floatingLabelText="Mobile Phone Number" type="tel" onChange={(event) => this.onParticipantInfoChange({phone: event.target.value})} value={participant.phone}/>
+              <TextField hintText='Mobile Phone Number' floatingLabelText='Mobile Phone Number' type='tel' onChange={(event) => this.onParticipantInfoChange({phone: event.target.value})} value={participant.phone}/>
               <div style={textStyle}>
                 OR
               </div>

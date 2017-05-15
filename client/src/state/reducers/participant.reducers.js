@@ -2,6 +2,9 @@ import {
   GET_PARTICIPANT,
   HANDLE_PARTICIPANT_RESPONSE,
   GET_PARTICIPANT_MESSAGES,
+  HANDLE_PARTICIPANT_MESSAGES,
+  SEND_PARTICIPANT_MESSAGE,
+  HANDLE_SEND_PARTICIPANT_MESSAGE,
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -33,10 +36,16 @@ const participant = handleActions({
 const messages = handleActions({
   GET_PARTICIPANT_MESSAGES: (state, action) => {
     return Object.assign({}, state, {isFetching: true});
-  }
+  },
   HANDLE_PARTICIPANT_MESSAGES: (state, action) => {
     return Object.assign({}, state, {messages: action.payload, isFetching: false});
-  }
+  },
+  SEND_PARTICIPANT_MESSAGE: (state, action) => {
+    return Object.assign({}, state, {messageToSend: action.payload, isSending: true});
+  },
+  HANDLE_SEND_PARTICIPANT_MESSAGE: (state, action) => {
+    return Object.assign({}, state, {isSending: false});
+  },
 },
   /**
     Initial State
@@ -44,10 +53,13 @@ const messages = handleActions({
   {
     isFetching: false,
     messages: [],
+    messageToSend: {},
+    isSending: false,
   }
 );
 
 
 module.exports = {
-  participant
+  participant,
+  messages,
 };

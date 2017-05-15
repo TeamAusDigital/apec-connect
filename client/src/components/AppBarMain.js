@@ -28,7 +28,7 @@ const ContextHelp = (props) => (
     targetOrigin={{horizontal: 'right', vertical: 'top'}}
     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
   >
-    <MenuItem primaryText="Help" />
+    <MenuItem primaryText='Help' />
   </IconMenu>
   </div>
 );
