@@ -51,8 +51,13 @@ object Participant {
     username: String,
     authToken: String,
     isVerified: Boolean = false,
+    rating: Option[Int] = None,
     accountStatus: AccountStatus = AccountStatus.Enabled
   )
+
+  def publicParticipantView(participant: Participant): Participant = {
+    participant.updateData(_.copy(authToken = ""))
+  }
 
   type Participant = Record[ParticipantData]
 
