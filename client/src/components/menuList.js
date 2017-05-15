@@ -24,7 +24,7 @@ const paperStyle = {
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui,
+    ui: state.ui
   };
 })
 export default class MenuList extends React.Component {
