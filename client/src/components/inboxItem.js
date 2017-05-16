@@ -46,17 +46,22 @@ export default class InboxItem extends React.Component {
     };
   };
 
-  getDisplayName = () => {
-    if (this.props.participant.identifier === this.props.message.sender.identifier) {
-      this.state.displayName = this.props.participant.businessName;
-      this.state.starRating = this.props.participant.starRating;
-    } else {
-      this.state.displayName = this.props.message.receiver.businessName;
-      this.state.starRating = this.props.message.receiver.rating;
+  displayName = () => {
+    let currentParticipant = this.props.participant;
+    let sender = this.props.message.sender;
+    let receiver = this.props.message.receiver;
+
+    if (sender.identifier === currentParticipant.identifier) {
+      return <TableRowColumn style ={trStyle} >To: {receiver.businessName}
+             <br /><StarRating rating={receiver.rating} /></TableRowColumn>;
+    }
+    else {
+      return <TableRowColumn style ={trStyle} >From: {sender.businessName}
+             <br /><StarRating rating={sender.rating} /></TableRowColumn>;
     }
   }
 
-  hasDueDate = () => {
+  dueDate = () => {
     if (this.props.message.invoice) {
       return <TableRowColumn style ={trStyle}>{moment(this.props.message.invoice.dateIssued).format('YYYY-MM-DD')}<br/>{'Due: ' + moment(this.props.message.invoice.dateDue).format('YYYY-MM-DD') }</TableRowColumn>;
     } else {
@@ -74,9 +79,8 @@ export default class InboxItem extends React.Component {
         style ={trStyle}
         onMouseDown={()=> this.props.router.push({pathname: '/viewInvoice', query:{key:this.props.keyID} })}>
       >
-        {this.getDisplayName()}
-        <TableRowColumn style ={trStyle} >{this.state.displayName}<br /><StarRating rating={this.state.starRating}/></TableRowColumn>
-        {this.hasDueDate()}
+        {this.displayName()}
+        {this.dueDate()}
         <TableRowColumn style ={trStyle} >{this.props.message.message.message}</TableRowColumn>
       </TableRow>
     );

@@ -41,7 +41,8 @@ const textStyle ={
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
+    participant: state.participant
   };
 })
 export default class MenuDrawer extends React.Component {
@@ -59,6 +60,8 @@ export default class MenuDrawer extends React.Component {
   );
 
   render() {
+    let {participant} = this.props;
+
     return (
         <Drawer
           open={this.props.ui.mainMenuOpen}
@@ -67,12 +70,10 @@ export default class MenuDrawer extends React.Component {
           zDepth={3}
         >
           <div style={divStyle}>
-
-            {/**<img src={Background} style={backgroundStyle}/>**/}
             <div style={textStyle}>
-              <div style={textStyleBig}>{'David\'s Hat Co.'}</div>
+              <div style={textStyleBig}>{participant.businessName}</div>
               <br />
-              <div style={textStyleSmall}>{'DHat72'} <StarRating rating={1} /></div>
+              <div style={textStyleSmall}>{participant.username} <StarRating rating={participant.rating} /></div>
               <br />
             </div>
 

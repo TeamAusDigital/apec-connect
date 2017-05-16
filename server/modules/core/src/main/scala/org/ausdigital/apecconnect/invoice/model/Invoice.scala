@@ -34,6 +34,7 @@ object PaymentOption extends PlayEnum[PaymentOption] {
 object Invoice {
 
   import com.github.nscala_money.money.json.PlayImports._
+  import org.ausdigital.apecconnect.common.model.JsonFormatters._
 
   final case class InvoiceData(issuerId: ParticipantId,
                                dateIssued: DateTime,

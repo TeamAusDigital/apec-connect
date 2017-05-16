@@ -30,5 +30,5 @@ class ParticipantDao @Inject() (override val dbConfigProvider: DatabaseConfigPro
     baseQuery.filter(_.username === username).result.headOption
 
   def queryByBusinessName(businessName: String): DBIO[Seq[Participant]] =
-    baseQuery.filter(_.businessName like s"%$businessName%").result
+    baseQuery.filter(_.businessName.toLowerCase like s"%${businessName.toLowerCase}%").result
 }

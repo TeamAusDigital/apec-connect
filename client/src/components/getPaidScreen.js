@@ -11,8 +11,11 @@ import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import AutoComplete from 'material-ui/AutoComplete';
 import actions from 'state/actions';
 import moment from 'moment';
+import Immutable from 'immutable';
+
 /***
 
 This is the basic elements for a main view in the app.
@@ -56,15 +59,39 @@ const moneyDivStyle = {
   display: 'block',
 };
 
-
-
-const paymentMethods = [
-  {value: 0, name: 'Cash'},
-  {value: 1, name: 'VISA'},
-  {value: 2, name: 'PayPal'},
-  {value: 3, name: 'BitCoin'}
+/**
+ * Currently supported payment options (methods).
+ * @type {Array}
+ */
+const paymentOptions = [
+  {value: 'Cash', text: 'Cash'},
+  {value: 'VISA', text: 'VISA'},
+  {value: 'MasterCard', text: 'MasterCard'},
+  {value: 'PayPal', text: 'PayPal'}
 ];
 
+/**
+ * The payment terms for an Invoice to be paid.
+ * i.e. how far away from due date.
+ * @type {Array}
+ */
+const paymentTerms = [
+  {value: 0, unit: 'days', text: 'Today'},
+  {value: 1, unit: 'weeks', text: '1 Week'},
+  {value: 2, unit: 'weeks', text: '2 Weeks'},
+  {value: 1, unit: 'months', text: '1 Month'}
+];
+
+/**
+ * Currently supported currency types.
+ * TODO: more currency types quried from remote.
+ * @type {Array}
+ */
+const currencyTypes = [
+  {value: 'VND', text: 'VND'},
+  {value: 'AUD', text: 'AUD'},
+  {value: 'USD', text: 'USD'}
+];
 
 @withRouter
 @connect((state) => {
@@ -73,196 +100,225 @@ const paymentMethods = [
     ui: state.ui,
     participant: state.participant,
     messages: state.messages,
+    matchedParticipants: state.matchedParticipants,
   };
 })
+
+/**
+ * Renders Get Paid screen that contains Invoice form.
+ */
 export default class GetPaidScreen extends React.Component {
 
+  /**
+   * Set init state of the component.
+   * @see https://facebook.github.io/react/docs/react-component.html#constructor
+   */
   constructor(props) {
     super(props);
 
-    //Hold the prototype message to be sent as an invoice
+    // Default value for an Invoice.
     this.state = {
-      invoiceMessage: {
-         sender: {
-           identifier: '0858bb02-ace6-45fb-9684-ebe7e277f1bb',
-           businessName: 'Test Business',
-           username: 'test-dusty-elemental-9597',
-           authToken: 'ee77690a4bf241439c7d9ddf3fb62ff5',
-           isVerified: false,
-           accountStatus: 'Enabled',
-           rating:3,
-           id: 1,
-         },
-         receiver: {
-           identifier: '0e5cb22a-1e64-4a55-966e-7eac1e58fd69',
-           businessName: 'Test Business',
-           username: 'test-bitter-moon-7244',
-           authToken: 'b6a9d1feab29457eb734f20e7b2caba2',
-           isVerified: false,
-           accountStatus: 'Enabled',
-           rating:2,
-           id: 3,
-         },
-         message: {
-           senderId: '0858bb02-ace6-45fb-9684-ebe7e277f1bb',
-           receiverId: '0e5cb22a-1e64-4a55-966e-7eac1e58fd69',
-           message: 'Hello, going to generate invoice for you.',
-           id: 3,
-         },
-         invoice: {
-            issuerId: '0858bb02-ace6-45fb-9684-ebe7e277f1bb',
-            dateIssued: 1494511200000,
-            dateDue: 1494770400000,
-            isPaid: false,
-            isAccepted: false,
-            amount: {
-              currency: 'AUD',
-              amount: 0.0
-            },
-            currencyCode: '',
-            paymentOptions: [
-              'Cash'
-            ],
-            id: 2,
-         }
-      }
+      invoice: {
+        dateIssued: moment(),
+        dateDue: moment(),
+        isPaid: false,
+        isAccepted: false,
+        amount: {
+          currency: 'VND'
+        },
+        paymentOptions: [],
+        derived: {
+          paymentTerm: paymentTerms[0],
+          receiverId: '',
+          message: ''
+        }
+      },
+      errors: {}
     };
   }
 
-  //Handle updating the payment terms menu
-  handleChange = (event, index, value) => this.props.dispatch(
-    actions.termsMenuValue(value)
-  );
+  /**
+   * Renders select options for payment options.
+   */
+  paymentOptions = () => Immutable.List(paymentOptions).map((method) => (<MenuItem key={method.value} insetChildren={true} checked={this.props.ui.acceptedPayments.includes(method.value)} value={method.value} primaryText={method.text} />));
 
-  //handle change payment optiosn menu
-  handleChangePayment = (event, index, values) => {
-    this.props.dispatch( actions.acceptedPayments(values) );
+  /**
+   * Renders select options for currencies.
+   */
+  currencies = () => Immutable.List(currencyTypes).map((currency) => <MenuItem key={currency.value} value={currency.value} primaryText={currency.text} />);
+
+  /**
+   * Renders selection options for payment terms.
+   */
+  paymentTermOptions = () => Immutable.List(paymentTerms).map((term) => <MenuItem key={term.text} value={term} primaryText={term.text} />);
+
+  /**
+   * Updates the selected payment terms.
+   */
+  handlePaymentTermChange = (event, index, selected) => {
+    let nextDerived = Object.assign({}, this.state.invoice.derived, {
+      paymentTerm: paymentTerms[index]
+    });
+    let nextInvoice = Object.assign({}, this.state.invoice, {
+      dateDue: moment().add(selected.value, selected.unit),
+      derived: nextDerived
+    });
+    this.setState({
+      invoice: nextInvoice
+    });
   };
 
-  //Handle change the currency options
-  handleChangeCurrency  = (event, index, value) => {
-    this.props.dispatch( actions.selectCurrency(value));
+  /**
+   * Updates the selected payment options.
+   */
+  handlePaymentOptionsChange = (event, index, values) => {
+    let nextInvoice = Object.assign({}, this.state.invoice, {paymentOptions: values});
+    this.setState({
+      invoice: nextInvoice
+    });
   };
 
-  //Change payment option text depending on amount selected
+  /**
+   * Updates the selected currency to accept.
+   */
+  handleCurrencyChange  = (event, index, value) => {
+    let nextAmount = Object.assign({}, this.state.invoice.amount, {currency: value});
+    this.setState({
+      invoice: Object.assign({}, this.state.invoice, {amount: nextAmount})
+    });
+  };
+
+  /**
+   * Updates Invoice information.
+   */
+  onInvoiceInfoChange = (nextInvoiceInfo) => {
+    this.setState({
+      invoice: Object.assign({}, this.state.invoice, nextInvoiceInfo)
+    });
+  }
+
+  /**
+   * Renders the payment options selections.
+   * @see http://www.material-ui.com/#/components/select-field
+   */
   selectionRenderer = (values) => {
     switch (values.length) {
       case 0:
         return '';
       case 1:
-        return paymentMethods[values[0]].name;
+        return values[0];
       default:
         return `${values.length} methods selected`;
     }
   }
 
-  //Menu item for the payment options
-  menuItems(paymentMethods) {
-    return paymentMethods.map((paymentMethods) => (
-      <MenuItem
-        key={paymentMethods.value}
-        insetChildren={true}
-        checked={this.props.ui.acceptedPayments.includes(paymentMethods.value)}
-        value={paymentMethods.value}
-        primaryText={paymentMethods.name}
-      />
-    ));
+  /**
+   * Updates the receiver ID for this Invoice.
+   */
+  onParticipantSelected = (selected) => this.onInvoiceInfoChange({derived: Object.assign({}, this.state.invoice.derived, {receiverId: selected.identifier})});
+
+  /**
+   * Fires action to lookup Participant based on the provided query.
+   */
+  handleParticipantLookup = (query) => {
+    this.setState({
+      participantSearchQuery: query
+    });
+    this.props.dispatch(actions.lookupParticipants(query));
   }
 
-  //Calculate the due date
-  calculateDueDate = () => {
-    switch(this.props.ui.termsMenuValue) {
-      case 1:
-        return moment().endOf('day').fromNow().format('x');
-      case 2:
-        return moment().add(7, 'days').format('x');
-      case 3:
-        return moment().add(14, 'days').format('x');
-      case 4:
-        return moment().add(28, 'days').format('x');
-      default:
-        return moment().add(1, 'days').format('x');
+  /**
+   * Issuing the Invoice by sending a message.
+   * Fires the action to send a Participant message after the validation passes.
+   */
+  sendMessage = () => {
+    let {dispatch} = this.props;
+    let {invoice} = this.state;
+
+    let nextErrors = {};
+
+    if (invoice.derived.receiverId === '') {
+      nextErrors = Object.assign({}, nextErrors, {participantError: 'Please select a valid Business.'});
+    }
+    else {
+      nextErrors = Object.assign({}, nextErrors, {participantError: null});
+    }
+
+    if (invoice.paymentOptions.length === 0) {
+      nextErrors = Object.assign({}, nextErrors, {paymentOptionsError: 'Please select at least one payment option.'});
+    }
+    else {
+     nextErrors= Object.assign({}, nextErrors, {paymentOptionsError: null});
+    }
+
+    if (!invoice.amount.amount) {
+      nextErrors = Object.assign({}, nextErrors, {amountError: 'Please enter an amount for the Invoice.'});
+    }
+    else {
+      nextErrors = Object.assign({}, nextErrors, {amountError: null});
+    }
+
+    this.setState({
+      errors: nextErrors
+    });
+
+    if (!Immutable.fromJS(nextErrors).find((error) => error)) {
+      let messageToSend = {
+        invoice: invoice,
+        message: {
+          receiverId: invoice.derived.receiverId,
+          message: invoice.derived.message
+        }
+      };
+
+      dispatch(actions.sendParticipantMessage(messageToSend));
     }
   }
 
-
-  /** Collect remaining information and send a message
-    * TODO Add randomised ids for each invoice and message
-    * TODO add in lookup for receiver information
-  **/
-  handleSendMessage = () => {
-    //Date Stuff
-    this.state.invoiceMessage.invoice.dateIssued = moment().format('x');
-    this.state.invoiceMessage.invoice.dateDue = this.calculateDueDate();
-
-    //Currency Value
-    this.state.invoiceMessage.invoice.amount.currency = this.props.ui.currencyType;
-
-    //payment options
-    this.state.invoiceMessage.invoice.paymentOptions = this.props.ui.acceptedPayments.map( (value) => paymentMethods[value].name);
-
-    //My ID
-    this.state.invoiceMessage.invoice.issuerId = this.props.participant.identifier;
-    this.state.invoiceMessage.sender.identifier = this.props.participant.identifier;
-
-    console.log(this.state.invoiceMessage);
-    actions.sendParticipantMessage(this.state.invoiceMessage);
-
-  }
-
-  onMessageChange = (messageInfo) => {
-    this.state.invoiceMessage.message.message = messageInfo;
-  }
-
-  onAmountChange = (amount) => {
-    //let nextMessage = Object.assign({}, this.state.invoiceMessage.invoice.amount, amount);
-    //this.setState(Object.assign({}, this.state, {invoiceMessage: nextMessage}));
-    this.state.invoiceMessage.invoice.amount.amount = amount;
-  }
-
   render() {
+    let {state, props} = this;
+
+    let matchedParticipants = props.matchedParticipants.participants;
+
     return (
       <div>
-        {/** AppBarMain contains the app bar and menu drawer **/}
         <AppBarMain title={'Get Paid'}/>
-        {/** Paper containing the logo **/}
         <Paper
           zDepth={1}
-          style={paperStyle}
-        >
+          style={paperStyle}>
           <img src={Logo} style={logoStyle} />
           <br />
           <br />
           <Paper
             zDepth={1}
-            style={getPaidPaperStyle}
-          >
-            <TextField
-              fullWidth={true}
-              style={textFieldStyle}
-              hintText='Person you are paying'
-              floatingLabelText='Who'
-            />
-            <br />
+            style={getPaidPaperStyle}>
+              <AutoComplete
+                fullWidth={true}
+                style={textFieldStyle}
+                hintText='Person you are paying'
+                floatingLabelText='Who'
+                dataSourceConfig={{ text: 'businessName', value: 'identifier',}}
+                dataSource={matchedParticipants}
+                errorText={this.state.errors.participantError}
+                onNewRequest={(selected) => this.onParticipantSelected(selected)}
+                onUpdateInput={(value) => this.handleParticipantLookup(value)} />
+              <br />
             <div style={moneyDivStyle}>
               <SelectField
                 floatingLabelText='Currency'
-                value={this.props.ui.currencyType}
-                onChange={this.handleChangeCurrency}
-                style={currencyFieldStyle}
-              >
-                <MenuItem value={'VND'} primaryText='VND' />
-                <MenuItem value={'USD'} primaryText='USD' />
-                <MenuItem value={'AUD'} primaryText='AUD' />
+                value={state.invoice.amount.currency}
+                onChange={this.handleCurrencyChange}
+                style={currencyFieldStyle}>
+                {this.currencies()}
               </SelectField>
               <TextField
                 type='number'
                 style = {textFieldStyle}
                 fullWidth={true}
+                errorText={this.state.errors.amountError}
                 hintText='Amount to pay'
                 floatingLabelText='How much'
-                onChange={(event) => this.onAmountChange(event.target.value)}
-              />
+                onChange={(event) => this.onInvoiceInfoChange({amount: Object.assign({}, this.state.invoice.amount, {amount: event.target.value})})} />
             </div>
             <br />
             <TextField
@@ -273,43 +329,35 @@ export default class GetPaidScreen extends React.Component {
               multiLine={true}
               rows={1}
               rowsMax={4}
-              onChange={(event) => this.onMessageChange(event.target.value)}
-            />
+              onChange={(event) => this.onInvoiceInfoChange({derived: Object.assign({}, this.state.invoice.derived, {message: event.target.value})})} />
             <br />
             <SelectField
               floatingLabelText='Payment Terms'
-              value={this.props.ui.termsMenuValue}
-              onChange={this.handleChange}
+              value={state.invoice.derived.paymentTerm}
+              onChange={this.handlePaymentTermChange}
               fullWidth={true}
-              style={textFieldStyle}
-            >
-              <MenuItem value={1} primaryText='Today' />
-              <MenuItem value={2} primaryText='1 Week' />
-              <MenuItem value={3} primaryText='2 Weeks' />
-              <MenuItem value={4} primaryText='1 Month' />
+              style={textFieldStyle}>
+              {this.paymentTermOptions()}
             </SelectField>
             <br />
             <SelectField
               multiple={true}
               style={textFieldStyle}
               floatingLabelText='Payment methods'
-              value={this.props.ui.acceptedPayments}
-              onChange={this.handleChangePayment}
+              value={state.invoice.paymentOptions}
+              onChange={this.handlePaymentOptionsChange}
               fullWidth={true}
-              selectionRenderer={this.selectionRenderer}
-            >
-              {this.menuItems(paymentMethods)}
+              errorText={this.state.errors.paymentOptionsError}
+              selectionRenderer={this.selectionPaymentOptionsRenderer}>
+              {this.paymentOptions()}
             </SelectField>
 
             <br />
 
-            <RaisedButton label='Send' fullWidth={true} backgroundColor={red} labelColor={white} onTouchTap={() => this.handleSendMessage()}/>
-
+            <RaisedButton label='Send' fullWidth={true} backgroundColor={red} labelColor={white} onTouchTap={() => this.sendMessage()} />
           </Paper>
         </Paper>
       </div>
     );
   }
 }
-
-

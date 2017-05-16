@@ -71,11 +71,30 @@ export default class Inbox extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.dispatch(actions.getParticipantMessages());
   };
 
   generateInboxItems = () => {
-    return this.props.messages.messages.map( (m,index) => <InboxItem key={index} message={m} keyID={index}/> ) ;
+    return this.props.messages.messages.map((m, index) =>  <InboxItem key={index} message={m} keyID={index}/>) ;
+  }
+
+  componentDidMount() {
+    let { dispatch } = this.props;
+
+    setTimeout(function () {
+      dispatch(actions.getParticipantMessages());
+    });
+  }
+
+  componentWillReceiveProps() {
+    clearTimeout(this.inboxRefreshTimeout);
+    this.refreshInbox();
+  }
+
+  refreshInbox = () => {
+    let { dispatch } = this.props;
+    this.inboxRefreshTimeout = setTimeout(function() {
+      dispatch(actions.getParticipantMessages());
+    }, 5 * 1000);
   }
 
   render() {
@@ -125,5 +144,3 @@ export default class Inbox extends React.Component {
     );
   }
 }
-
-

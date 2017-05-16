@@ -79,7 +79,25 @@ function fetchMessages() {
   }).then((response) => response.result);
 }
 
+/**
+ * Queries the Participants that matches the supplied query.
+ * Currently the query only try to match Business Name of a Participant.
+ * @param  {string} query contains the business name to find Participants.
+ * @return {promise} of matched Participants.
+ */
+function lookupParticipants(query) {
+  return fetchIt.fetch(`/api/v1/participants/lookup?query=${query}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => response.result);
+}
+
 module.exports = {
   signUp,
-  fetchCurrentParticipant
+  fetchCurrentParticipant,
+  lookupParticipants,
+  fetchMessages,
+  sendMessage
 };
