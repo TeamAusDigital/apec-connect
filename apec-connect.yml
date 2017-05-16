@@ -1,0 +1,60 @@
+apecconnectapecconnectclient:
+  image: apecconnect_apecconnect_client
+  restart: always
+  dns: %DNS_IP%
+  labels:
+    source.path: "components.apecconnect_client"
+    project.artefact: "true"
+  environment:
+    - DNSDOCK_ALIAS=apecconnect_client.docker
+      
+
+apecconnectpublicapi:
+  image: apecconnect_public_api
+  restart: always
+  dns: %DNS_IP%
+  links:
+   - apecconnectstatsd:apecconnect-statsd
+   - apecconnectdb:apecconnect-db
+  labels:
+    source.path: "components.public_api"
+    project.artefact: "true"
+  environment:
+    - DNSDOCK_ALIAS=public_api.docker
+      
+apecconnectmainapecconnectclientnginx:
+  image: apecconnect_main_apecconnect_client_nginx
+  links:
+   - apecconnectpublicapi:PUBLIC_API
+   - apecconnectapecconnectclient:APECCONNECT_CLIENT
+  ports:
+   - 80
+  labels:
+   source.path: "topology.edges.main.subEdges.apecconnect_client"
+   project.artefact: "true"
+
+
+apecconnectstatsd:
+  image: kamon/grafana_graphite
+  dns: %DNS_IP%
+  restart: always
+  environment:
+    - DNSDOCK_ALIAS=apecconnect-statsd.docker
+
+  ports:
+   - 80
+   - 81
+   - 8125/UDP
+   - 8126
+
+apecconnectdb:
+  image: library/postgres
+  dns: %DNS_IP%
+  restart: always
+  environment:
+    - DNSDOCK_ALIAS=apecconnect-db.docker
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_USER=postgres
+  ports:
+   - 5432
+
