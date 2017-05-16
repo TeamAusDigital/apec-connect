@@ -73,9 +73,9 @@ class ParticipantsController @Inject()(
     * @param query to search the Participants.
     * @return 200 OK with the Participants matches the query, or 500 internal error if failed to query.
     */
-  def lookupParticipants(query: String): Action[AnyContent] = Action.async { implicit request =>
+  def lookupParticipants(query: Option[String]): Action[AnyContent] = Action.async { implicit request =>
     for {
-      participantsResults <- participantService.queryByBusinessName(query) ?| JsonApiResponse.internalServerErrorResponse(s"Failed to look up Participants with query [$query].")
+      participantsResults <- participantService.queryByBusinessName(query.getOrElse("")) ?| JsonApiResponse.internalServerErrorResponse(s"Failed to look up Participants with query [$query].")
     } yield JsonApiResponse.buildResponse("Successfully found Participants.", participantsResults)
   }
 

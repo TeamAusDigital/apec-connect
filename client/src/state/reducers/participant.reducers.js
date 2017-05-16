@@ -5,6 +5,8 @@ import {
   HANDLE_PARTICIPANT_MESSAGES,
   SEND_PARTICIPANT_MESSAGE,
   HANDLE_SEND_PARTICIPANT_MESSAGE,
+  LOOKUP_PARTICIPANTS,
+  HANDLE_PARTICIPANTS_RESPONSE,
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -58,8 +60,20 @@ const messages = handleActions({
   }
 );
 
+/**
+ * Matched Participants after looking up the Participants.
+ */
+const matchedParticipants = handleActions({
+  LOOKUP_PARTICIPANTS: (state, action) => {
+    return Object.assign({}, state, {isFetching: true});
+  },
+  HANDLE_PARTICIPANTS_RESPONSE: (state, action) => {
+    return Object.assign({}, state, {participants: action.payload, isFetching: false});
+  }
+}, {isFetching: false, participants: []});
 
 module.exports = {
   participant,
   messages,
+  matchedParticipants
 };

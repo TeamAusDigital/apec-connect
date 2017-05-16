@@ -58,9 +58,6 @@ const lStyle = {
   lineHeight: '20vh',
 };
 
-// TODO: fake rating.
-const userStarRating = 2;
-
 @connect((state) => {
   return {dispatch: state.dispatch, ui: state.ui, participant: state.participant};
 })
@@ -72,7 +69,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    let {businessName, username} = this.props.participant;
+    let {businessName, username, rating} = this.props.participant;
 
     return (
       <div>
@@ -86,7 +83,7 @@ export default class HomeScreen extends React.Component {
           <div style={businessNameStyle}>{businessName}</div>
           <div style={userDetailsStyle}>
             {username}
-            <StarRating rating={userStarRating}/>
+            <StarRating rating={rating}/>
           </div>
           <br/> {/** Action buttons  **/}
           <RaisedButton labelStyle={lStyle} label='Get Paid' style={getPaidStyle} secondary={true} containerElement={< Link to = '/getPaid' />}/>

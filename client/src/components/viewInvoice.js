@@ -147,7 +147,7 @@ export default class ViewInvoice extends React.Component {
             <Divider />
             <ListItem>InvoiceID: {this.messageInvoice.invoice.id} </ListItem>
             <ListItem>What: {this.messageInvoice.message.message} </ListItem>
-            <ListItem>Amount: {this.messageInvoice.invoice.amount.currency}  {this.messageInvoice.invoice.amount.amount}</ListItem>
+            <ListItem>Amount: {this.messageInvoice.invoice.currencyCode}  {this.messageInvoice.invoice.amount.amount}</ListItem>
             <ListItem>Date sent: {moment(this.messageInvoice.invoice.dateIssued).format('YYYY-MM-DD')}</ListItem>
             <ListItem>Date due: {moment(this.messageInvoice.invoice.dateDue).format('YYYY-MM-DD')}</ListItem>
             <Divider />
@@ -169,5 +169,3 @@ export default class ViewInvoice extends React.Component {
     );
   }
 }
-
-
