@@ -48,7 +48,9 @@ class ApecConnectBusinessRegister @Inject() (ws: WSClient, configuration: Config
           case NonFatal(ex) => throw new ApecConnectBusinessRegisterException(s"Failed to sign up with APEC Connect Business Register.", ex)
         }
       } else {
-        s"Failed to register this participant with APEC Connect Business Register. Got response code [${response.status}] - [${response.body}]".left
+        (response.json \ "email").head.asOpt[String].
+          orElse((response.json \ "phone").head.asOpt[String]).
+          getOrElse("Failed to sign up with APEC Connect Business Register.").left
       }
     }
 

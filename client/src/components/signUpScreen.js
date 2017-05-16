@@ -11,7 +11,8 @@ import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import {Link} from 'react-router';
 import actions from 'state/actions';
 import TextField from 'material-ui/TextField';
-import Background from '../common/assets/bg-bottom.png';
+import Background from '../common/assets/bg-bottom-alpha-60.png';
+import FontIcon from 'material-ui/FontIcon';
 
 /***`
 
@@ -20,25 +21,26 @@ This is the basic elements for a main view in the app.
 ***/
 
 const paperStyle = {
-  padding: 10,
+  padding: '5px',
   textAlign: 'center',
   height: '100vh',
-  overflow: 'hidden'
+  overflow: 'hidden',
 };
 
 const divStyle = {
   height: '100%',
   backgroundImage: `url(${Background})`,
   backgroundSize: 'cover',
-  color: `${white}`,
-  position: 'relative'
+  position: 'relative',
+
 };
 
 const textStyle = {
-  color: `${white}`,
   width: '75%',
   margin: '0 auto',
-  position: 'relative'
+  position: 'relative',
+  fontWeight: 'bold',
+  display: 'block'
 };
 
 const logoStyle = {
@@ -47,7 +49,12 @@ const logoStyle = {
 };
 
 const btnStyle = {
-  width: '100%'
+  width: '100%',
+  fontSize: '20px',
+};
+
+const textFieldStyle = {
+  position: 'relative',
 };
 
 @withRouter
@@ -106,25 +113,36 @@ export default class SignUpScreen extends React.Component {
 
           <div style={divStyle}>
             <div style={textStyle}>
-              <TextField hintText='Business Name' errorText='This field is required' floatingLabelText='Business Name' onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})} value={participant.businessName}/>
+              <TextField hintText="Business Name" errorText="This field is required" floatingLabelText='Business Name' onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})} value={participant.businessName}/>
 
               <div style={textStyle}>
                 AND
               </div>
-              <TextField hintText='Email Address' floatingLabelText='Email Address' type='email' onChange={(event) => this.onParticipantInfoChange({email: event.target.value})} value={participant.email}/>
+              <TextField style={textFieldStyle} hintText="Email Address" floatingLabelText="Email Address" type="email" onChange={(event) => this.onParticipantInfoChange({email: event.target.value})} value={participant.email}/>
 
               <div style={textStyle}>
                 OR
               </div>
-              <TextField hintText='Mobile Phone Number' floatingLabelText='Mobile Phone Number' type='tel' onChange={(event) => this.onParticipantInfoChange({phone: event.target.value})} value={participant.phone}/>
+              <TextField style={textFieldStyle} hintText="Mobile Phone Number" floatingLabelText="Mobile Phone Number" type="tel" onChange={(event) => this.onParticipantInfoChange({phone: event.target.value})} value={participant.phone}/>
               <div style={textStyle}>
                 OR
               </div>
               <br/>
-              <RaisedButton style={btnStyle} label='Social Media' primary={true}/>
+              <RaisedButton
+                style={btnStyle}
+
+                primary={true}
+                icon={
+                  <span>
+                  <FontIcon className='fa fa-google-plus fa-fw' color={white}/>
+                  <FontIcon className='fa fa-facebook-official fa-fw' color={white}/>
+                  <FontIcon className='fa fa-twitter fa-fw' color={white}/>
+                  </span>
+                  }
+                />
             </div>
             <br/>
-            <RaisedButton style={btnStyle} label='Sign Up' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>
+            <RaisedButton labelStyle={btnStyle} style={btnStyle} label='Sign Up Now' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>
             <br/>
           </div>
         </Paper>

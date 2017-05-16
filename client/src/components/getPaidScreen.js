@@ -50,8 +50,8 @@ const textFieldStyle = {
   margin: 0,
 };
 
-const currencyFieldStyle = {
-
+const lStyle = {
+  fontSize: '20px'
 };
 
 const moneyDivStyle = {
@@ -308,7 +308,7 @@ export default class GetPaidScreen extends React.Component {
                 floatingLabelText='Currency'
                 value={state.invoice.amount.currency}
                 onChange={this.handleCurrencyChange}
-                style={currencyFieldStyle}>
+                >
                 {this.currencies()}
               </SelectField>
               <TextField
@@ -354,7 +354,7 @@ export default class GetPaidScreen extends React.Component {
 
             <br />
 
-            <RaisedButton label='Send' fullWidth={true} backgroundColor={red} labelColor={white} onTouchTap={() => this.sendMessage()} />
+            <RaisedButton labelStyle={lStyle} label='Send Invoice' fullWidth={true} backgroundColor={red} labelColor={white} onTouchTap={() => this.sendMessage()} />
           </Paper>
         </Paper>
       </div>

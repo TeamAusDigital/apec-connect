@@ -10,16 +10,16 @@ import actions from 'state/actions';
 import MenuList from './menuList';
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import Divider from 'material-ui/Divider';
-import Background from '../common/assets/bg-bottom.png';
+import Background from '../common/assets/bg-bottom-alpha-60.png';
 import StarRating from './starRating';
 
 const textStyleBig = {
-    fontSize: '30pt',
+    fontSize: '28pt',
     padding: '2px',
 };
 
 const textStyleSmall = {
-    fontSize: '20pt',
+    fontSize: '16pt',
     padding: '2px',
 };
 
@@ -33,9 +33,8 @@ const divStyle = {
 
 const textStyle ={
   position: 'absolute',
-  bottom: 0,
+  bottom: '0',
 };
-
 
 @withRouter
 @connect((state) => {
@@ -70,6 +69,7 @@ export default class MenuDrawer extends React.Component {
           zDepth={3}
         >
           <div style={divStyle}>
+
             <div style={textStyle}>
               <div style={textStyleBig}>{participant.businessName}</div>
               <br />

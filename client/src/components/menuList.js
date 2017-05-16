@@ -9,6 +9,7 @@ import Home from 'material-ui/svg-icons/action/home';
 import CreditCard from 'material-ui/svg-icons/action/credit-card';
 import PowerSettingsNew from 'material-ui/svg-icons/action/power-settings-new';
 import AccountBalanceWallet from 'material-ui/svg-icons/action/account-balance-wallet';
+import ActionInfo from 'material-ui/svg-icons/action/info';
 import Paper from 'material-ui/Paper';
 import {Link} from 'react-router';
 import { withRouter } from 'react-router';
@@ -27,7 +28,7 @@ const paperStyle = {
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
   };
 })
 export default class MenuList extends React.Component {
@@ -58,6 +59,7 @@ export default class MenuList extends React.Component {
         </List>
         <Divider />
         <List>
+          <ListItem primaryText="About" rightIcon={< ActionInfo />}/>
           <ListItem primaryText='Forget Me' rightIcon={< PowerSettingsNew />} onTouchTap={() => this.handleForgetMe()}/>
         </List>
       </div>

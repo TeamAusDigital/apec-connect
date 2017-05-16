@@ -3,9 +3,9 @@
 set -e
 set -x
 
-POSTGRES_PORT_5432=`../tools/docker-port.sh tmp_d61plusdb_1 5432`
-KAMON_PORT_8125=`../tools/docker-port.sh tmp_d61plusstatsd_1 8125 udp`
-MAILDEV_PORT_25=`../tools/docker-port.sh tmp_d61plusmailrelay_1 25` 
+POSTGRES_PORT_5432=`../tools/docker-port.sh tmp_apecconnectdb_1 5432`
+KAMON_PORT_8125=`../tools/docker-port.sh tmp_apecconnectstatsd_1 8125 udp`
+MAILDEV_PORT_25=`../tools/docker-port.sh tmp_apecconnectmailrelay_1 25` 
 
 UNAME=`uname`
 
