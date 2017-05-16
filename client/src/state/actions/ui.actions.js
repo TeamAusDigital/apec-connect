@@ -7,7 +7,7 @@ import {
   FORGET_USER,
   SHOW_ERROR,
   HIDE_ERROR,
-
+  SELECT_CURRENCY,
 } from './actionTypes';
 import { createActions } from 'redux-actions';
 
@@ -21,7 +21,7 @@ const uiActions = createActions(
   ACCEPTED_PAYMENTS,
   REMEMBER_USER,
   FORGET_USER,
-
+  SELECT_CURRENCY,
   SHOW_ERROR,
   HIDE_ERROR,
 

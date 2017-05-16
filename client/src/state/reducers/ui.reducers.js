@@ -3,7 +3,7 @@ import {
   CLOSE_MAIN_MENU,
   CLOSE_TERMS_MENU,
   OPEN_TERMS_MENU,
-
+  SELECT_CURRENCY,
   SHOW_ERROR,
   HIDE_ERROR,
 
@@ -41,6 +41,11 @@ const ui = handleActions({
   FORGET_USER: (state, action) => {
     return Object.assign({}, state, {
       alreadyUser: false
+    });
+  },
+  SELECT_CURRENCY: (state, action) => {
+    return Object.assign({}, state, {
+      currencyType: action.payload
     });
   },
 
