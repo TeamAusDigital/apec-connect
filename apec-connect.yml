@@ -1,7 +1,8 @@
 apecconnectapecconnectclient:
-  image: apecconnect_apecconnect_client
+  image: teamausdigital/apecconnect_client
   restart: always
-  dns: %DNS_IP%
+  dns: 
+   - %DNS_IP%
   labels:
     source.path: "components.apecconnect_client"
     project.artefact: "true"
@@ -10,9 +11,10 @@ apecconnectapecconnectclient:
       
 
 apecconnectpublicapi:
-  image: apecconnect_public_api
+  image: teamausdigital/public_api
   restart: always
-  dns: %DNS_IP%
+  dns: 
+   - %DNS_IP%
   links:
    - apecconnectstatsd:apecconnect-statsd
    - apecconnectdb:apecconnect-db
@@ -23,12 +25,12 @@ apecconnectpublicapi:
     - DNSDOCK_ALIAS=public_api.docker
       
 apecconnectmainapecconnectclientnginx:
-  image: apecconnect_main_apecconnect_client_nginx
+  image: teamausdigital/main_apecconnect_client_nginx
   links:
    - apecconnectpublicapi:PUBLIC_API
    - apecconnectapecconnectclient:APECCONNECT_CLIENT
   ports:
-   - 80
+   - 80:80
   labels:
    source.path: "topology.edges.main.subEdges.apecconnect_client"
    project.artefact: "true"
@@ -36,7 +38,8 @@ apecconnectmainapecconnectclientnginx:
 
 apecconnectstatsd:
   image: kamon/grafana_graphite
-  dns: %DNS_IP%
+  dns: 
+   - %DNS_IP%
   restart: always
   environment:
     - DNSDOCK_ALIAS=apecconnect-statsd.docker
@@ -49,7 +52,8 @@ apecconnectstatsd:
 
 apecconnectdb:
   image: library/postgres
-  dns: %DNS_IP%
+  dns: 
+   - %DNS_IP%
   restart: always
   environment:
     - DNSDOCK_ALIAS=apecconnect-db.docker
