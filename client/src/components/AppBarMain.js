@@ -19,7 +19,6 @@ import {white} from './apecConnectTheme';
 
 const ContextHelp = (props) => (
   <div>
-  <IconButton> <SearchIcon color={white}/> </IconButton>
   <IconMenu
     {...props}
     iconButtonElement={

@@ -9,7 +9,7 @@ import org.ausdigital.apecconnect.businessregister._
 import org.ausdigital.apecconnect.db.services.SimpleRecordService
 import org.ausdigital.apecconnect.participants.dao.ParticipantDao
 import org.ausdigital.apecconnect.participants.model.Participant.{Participant, ParticipantData}
-import org.ausdigital.apecconnect.participants.model.ParticipantIdentity
+import org.ausdigital.apecconnect.participants.model.{Participant, ParticipantIdentity}
 import org.ausdigital.apecconnect.db.model.RecordOps._
 import play.api.Configuration
 import play.api.libs.ws.WSClient
@@ -40,6 +40,8 @@ class ParticipantService @Inject()(override val dao: ParticipantDao, ws: WSClien
   }
 
   def queryByBusinessName(businessName: String): Future[Seq[Participant]] = dao.run {
-    dao.queryByBusinessName(businessName)
+    dao.queryByBusinessName(businessName).map { participants =>
+      participants.map(Participant.publicParticipantView)
+    }
   }
 }

@@ -22,5 +22,5 @@ function createInvoice(invoice) {
 }
 
 module.exports = {
-  issueInvoice
+  createInvoice
 };

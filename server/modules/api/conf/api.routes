@@ -3,7 +3,7 @@ GET        /hc                          org.ausdigital.apecconnect.system.contro
 
 
 # APEC Connect Participants
-GET        /v1/participants/lookup/:query             org.ausdigital.apecconnect.participants.controllers.ParticipantsController.lookupParticipants(query: String)
+GET        /v1/participants/lookup                    org.ausdigital.apecconnect.participants.controllers.ParticipantsController.lookupParticipants(query: Option[String])
 GET        /v1/participants/current                   org.ausdigital.apecconnect.participants.controllers.ParticipantsController.participant()
 POST       /v1/participants/sign-up                   org.ausdigital.apecconnect.participants.controllers.ParticipantsController.signUp()
 GET        /v1/participants/current/messages          org.ausdigital.apecconnect.participants.controllers.ParticipantsController.participantMessages()
