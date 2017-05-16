@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import actions from 'state/actions';
+import moment from 'moment';
 /***
 
 This is the basic elements for a main view in the app.
@@ -22,7 +23,7 @@ const paperStyle = {
   padding: 5,
   textAlign: 'center',
   position: 'relative',
-  height:'100vh',
+  height:'100%',
 };
 
 const getPaidPaperStyle = {
@@ -46,6 +47,17 @@ const textFieldStyle = {
   margin: 0,
 };
 
+const currencyFieldStyle = {
+
+};
+
+const moneyDivStyle = {
+  position: 'relative',
+  display: 'block',
+};
+
+
+
 const paymentMethods = [
   {value: 0, name: 'Cash'},
   {value: 1, name: 'VISA'},
@@ -62,23 +74,81 @@ const lStyle = {
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
+    participant: state.participant,
+    messages: state.messages,
   };
 })
 export default class GetPaidScreen extends React.Component {
 
   constructor(props) {
     super(props);
+
+    //Hold the prototype message to be sent as an invoice
+    this.state = {
+      invoiceMessage: {
+         sender: {
+           identifier: '0858bb02-ace6-45fb-9684-ebe7e277f1bb',
+           businessName: 'Test Business',
+           username: 'test-dusty-elemental-9597',
+           authToken: 'ee77690a4bf241439c7d9ddf3fb62ff5',
+           isVerified: false,
+           accountStatus: 'Enabled',
+           rating:3,
+           id: 1,
+         },
+         receiver: {
+           identifier: '0e5cb22a-1e64-4a55-966e-7eac1e58fd69',
+           businessName: 'Test Business',
+           username: 'test-bitter-moon-7244',
+           authToken: 'b6a9d1feab29457eb734f20e7b2caba2',
+           isVerified: false,
+           accountStatus: 'Enabled',
+           rating:2,
+           id: 3,
+         },
+         message: {
+           senderId: '0858bb02-ace6-45fb-9684-ebe7e277f1bb',
+           receiverId: '0e5cb22a-1e64-4a55-966e-7eac1e58fd69',
+           message: 'Hello, going to generate invoice for you.',
+           id: 3,
+         },
+         invoice: {
+            issuerId: '0858bb02-ace6-45fb-9684-ebe7e277f1bb',
+            dateIssued: 1494511200000,
+            dateDue: 1494770400000,
+            isPaid: false,
+            isAccepted: false,
+            amount: {
+              currency: 'AUD',
+              amount: 0.0
+            },
+            currencyCode: '',
+            paymentOptions: [
+              'Cash'
+            ],
+            id: 2,
+         }
+      }
+    };
   }
 
+  //Handle updating the payment terms menu
   handleChange = (event, index, value) => this.props.dispatch(
     actions.termsMenuValue(value)
   );
 
-  handleChangePayment = (event, index, values) => this.props.dispatch(
-    actions.acceptedPayments(values)
-  );
+  //handle change payment optiosn menu
+  handleChangePayment = (event, index, values) => {
+    this.props.dispatch( actions.acceptedPayments(values) );
+  };
 
+  //Handle change the currency options
+  handleChangeCurrency  = (event, index, value) => {
+    this.props.dispatch( actions.selectCurrency(value));
+  };
+
+  //Change payment option text depending on amount selected
   selectionRenderer = (values) => {
     switch (values.length) {
       case 0:
@@ -90,6 +160,7 @@ export default class GetPaidScreen extends React.Component {
     }
   }
 
+  //Menu item for the payment options
   menuItems(paymentMethods) {
     return paymentMethods.map((paymentMethods) => (
       <MenuItem
@@ -102,6 +173,56 @@ export default class GetPaidScreen extends React.Component {
     ));
   }
 
+  //Calculate the due date
+  calculateDueDate = () => {
+    switch(this.props.ui.termsMenuValue) {
+      case 1:
+        return moment().endOf('day').fromNow().format('x');
+      case 2:
+        return moment().add(7, 'days').format('x');
+      case 3:
+        return moment().add(14, 'days').format('x');
+      case 4:
+        return moment().add(28, 'days').format('x');
+      default:
+        return moment().add(1, 'days').format('x');
+    }
+  }
+
+
+  /** Collect remaining information and send a message
+    * TODO Add randomised ids for each invoice and message
+    * TODO add in lookup for receiver information
+  **/
+  handleSendMessage = () => {
+    //Date Stuff
+    this.state.invoiceMessage.invoice.dateIssued = moment().format('x');
+    this.state.invoiceMessage.invoice.dateDue = this.calculateDueDate();
+
+    //Currency Value
+    this.state.invoiceMessage.invoice.amount.currency = this.props.ui.currencyType;
+
+    //payment options
+    this.state.invoiceMessage.invoice.paymentOptions = this.props.ui.acceptedPayments.map( (value) => paymentMethods[value].name);
+
+    //My ID
+    this.state.invoiceMessage.invoice.issuerId = this.props.participant.identifier;
+    this.state.invoiceMessage.sender.identifier = this.props.participant.identifier;
+
+    console.log(this.state.invoiceMessage);
+    actions.sendParticipantMessage(this.state.invoiceMessage);
+
+  }
+
+  onMessageChange = (messageInfo) => {
+    this.state.invoiceMessage.message.message = messageInfo;
+  }
+
+  onAmountChange = (amount) => {
+    //let nextMessage = Object.assign({}, this.state.invoiceMessage.invoice.amount, amount);
+    //this.setState(Object.assign({}, this.state, {invoiceMessage: nextMessage}));
+    this.state.invoiceMessage.invoice.amount.amount = amount;
+  }
 
   render() {
     return (
@@ -127,13 +248,26 @@ export default class GetPaidScreen extends React.Component {
               floatingLabelText='Who'
             />
             <br />
-            <TextField
-              type='number'
-              fullWidth={true}
-              style = {textFieldStyle}
-              hintText='Amount to pay'
-              floatingLabelText='How much'
-            />
+            <div style={moneyDivStyle}>
+              <SelectField
+                floatingLabelText='Currency'
+                value={this.props.ui.currencyType}
+                onChange={this.handleChangeCurrency}
+                style={currencyFieldStyle}
+              >
+                <MenuItem value={'VND'} primaryText='VND' />
+                <MenuItem value={'USD'} primaryText='USD' />
+                <MenuItem value={'AUD'} primaryText='AUD' />
+              </SelectField>
+              <TextField
+                type='number'
+                style = {textFieldStyle}
+                fullWidth={true}
+                hintText='Amount to pay'
+                floatingLabelText='How much'
+                onChange={(event) => this.onAmountChange(event.target.value)}
+              />
+            </div>
             <br />
             <TextField
               fullWidth={true}
@@ -143,6 +277,7 @@ export default class GetPaidScreen extends React.Component {
               multiLine={true}
               rows={1}
               rowsMax={4}
+              onChange={(event) => this.onMessageChange(event.target.value)}
             />
             <br />
             <SelectField
@@ -173,6 +308,7 @@ export default class GetPaidScreen extends React.Component {
             <br />
 
             <RaisedButton labelStyle={lStyle} label='Send Invoice' fullWidth={true} backgroundColor={red} labelColor={white} />
+
 
           </Paper>
         </Paper>
