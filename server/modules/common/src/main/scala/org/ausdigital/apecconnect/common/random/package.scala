@@ -17,7 +17,7 @@ package object random {
     private val nouns = List("waterfall", "river", "breeze", "moon", "rain",
       "wind", "sea", "morning", "snow", "lake", "sunset", "pine", "shadow", "leaf",
       "sequoia", "cedar", "wrath", "blessing", "spirit", "nova", "storm", "burst",
-      "giant", "elemental", "throne", "game", "weed", "stone", "apogee", "bang")
+      "giant", "elemental", "throne", "game", "stone", "apogee", "bang")
 
     private def getRandElt[A](xs: List[A]): A = xs.apply(nextInt(xs.size))
 

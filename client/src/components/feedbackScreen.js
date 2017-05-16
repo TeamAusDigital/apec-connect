@@ -111,22 +111,22 @@ export default class FeedbackScreen extends React.Component {
               <br />
               <div style={invoiceViewStyle}>
                 <SelectField
-                  floatingLabelText="Rating"
+                  floatingLabelText='Rating'
                   value={this.starRating}
                   onChange={this.handleStarRatingChange}
                   style={starStyle}
                 >
-                  <MenuItem value={0} primaryText="0" />
-                  <MenuItem value={1} primaryText="1" />
-                  <MenuItem value={2} primaryText="2" />
-                  <MenuItem value={3} primaryText="3" />
+                  <MenuItem value={0} primaryText='0' />
+                  <MenuItem value={1} primaryText='1' />
+                  <MenuItem value={2} primaryText='2' />
+                  <MenuItem value={3} primaryText='3' />
                 </SelectField>
                 <StarRating rating={this.starRating} />
               </div>
               <div style={invoiceViewStyle}>
                 <TextField
-                  hintText="Feedback message"
-                  floatingLabelText="Feedback message"
+                  hintText='Feedback message'
+                  floatingLabelText='Feedback message'
                   multiLine={true}
                   rows={1}
                   fullWidth={true}

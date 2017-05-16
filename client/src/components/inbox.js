@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import actions from 'state/actions';
 import { connect } from 'react-redux';
 import AppBarMain from '../components/AppBarMain';
 import Paper from 'material-ui/Paper';
@@ -61,12 +62,43 @@ const logoStyle ={
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
+    participant: state.participant,
+    messages: state.messages,
   };
 })
 export default class Inbox extends React.Component {
 
+  constructor(props) {
+    super(props);
+  };
+
+  generateInboxItems = () => {
+    return this.props.messages.messages.map((m, index) =>  <InboxItem key={index} message={m} keyID={index}/>) ;
+  }
+
+  componentDidMount() {
+    let { dispatch } = this.props;
+
+    setTimeout(function () {
+      dispatch(actions.getParticipantMessages());
+    });
+  }
+
+  componentWillReceiveProps() {
+    clearTimeout(this.inboxRefreshTimeout);
+    this.refreshInbox();
+  }
+
+  refreshInbox = () => {
+    let { dispatch } = this.props;
+    this.inboxRefreshTimeout = setTimeout(function() {
+      dispatch(actions.getParticipantMessages());
+    }, 5 * 1000);
+  }
+
   render() {
+
     return (
       <div>
         {/** AppBarMain contains the app bar and menu drawer **/}
@@ -102,17 +134,7 @@ export default class Inbox extends React.Component {
                 displayRowCheckbox={false}
                 stripedRows={true}
               >
-                <InboxItem id={'1'} who={'S. Jobs'} rating={2} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'M. Pfeiffer'} rating={1} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
-                <InboxItem id={'1'} who={'S. Jobs'} rating={3} issueDate={'11/01/2017'} dueDate={'11/01/2017'} what={'-$11.00'}/>
+                {this.generateInboxItems()}
 
               </TableBody>
             </Table>
@@ -122,5 +144,3 @@ export default class Inbox extends React.Component {
     );
   }
 }
-
-

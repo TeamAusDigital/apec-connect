@@ -1,6 +1,6 @@
 package org.ausdigital.apecconnect.businessregister.model
 
-import play.api.libs.json.{ Json, OFormat }
+import play.api.libs.json._
 
 /**
   * Participant registration payload that is required for sign up with APEC Connect Business Register.

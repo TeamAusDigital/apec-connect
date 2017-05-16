@@ -72,8 +72,8 @@ export default class MessageScreen extends React.Component {
             <br/>
 
             <TextField
-              hintText="User message"
-              floatingLabelText="User message"
+              hintText='User message'
+              floatingLabelText='User message'
               multiLine={true}
               rows={1}
               fullWidth={true}

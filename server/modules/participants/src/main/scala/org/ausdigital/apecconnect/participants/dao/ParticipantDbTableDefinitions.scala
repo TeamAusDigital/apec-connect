@@ -16,7 +16,7 @@ trait ParticipantDbTableDefinitions extends BaseDbTableDefinitions {
 
   import profile.api._
 
-  // TODO: use EnumerationMapping.enumeratumMapper instead, fix complie error first.
+  // TODO: use EnumerationMapping.enumeratumMapper instead, fix compile error first.
   implicit val accountStatusMapper: JdbcType[AccountStatus] = MappedColumnType.base[AccountStatus, Int](
     a => a.value,
     id =>
@@ -34,10 +34,11 @@ trait ParticipantDbTableDefinitions extends BaseDbTableDefinitions {
     def phone: Rep[Option[String]]        = column[Option[String]]("phone")
     def authToken: Rep[String]            = column[String]("auth_token")
     def username: Rep[String]             = column[String]("username")
+    def rating: Rep[Option[Int]]          = column[Option[Int]]("rating")
     def isVerified: Rep[Boolean]          = column[Boolean]("is_verified")
     def accountStatus: Rep[AccountStatus] = column[AccountStatus]("account_status")
 
-    private[dao] def data = (identifier, businessName, email, phone, authToken, username, isVerified, accountStatus).mapTo[ParticipantData]
+    private[dao] def data = (identifier, businessName, email, phone, authToken, username, isVerified, rating, accountStatus).mapTo[ParticipantData]
 
     override def * : ProvenShape[Participant] = record(data)
   }

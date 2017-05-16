@@ -3,6 +3,11 @@ GET        /hc                          org.ausdigital.apecconnect.system.contro
 
 
 # APEC Connect Participants
-POST       /v1/participants/sign-up      org.ausdigital.apecconnect.participants.controllers.ParticipantsController.signUp()
+GET        /v1/participants/lookup                    org.ausdigital.apecconnect.participants.controllers.ParticipantsController.lookupParticipants(query: Option[String])
+GET        /v1/participants/current                   org.ausdigital.apecconnect.participants.controllers.ParticipantsController.participant()
+POST       /v1/participants/sign-up                   org.ausdigital.apecconnect.participants.controllers.ParticipantsController.signUp()
+GET        /v1/participants/current/messages          org.ausdigital.apecconnect.participants.controllers.ParticipantsController.participantMessages()
+POST       /v1/participants/current/messages/create   org.ausdigital.apecconnect.participants.controllers.ParticipantsController.createParticipantMessage()
 
-GET        /v1/participants/current      org.ausdigital.apecconnect.participants.controllers.ParticipantsController.participant()
+# Invoices related routes.
+POST       /v1/participants/current/invoices/create   org.ausdigital.apecconnect.invoices.controllers.InvoicesController.createInvoice()

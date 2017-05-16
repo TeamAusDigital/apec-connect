@@ -19,7 +19,7 @@ const textStyleBig = {
 };
 
 const textStyleSmall = {
-    fontSize: '16',
+    fontSize: '16pt',
     padding: '2px',
 };
 
@@ -33,16 +33,15 @@ const divStyle = {
 
 const textStyle ={
   position: 'absolute',
-  bottom: '0px',
+  bottom: '0',
 };
-
 
 @withRouter
 @connect((state) => {
   return {
     dispatch: state.dispatch,
     ui: state.ui,
-    participant: state.participant,
+    participant: state.participant
   };
 })
 export default class MenuDrawer extends React.Component {
@@ -60,6 +59,8 @@ export default class MenuDrawer extends React.Component {
   );
 
   render() {
+    let {participant} = this.props;
+
     return (
         <Drawer
           open={this.props.ui.mainMenuOpen}
@@ -69,10 +70,10 @@ export default class MenuDrawer extends React.Component {
         >
           <div style={divStyle}>
 
-            {/**<img src={Background} style={backgroundStyle}/>**/}
             <div style={textStyle}>
-              <div style={textStyleBig}>{this.props.participant.businessName}</div>
-              <div style={textStyleSmall}>{this.props.participant.username} <br/> <StarRating rating={1} /></div>
+              <div style={textStyleBig}>{participant.businessName}</div>
+              <br />
+              <div style={textStyleSmall}>{participant.username} <StarRating rating={participant.rating} /></div>
               <br />
             </div>
 
