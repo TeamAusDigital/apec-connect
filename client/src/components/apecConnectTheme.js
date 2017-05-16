@@ -18,6 +18,7 @@ export const white = '#ffffff';
 
 
 const apecConnectTheme = getMuiTheme({
+  fontFamily: 'Roboto, sans-serif',
   palette: {
     primary1Color: blue900,
     primary2Color: indigo900,
