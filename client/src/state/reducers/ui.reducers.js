@@ -3,7 +3,10 @@ import {
   CLOSE_MAIN_MENU,
   CLOSE_TERMS_MENU,
   OPEN_TERMS_MENU,
-  SELECT_CURRENCY,
+
+  SHOW_ERROR,
+  HIDE_ERROR,
+
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -40,11 +43,19 @@ const ui = handleActions({
       alreadyUser: false
     });
   },
-  SELECT_CURRENCY: (state, action) => {
-     return Object.assign({}, state, {
-       currencyType: action.payload
-     });
-   },
+
+  SHOW_ERROR: (state, action) => {
+    return Object.assign({}, state, {
+      errorMessage: action.payload.message,
+      showError: true
+    });
+  },
+  HIDE_ERROR: (state, action) => {
+    return Object.assign({}, state, {
+      showError: false
+    });
+  },
+
 },
   /*** initial state  ***/
   {
@@ -52,7 +63,10 @@ const ui = handleActions({
     termsMenuValue: 1,
     acceptedPayments: [],
     alreadyUser: false,
-    currencyType: 'VND',
+
+    showError: false,
+    errorMessage: '',
+
   }
 );
 

@@ -17,6 +17,13 @@ let apiMiddleware = {
     else if (res.status === 401) {
       store.dispatch(actions.notAuthenticated());
     }
+    else if (res.status === 400) {
+      res.json().then((e) => {
+        if(e.messages.length) {
+          store.dispatch(actions.showError(e.messages[0]));
+        }
+      });
+    }
 
     return processedResponse;
   },

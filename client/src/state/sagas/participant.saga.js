@@ -22,11 +22,13 @@ export function* signUp (action) {
       email: action.payload.email,
       phone: action.payload.phone
     });
-    yield put(actions.authResponse({token: token}));
-    yield put(actions.getParticipant());
+    if(token) {
+      yield put(actions.authResponse({token: token}));
+      yield put(actions.getParticipant());
+    }
   }
   catch (error) {
-    yield put(actions.authResponse(error));
+    yield put(actions.authResponse({error: error}));
   }
 }
 

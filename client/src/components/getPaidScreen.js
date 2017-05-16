@@ -65,6 +65,10 @@ const paymentMethods = [
   {value: 3, name: 'BitCoin'}
 ];
 
+const lStyle = {
+  fontSize: '20px'
+};
+
 
 @withRouter
 @connect((state) => {
@@ -303,7 +307,8 @@ export default class GetPaidScreen extends React.Component {
 
             <br />
 
-            <RaisedButton label='Send' fullWidth={true} backgroundColor={red} labelColor={white} onTouchTap={() => this.handleSendMessage()}/>
+            <RaisedButton labelStyle={lStyle} label='Send Invoice' fullWidth={true} backgroundColor={red} labelColor={white} />
+
 
           </Paper>
         </Paper>
