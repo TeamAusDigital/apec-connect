@@ -15,6 +15,7 @@ import ReceiptScreen from './components/receiptScreen';
 import FeedbackScreen from './components/feedbackScreen';
 import {persistStore} from 'redux-persist';
 import MessageScreen from './components/messageScreen';
+import ErrorSnackbar from './components/errorSnackbar';
 
 /**
  * The main application component that contains the routing configuration.
@@ -65,6 +66,7 @@ class App extends React.Component {
               <div id='body'>
                 {this.props.children}
               </div>
+              <ErrorSnackbar />
             </div>
           : ''
         }

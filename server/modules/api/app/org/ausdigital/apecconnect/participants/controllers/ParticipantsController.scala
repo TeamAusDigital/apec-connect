@@ -43,7 +43,7 @@ class ParticipantsController @Inject()(
     for {
       // TODO: handles the validation errors from business register, e.g. using a failureNel.
       registeredParticipant <- apecConnectBusinessRegister.signUp(participantRegistrationPayload.copy(username = Some(generateUsername(participantRegistrationPayload.businessName)))) ?| { error =>
-        JsonApiResponse.badRequestResponse(s"Failed to sign up participant - [$error].", Nil)
+        JsonApiResponse.badRequestResponse(error, Nil)
       }
       participant <- participantService.create(
         ParticipantData(
