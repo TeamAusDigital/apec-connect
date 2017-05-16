@@ -10,15 +10,15 @@ import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import actions from 'state/actions';
 import {Link} from 'react-router';
 
-import Background from '../common/assets/bg-bottom.png';
+import Background from '../common/assets/bg-bottom-alpha-60.png';
 
-const logoStyle ={
+const logoStyle = {
   width: '100%',
-  position: 'relative'
+  maxHeight: '150px'
 };
 
 const paperStyle = {
-  padding: 5,
+  padding: '5px',
   textAlign: 'center',
   position: 'relative',
   height:'100vh',
@@ -29,14 +29,12 @@ const divStyle = {
    height: '100%',
    backgroundImage: `url(${Background})`,
    backgroundSize: 'cover',
-   textColor: {white},
    position: 'relative',
 };
 
 const bStyle ={
   width: '100%',
   textAlign: 'center',
-  color: `${white}`,
   position: 'fixed',
   bottom: '50px',
   left: '0px',
@@ -48,12 +46,18 @@ const textStyle ={
   textAlign: 'center',
   position: 'relative',
   margin: '0 auto',
+  fontWeight: 'bold',
 };
 
 const buttonStyle = {
   position: 'relative',
   width:'80%',
   margin: '0 auto',
+};
+
+const lStyle = {
+  width: '100%',
+  fontSize: '20px',
 };
 
 @withRouter
@@ -81,6 +85,7 @@ export default class MainSplashScreen extends React.Component {
               label='Join'
               backgroundColor={red}
               labelColor={white}
+              labelStyle={lStyle }
               fullWidth={true}
               containerElement={<Link to='/signUp' />}
             />

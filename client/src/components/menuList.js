@@ -24,7 +24,7 @@ const paperStyle = {
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
   };
 })
 export default class MenuList extends React.Component {
@@ -55,9 +55,7 @@ export default class MenuList extends React.Component {
         </List>
         <Divider />
         <List>
-          <ListItem primaryText="All mail" rightIcon={< ActionInfo />}/>
-          <ListItem primaryText="Trash" rightIcon={< ActionInfo />}/>
-          <ListItem primaryText="Spam" rightIcon={< ActionInfo />}/>
+          <ListItem primaryText="About" rightIcon={< ActionInfo />}/>
           <ListItem primaryText="Forget Me" rightIcon={< ActionInfo />} onTouchTap={() => this.handleForgetMe()}/>
         </List>
       </div>

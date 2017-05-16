@@ -17,23 +17,28 @@ This is the basic elements for a main view in the app.
 ***/
 
 const paperStyle = {
-  padding: 10,
+  padding: '5px',
   textAlign: 'center',
-  height: '100vh'
+  height: '100%'
 };
 
 const getPaidStyle = {
-  width: '50%'
+  width: '50%',
+  height: '20vh',
 };
 
 const payStyle = {
-  width: '50%'
+  width: '50%',
+  height: '20vh',
 };
 
-const inboxStyle = {};
+const inboxStyle = {
+  height: '20vh',
+};
 
 const businessNameStyle = {
-  fontSize: 48
+  fontSize: 48,
+  position: 'relative',
 };
 
 const userDetailsStyle = {
@@ -43,6 +48,14 @@ const userDetailsStyle = {
 const logoStyle = {
   width: '100%',
   maxHeight: '150px'
+};
+
+const lStyle = {
+  width: '100%',
+  fontSize: '28px',
+  verticalAlign: 'middle',
+  textAlign: 'center',
+  lineHeight: '20vh',
 };
 
 // TODO: fake rating.
@@ -76,9 +89,9 @@ export default class HomeScreen extends React.Component {
             <StarRating rating={userStarRating}/>
           </div>
           <br/> {/** Action buttons  **/}
-          <RaisedButton label='Get Paid' style={getPaidStyle} secondary={true} containerElement={< Link to = '/getPaid' />}/>
-          <RaisedButton label='Pay' style={payStyle} primary={true} containerElement={< Link to = '/pay' />}/>
-          <RaisedButton label='Inbox' style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} containerElement={< Link to = '/inbox' />}/>
+          <RaisedButton labelStyle={lStyle} label='Get Paid' style={getPaidStyle} secondary={true} containerElement={< Link to = '/getPaid' />}/>
+          <RaisedButton labelStyle={lStyle} label='Pay' style={payStyle} primary={true} containerElement={< Link to = '/pay' />}/>
+          <RaisedButton labelStyle={lStyle} label='Inbox' style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} containerElement={< Link to = '/inbox' />}/>
           <br/>
         </Paper>
       </div>

@@ -10,16 +10,16 @@ import actions from 'state/actions';
 import MenuList from './menuList';
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import Divider from 'material-ui/Divider';
-import Background from '../common/assets/bg-bottom.png';
+import Background from '../common/assets/bg-bottom-alpha-60.png';
 import StarRating from './starRating';
 
 const textStyleBig = {
-    fontSize: '30pt',
+    fontSize: '28pt',
     padding: '2px',
 };
 
 const textStyleSmall = {
-    fontSize: '20pt',
+    fontSize: '16',
     padding: '2px',
 };
 
@@ -33,7 +33,7 @@ const divStyle = {
 
 const textStyle ={
   position: 'absolute',
-  bottom: 0,
+  bottom: '0px',
 };
 
 
@@ -41,7 +41,8 @@ const textStyle ={
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
+    participant: state.participant,
   };
 })
 export default class MenuDrawer extends React.Component {
@@ -70,9 +71,8 @@ export default class MenuDrawer extends React.Component {
 
             {/**<img src={Background} style={backgroundStyle}/>**/}
             <div style={textStyle}>
-              <div style={textStyleBig}>{'David\'s Hat Co.'}</div>
-              <br />
-              <div style={textStyleSmall}>{'DHat72'} <StarRating rating={1} /></div>
+              <div style={textStyleBig}>{this.props.participant.businessName}</div>
+              <div style={textStyleSmall}>{this.props.participant.username} <br/> <StarRating rating={1} /></div>
               <br />
             </div>
 
