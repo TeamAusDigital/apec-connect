@@ -12,6 +12,7 @@ import actions from 'state/actions';
 import moment from 'moment';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import EconomyFlag from '../components/EconomyFlag';
 
 
 /***
@@ -31,6 +32,8 @@ const logoStyle ={
   maxHeight: '150px',
 };
 
+//<EconomyFlag economyCode={participant.economy} />
+
 @withRouter
 @connect((state) => {
   return {
@@ -45,12 +48,11 @@ export default class ViewInvoice extends React.Component {
   constructor(props) {
       super(props);
       this.messageInvoice = this.props.messages.selectedMessage;
-
+      console.log(this.messageInvoice);
       this.isInvoice = false;
       if (this.messageInvoice.invoice) {
         this.isInvoice = true;
       }
-      console.log(this.isInvoice);
 
       this.sellerText = this.messageInvoice.sender.businessName;
       this.sellerStarRating = this.messageInvoice.sender.rating;
@@ -85,23 +87,28 @@ export default class ViewInvoice extends React.Component {
   };
 
   payButton = () => {
-    if (this.messageInvoice.invoice.issuerId === this.props.participant.identifier &&
-        this.messageInvoice.invoice.isPaid === false) {
-      return(<RaisedButton label='Pay' backgroundColor={red} labelColor={white} fullWidth={true} onTouchTap={this.handlePay}/>);
-    } else if (this.messageInvoice.invoice.isPaid === true){
-      return(<RaisedButton label='Invoice Paid' disabled={true} fullWidth={true}/>);
+    if (this.messageInvoice.sender.identifier != this.props.participant.identifier) {
+
+      if (this.messageInvoice.invoice.isPaid) {
+        return(<RaisedButton label='Invoice Paid' disabled={true} fullWidth={true}/>);
+      } else {
+        return(<RaisedButton label='Pay' backgroundColor={red} labelColor={white} fullWidth={true} onTouchTap={this.handlePay}/>);
+      }
+
     } else {
       return(<RaisedButton label='Awaiting Payment' disabled={true} fullWidth={true}/>);
     }
   };
 
   acceptButton = () => {
-    if (this.messageInvoice.invoice.issuerId != this.props.participant.identifier && this.messageInvoice.invoice.isAccepted === false && this.messageInvoice.invoice.isPaid===true) {
-      return(<RaisedButton label='Accept Payment' primary={true} fullWidth={true} onTouchTap={this.handleAcceptPayment}/>);
-    } else if (this.messageInvoice.invoice.isAccepted === true){
-      return(<RaisedButton label='Payment Accepted' disabled={true} fullWidth={true}/>);
-    } else if (this.messageInvoice.invoice.isPaid === true){
-      return(<RaisedButton label='Awaiting Acceptance' disabled={true} fullWidth={true}/>);
+    if (this.messageInvoice.sender.identifier === this.props.participant.identifier) {
+
+      if (this.messageInvoice.invoice.isAccepted && this.messageInvoice.invoice.isPaid) {
+        return(<RaisedButton label='Awaiting Acceptance' disabled={true} fullWidth={true}/>);
+      } else {
+        return(<RaisedButton label='Accept Payment' primary={true} fullWidth={true} onTouchTap={this.handleAcceptPayment}/>);
+      }
+
     } else {
       return(<RaisedButton label='Awaiting Payment' disabled={true} fullWidth={true}/>);
     }
