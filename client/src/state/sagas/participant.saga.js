@@ -12,6 +12,7 @@ import {
   HANDLE_PARTICIPANTS_RESPONSE,
   GET_ANNOUNCEMENTS,
   SELECT_PARTICIPANT_MESSAGE,
+  HANDLE_SELECT_PARTICIPANT_MESSAGE,
 } from 'state/actions/actionTypes';
 import Immutable from 'immutable';
 import apis from 'apis';
@@ -115,10 +116,10 @@ export function* lookupParticipants(action) {
 export function* selectParticipantMessage(action) {
   try {
     let message = action.payload;
-    yield put(actions.handleSelectedParticipantMessage(message));
+    yield put(actions.handleSelectParticipantMessage(message));
   }
   catch (error) {
-    yield put(actions.handleSelectedParticipantMessage({error: error}));
+    yield put(actions.handleSelectParticipantMessage({error: error}));
   }
 
 };

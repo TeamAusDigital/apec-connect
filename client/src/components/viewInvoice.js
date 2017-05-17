@@ -32,7 +32,7 @@ const logoStyle ={
   maxHeight: '150px',
 };
 
-//<EconomyFlag economyCode={participant.economy} />
+
 
 @withRouter
 @connect((state) => {
@@ -48,7 +48,8 @@ export default class ViewInvoice extends React.Component {
   constructor(props) {
       super(props);
       this.messageInvoice = this.props.messages.selectedMessage;
-      console.log(this.messageInvoice);
+
+
       this.isInvoice = false;
       if (this.messageInvoice.invoice) {
         this.isInvoice = true;
@@ -179,7 +180,7 @@ export default class ViewInvoice extends React.Component {
             style={paperStyle}
           >
           <List>
-            <ListItem>Seller: {this.sellerText} <StarRating rating={this.sellerStarRating}/></ListItem>
+            <ListItem>Seller: {this.sellerText} {this.messageInvoice.message.isAnnouncement ? <EconomyFlag economyCode={this.messageInvoice.sender.economy} /> : <StarRating rating={this.sellerStarRating}/>}</ListItem>
             <ListItem>Buyer: {this.buyerText} <StarRating rating={this.buyerStarRating}/></ListItem>
             <Divider />
             {this.renderReceipt()}
