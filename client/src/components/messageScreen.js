@@ -120,10 +120,8 @@ export default class MessageScreen extends React.Component {
           message: message.content
         }
       };
-      //console.log(messageToSend);
       dispatch(actions.sendParticipantMessage(messageToSend));
     }
-    //console.log(message);
 
   }
 
