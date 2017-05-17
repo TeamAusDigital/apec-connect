@@ -3,6 +3,7 @@ import store from 'state';
 import participantApi from './participant.api';
 import invoiceApi from './invoice.api';
 import actions from '../state/actions';
+import Immutable from 'immutable';
 
 let apiMiddleware = {
   // TODO: central place to handle remote server error here: i.e. 4XX, 5XX.
@@ -21,7 +22,13 @@ let apiMiddleware = {
     else if (res.status === 400) {
       res.json().then((e) => {
         if(e.messages.length) {
-          store.dispatch(actions.showError(e.messages[0]));
+          let error = e.messages[0];
+          if (error.context) {
+            store.dispatch(actions.showError({message: 'Please fill in required field.'}));
+          }
+          else {
+            store.dispatch(actions.showError(error));
+          }
         }
       });
     }

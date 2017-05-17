@@ -109,6 +109,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "express": "4.14.0",
     "fetch-it": "0.3.0",
+    "flag-icon-css": "^2.8.0",
     "font-awesome": "^4.7.0",
     "immutable": "3.8.1",
     "jquery": "^3.2.1",

@@ -7,12 +7,16 @@ import Paper from 'material-ui/Paper';
 import StarRating from '../components/starRating';
 import RaisedButton from 'material-ui/RaisedButton';
 import {indigo, white, red} from './apecConnectTheme';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import {Link} from 'react-router';
 import actions from 'state/actions';
 import TextField from 'material-ui/TextField';
 import Background from '../common/assets/bg-bottom-alpha-60.png';
 import FontIcon from 'material-ui/FontIcon';
+import Immutable from 'immutable';
+import EconomyFlag, {ApecEconomyCodes} from '../components/EconomyFlag';
 
 /***`
 
@@ -73,8 +77,10 @@ export default class SignUpScreen extends React.Component {
       participant: {
         businessName: '',
         email: '',
-        phone: ''
-      }
+        phone: '',
+        economy: 'VN'
+      },
+      validationErrors: {}
     };
   }
 
@@ -95,14 +101,40 @@ export default class SignUpScreen extends React.Component {
     this.setState(Object.assign({}, this.state, {participant: nextParticipant}));
   }
 
+  onEconomyChange = (event, key, payload) => {
+    let nextParticipant = Object.assign({}, this.state.participant, {economy: payload});
+    this.setState({
+      participant: nextParticipant
+    });
+  }
+
+  economies = () => Immutable.List(ApecEconomyCodes).map((code) =>
+    <MenuItem key={code} value={code} primaryText={<span><EconomyFlag economyCode={code} /> {code}</span>} />
+  );
+
+
   handleSignUp = () => {
-    if (this.state.participant && this.state.participant.businessName !== '') {
+    let {participant, validationErrors} = this.state;
+    let nextValidationErrors = {};
+
+    if (participant.businessName === '') {
+      nextValidationErrors.businessName = 'Please enter your business name.';
+    }
+    else {
+      nextValidationErrors.businessName = null;
+    }
+
+    this.setState({
+      validationErrors: nextValidationErrors
+    });
+
+    if (!Immutable.fromJS(nextValidationErrors).find((error) => error)) {
       this.props.dispatch(actions.signUp(this.state.participant));
     }
   }
 
   render() {
-    let {participant} = this.state;
+    let {participant, validationErrors} = this.state;
 
     return (
       <div>
@@ -113,14 +145,31 @@ export default class SignUpScreen extends React.Component {
 
           <div style={divStyle}>
             <div style={textStyle}>
-              <TextField hintText='Business Name' errorText='This field is required' floatingLabelText='Business Name' onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})} value={participant.businessName}/>
+
+              <div style={{display: 'flex', marginBottom: '30px'}}>
+                <TextField
+                  hintText='Business Name'
+                  errorText={validationErrors.businessName}
+                  floatingLabelText='Business Name'
+                  onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})}
+                  value={participant.businessName}
+                  style={{flex: '1'}}
+                />
+                <SelectField
+                  floatingLabelText='Economy'
+                  value={participant.economy}
+                  onChange={this.onEconomyChange}
+                  style={{width: '90px'}}
+                >
+                  {this.economies()}
+                </SelectField>
+              </div>
 
               <div style={textStyle}>
                 AND
               </div>
 
               <TextField style={textFieldStyle} hintText="Email Address" floatingLabelText="Email Address" type="email" onChange={(event) => this.onParticipantInfoChange({email: event.target.value})} value={participant.email}/>
-
 
               <div style={textStyle}>
                 OR

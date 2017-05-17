@@ -13,7 +13,7 @@ import org.ausdigital.apecconnect.businessregister.ApecConnectBusinessRegister
 import org.ausdigital.apecconnect.businessregister.model.ParticipantRegistrationPayload
 import org.ausdigital.apecconnect.common.random.RandomWordsGenerator
 import org.ausdigital.apecconnect.invoice.services.InvoiceService
-import org.ausdigital.apecconnect.participantmessage.model.ParticipantMessage.{ParticipantMessageDetails, PendingParticipantMessage}
+import org.ausdigital.apecconnect.participantmessage.model.ParticipantMessage.PendingParticipantMessage
 import org.ausdigital.apecconnect.participantmessage.services.ParticipantMessageService
 import org.ausdigital.apecconnect.participants.model.Participant.ParticipantData
 import org.ausdigital.apecconnect.participants.services.ParticipantService
@@ -21,7 +21,7 @@ import org.ausdigital.apecconnect.db.model.RecordOps._
 import org.ausdigital.apecconnect.participantmessage.model.ParticipantMessage
 import play.api.mvc.{Action, AnyContent, Controller}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 /**
   * Provides public APIs related to Participant of APEC Connect application.
@@ -48,14 +48,15 @@ class ParticipantsController @Inject()(
     for {
       // TODO: handles the validation errors from business register, e.g. using a failureNel.
       registeredParticipant <- apecConnectBusinessRegister.signUp(participantRegistrationPayload.copy(username = Some(generateUsername(participantRegistrationPayload.businessName)))) ?| { error =>
-        JsonApiResponse.badRequestResponse(s"Failed to sign up Participant - [$error].", Nil)
+        JsonApiResponse.badRequestResponse(error, Nil)
       }
       participant <- participantService.create(
         ParticipantData(
           identifier = registeredParticipant.uuid,
           authToken = registeredParticipant.access_token,
-          businessName = request.body.businessName,
-          email = request.body.email,
+          businessName = participantRegistrationPayload.businessName,
+          email = participantRegistrationPayload.email,
+          economy = participantRegistrationPayload.economy,
           username = registeredParticipant.username,
           phone = request.body.phone
         )

@@ -11,7 +11,8 @@ import fetchIt from 'fetch-it';
  */
 function signUp(params) {
   let participant = {
-    businessName: params.businessName
+    businessName: params.businessName,
+    economy: params.economy
   };
   let payload;
   if (params.email && params.email !== '') {
