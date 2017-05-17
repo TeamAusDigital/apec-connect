@@ -94,10 +94,10 @@ export default class PayScreen extends React.Component {
      *  # Invoice part exists
      *  => If paid === true, disable PAY button
     **/
-    const items = Immutable.List(this.props.messages.messages).map ((m, index) => {
-      if (m.invoice && (m.sender.identifier != this.props.participant.identifier) ){
-        return <ToPayItem key={index} message={m} keyID={index}/>;
-      }
+    const items = Immutable.List(this.props.messages.messages).filter ((m, index) => {
+      return m.invoice && (m.sender.identifier != this.props.participant.identifier);
+    }).map ((m,index) => {
+      return <ToPayItem key={index} message={m} keyID={index}/>;
     });
 
     if (items.size > 0) {
