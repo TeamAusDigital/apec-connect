@@ -10,6 +10,7 @@ import {
   GET_ANNOUNCEMENTS,
   HANDLE_ANNOUNCEMENTS,
   SELECT_PARTICIPANT_MESSAGE,
+  HANDLE_SELECT_PARTICIPANT_MESSAGE,
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -52,7 +53,10 @@ const messages = handleActions({
     return Object.assign({}, state, {isSending: false, sent: true});
   },
   SELECT_PARTICIPANT_MESSAGE: (state, action) => {
-    return Object.assign({}, state, {selectedMessage: action.payload});
+    return Object.assign({}, state, {selectedMessage: action.payload, isFetching: true});
+  },
+  HANDLE_SELECT_PARTICIPANT_MESSAGE: (state, action) => {
+    return Object.assign({}, state, {selectedMessage: action.payload, isFetching: false});
   },
 },
   /**

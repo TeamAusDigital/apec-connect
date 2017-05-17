@@ -85,7 +85,7 @@ export default class Inbox extends React.Component {
           metaData: announce.metaData,
           message: announce.message
         },
-        isAnnoucement: true
+        isAnnouncement: true
       };
     });
 
@@ -96,7 +96,7 @@ export default class Inbox extends React.Component {
       return items;
     } else {
       return <TableRow style={colStyle}><TableRowColumn colSpan={3} style={colStyle}> Inbox is Empty! </TableRowColumn></TableRow>;
-    }	
+    }
   }
 
   componentDidMount() {
