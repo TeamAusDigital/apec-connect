@@ -41,7 +41,7 @@ export default class InboxItem extends React.Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       displayName: '',
       starRating: 0,
@@ -87,7 +87,9 @@ export default class InboxItem extends React.Component {
    * @return {node} of rendered table row with message dates.
    */
   dueDate = () => {
-    let {invoice, metaData} = this.props.message;
+    let {invoice} = this.props.message;
+    let {metaData} = this.props.message.message;
+    
     if (invoice) {
       return <TableRowColumn style ={trStyle}>
               {moment(invoice.dateIssued).format('YYYY-MM-DD')}

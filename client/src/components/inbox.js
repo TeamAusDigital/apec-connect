@@ -77,10 +77,10 @@ export default class Inbox extends React.Component {
     let announcements = Immutable.List(this.props.officials.announcements).map((announce) => {
       return {
         message: {
+          metaData: announce.metaData,
           message: announce.message
         },
-        isAnnoucement: true,
-        metaData: announce.metaData
+        isAnnoucement: true
       };
     });
 
