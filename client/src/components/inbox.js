@@ -33,13 +33,14 @@ This is the basic elements for a main view in the app.
 
 const colStyle = {
   textAlign: 'center',
-}
+};
 
 const paperStyle = {
   padding: '5px',
   textAlign: 'center',
   height: '100%'
 };
+
 const buttonStyle = {
   position: 'fixed',
   bottom: '10px',
