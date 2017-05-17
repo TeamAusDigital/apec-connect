@@ -1,3 +1,28 @@
+@(announcements: Seq[org.ausdigital.apecconnect.announcements.model.Announcement.Announcement])
+
 @main("Announcements", "announcements") { } {
     <h1>Announcements</h1>
+    <form action="/announcements/create" method="post">
+        <div class="form-group" >
+            <textarea name="message" class="form-control" placeholder="Enter your announcement here..."></textarea>
+            <input type="submit" class="btn btn-primary pull-right" value="Send Announcement">
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{announcements map { announcement =>
+        <tr>
+            <td>{announcement.metaData.dateCreated.toString(org.joda.time.format.DateTimeFormat.shortDateTime)}</td>
+            <td>{announcement.data.message}</td>
+        </tr>
+        }}
+        </tbody>
+    </table>
 }

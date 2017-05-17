@@ -44,4 +44,10 @@ class ParticipantService @Inject()(override val dao: ParticipantDao, ws: WSClien
       participants.map(Participant.publicParticipantView)
     }
   }
+
+  def allParticipants(): Future[Seq[Participant]] = dao.run {
+    dao.fetchAll().map { participants =>
+      participants.map(Participant.publicParticipantView)
+    }
+  }
 }
