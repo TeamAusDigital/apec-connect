@@ -1,5 +1,5 @@
 # Health Check
-GET        /hc                          org.ausdigital.apecconnect.system.controllers.HealthCheckerController.checkHealth(serverErrorOnFailure: Boolean ?= true)
+GET        /hc                                        org.ausdigital.apecconnect.system.controllers.HealthCheckerController.checkHealth(serverErrorOnFailure: Boolean ?= true)
 
 
 # APEC Connect Participants
@@ -11,3 +11,9 @@ POST       /v1/participants/current/messages/create   org.ausdigital.apecconnect
 
 # Invoices related routes.
 POST       /v1/participants/current/invoices/create   org.ausdigital.apecconnect.invoices.controllers.InvoicesController.createInvoice()
+
+# Administrative portal pages
+GET        /                                          org.ausdigital.apecconnect.web.controllers.WebPortalController.index()
+GET        /participants                              org.ausdigital.apecconnect.web.controllers.WebPortalController.participants()
+GET        /announcements                             org.ausdigital.apecconnect.web.controllers.WebPortalController.announcements()
+GET        /assets/*file                              controllers.Assets.at(path="/public", file)
