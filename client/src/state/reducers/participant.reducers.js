@@ -7,6 +7,7 @@ import {
   HANDLE_SEND_PARTICIPANT_MESSAGE,
   LOOKUP_PARTICIPANTS,
   HANDLE_PARTICIPANTS_RESPONSE,
+  SELECT_PARTICIPANT_MESSAGE,
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -48,7 +49,7 @@ const messages = handleActions({
   HANDLE_SEND_PARTICIPANT_MESSAGE: (state, action) => {
     return Object.assign({}, state, {isSending: false});
   },
-  SELECTED_PARTICIPANT_MESSAGE: (state, action) => {
+  SELECT_PARTICIPANT_MESSAGE: (state, action) => {
     return Object.assign({}, state, {selectedMessage: action.payload});
   },
 },
