@@ -54,6 +54,7 @@ const logoStyle ={
     ui: state.ui,
     participant: state.participant,
     messages: state.messages,
+    officials: state.officials
   };
 })
 export default class Inbox extends React.Component {
@@ -62,14 +63,37 @@ export default class Inbox extends React.Component {
     super(props);
   };
 
+  /**
+   * Generates the inbox items:
+   *  # Participant messages, with or without Invoice.
+   *  # Official announcements made by government agencies.
+   * @return {nodes} of rednered InboxItem components.
+   */
   generateInboxItems = () => {
-    return Immutable.List(this.props.messages.messages).map((m, index) => <InboxItem key={index} message={m} keyID={index} />) ;
+    let {messages} = this.props.messages;
+
+    // Wraps the announcements in ParticipantMessage manner. A ParticipantMessage contains:
+    // {sender: {}, receiver: {}, invoice: {}, message: {}}
+    let announcements = Immutable.List(this.props.officials.announcements).map((announce) => {
+      return {
+        message: {
+          message: announce.message
+        },
+        isAnnoucement: true,
+        metaData: announce.metaData
+      };
+    });
+
+    let messagesAndAnnouncements = announcements.concat(Immutable.List(messages));
+
+    return messagesAndAnnouncements.map((message, index) => <InboxItem key={index} message={message} keyID={index} />) ;
   }
 
   componentDidMount() {
     let { dispatch } = this.props;
 
     setTimeout(function () {
+      dispatch(actions.getAnnouncements());
       dispatch(actions.getParticipantMessages());
     });
   }
@@ -79,9 +103,13 @@ export default class Inbox extends React.Component {
     this.refreshInbox();
   }
 
+  /**
+   * Periodically refresh the inbox to fetch updated messages and announcements.
+   */
   refreshInbox = () => {
     let { dispatch } = this.props;
     this.inboxRefreshTimeout = setTimeout(function() {
+      dispatch(actions.getAnnouncements());
       dispatch(actions.getParticipantMessages());
     }, 5 * 1000);
   }
@@ -91,7 +119,6 @@ export default class Inbox extends React.Component {
   };
 
   render() {
-
     return (
       <div>
         {/** AppBarMain contains the app bar and menu drawer **/}

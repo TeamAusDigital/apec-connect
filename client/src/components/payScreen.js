@@ -99,6 +99,7 @@ export default class PayScreen extends React.Component {
         return <ToPayItem key={index} message={m} keyID={index}/>;
       }
     });
+
     if (items.size > 0) {
       return items;
     } else {
@@ -133,5 +134,3 @@ export default class PayScreen extends React.Component {
     );
   }
 }
-
-

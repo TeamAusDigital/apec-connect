@@ -10,6 +10,8 @@ import {
   CREATE_INVOICE,
   LOOKUP_PARTICIPANTS,
   HANDLE_PARTICIPANTS_RESPONSE,
+  GET_ANNOUNCEMENTS,
+  SELECT_PARTICIPANT_MESSAGE,
 } from 'state/actions/actionTypes';
 import Immutable from 'immutable';
 import apis from 'apis';
@@ -104,7 +106,10 @@ export function* lookupParticipants(action) {
   }
 }
 
-export function* selectedParticipantMessage(action) {
+/**
+ * Handles action for a Participant Message has been selected.
+ */
+export function* selectParticipantMessage(action) {
   try {
     let message = action.payload;
     yield put(actions.handleSelectedParticipantMessage(message));
@@ -115,9 +120,23 @@ export function* selectedParticipantMessage(action) {
 
 };
 
+/**
+ * Handles action to get official annoucements. Officials store will be updated with
+ * fetched announcements from API call and the announcements are sorted by date created.
+ */
+export function* getAnnouncements() {
+  try {
+    const announcements = yield call(apis.fetchAnnouncements);
+    let sortedAnnouncements = Immutable.List(announcements).sortBy((annouce) => -annouce.metaData.dateCreated).toArray();
+    yield put(actions.handleAnnouncements(sortedAnnouncements));
+  }
+  catch (error) {
+    yield put(actions.handleAnnouncements({error: error}));
+  }
+}
 
 /**
- * Sagas that watches client specific actions.
+ * Sagas that watch Participant specific actions.
  */
 export default function* participantSaga () {
   yield all([
@@ -126,5 +145,7 @@ export default function* participantSaga () {
     takeLatest(GET_PARTICIPANT_MESSAGES, getParticipantMessages),
     takeLatest(SEND_PARTICIPANT_MESSAGE, sendParticipantMessage),
     takeLatest(LOOKUP_PARTICIPANTS, lookupParticipants),
+    takeLatest(GET_ANNOUNCEMENTS, getAnnouncements),
+    takeLatest(SELECT_PARTICIPANT_MESSAGE, selectParticipantMessage),
   ]);
 }

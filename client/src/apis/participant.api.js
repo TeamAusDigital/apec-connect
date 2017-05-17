@@ -95,10 +95,25 @@ function lookupParticipants(query) {
   }).then((response) => response.result);
 }
 
+/**
+ * Fetches the official announcements from APEC Connect, the API to announcements is
+ * not protected with any authentication right now.
+ * @return {promise} of official announcements.
+ */
+function fetchAnnouncements() {
+  return fetchIt.fetch('/api/v1/announcements', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => response.result);
+}
+
 module.exports = {
   signUp,
   fetchCurrentParticipant,
   lookupParticipants,
   fetchMessages,
-  sendMessage
+  sendMessage,
+  fetchAnnouncements
 };
