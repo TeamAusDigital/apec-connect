@@ -7,6 +7,8 @@ import {
   HANDLE_SEND_PARTICIPANT_MESSAGE,
   LOOKUP_PARTICIPANTS,
   HANDLE_PARTICIPANTS_RESPONSE,
+  GET_ANNOUNCEMENTS,
+  HANDLE_ANNOUNCEMENTS,
   SELECT_PARTICIPANT_MESSAGE,
 } from '../actions/actionTypes';
 
@@ -77,8 +79,22 @@ const matchedParticipants = handleActions({
   }
 }, {isFetching: false, participants: []});
 
+/**
+ * Officials object that will be stored in the store, it contains any official agencies inforamtion:
+ * e.g. announcements.
+ */
+const officials = handleActions({
+  GET_ANNOUNCEMENTS: (state, action) => {
+    return Object.assign({}, state, {isFetching: true});
+  },
+  HANDLE_ANNOUNCEMENTS: (state, action) => {
+    return Object.assign({}, state, {announcements: action.payload, isFetching: false});
+  }
+}, {isFetching: false, announcements: []});
+
 module.exports = {
   participant,
   messages,
-  matchedParticipants
+  matchedParticipants,
+  officials
 };

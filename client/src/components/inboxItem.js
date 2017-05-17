@@ -10,6 +10,7 @@ import {Link} from 'react-router';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import EconomyFlag from '../components/EconomyFlag';
 
 import {
   Table,
@@ -40,32 +41,64 @@ export default class InboxItem extends React.Component {
 
   constructor(props) {
     super(props);
+    
     this.state = {
       displayName: '',
       starRating: 0,
     };
   };
 
+  /**
+   * Renders the "Who" part of the inbox item.
+   * @return {node} of rendered inbox item name table row.
+   */
   displayName = () => {
     let currentParticipant = this.props.participant;
-    let sender = this.props.message.sender;
-    let receiver = this.props.message.receiver;
+    let {sender, receiver, isAnnoucement} = this.props.message;
 
-    if (sender.identifier === currentParticipant.identifier) {
-      return <TableRowColumn style ={trStyle} >To: {receiver.businessName}
-             <br /><StarRating rating={receiver.rating} /></TableRowColumn>;
+    if (isAnnoucement) {
+      // FIXME: All announcements are hard coded from VN government for now.
+      return <TableRowColumn style ={trStyle}>
+               Vietnam Officials
+               <br />
+               <EconomyFlag economyCode='VN' />
+             </TableRowColumn>;
+    }
+    else if (sender.identifier === currentParticipant.identifier) {
+      return <TableRowColumn style ={trStyle}>
+              To: {receiver.businessName}
+              <br />
+              <StarRating rating={receiver.rating} />
+            </TableRowColumn>;
     }
     else {
-      return <TableRowColumn style ={trStyle} >From: {sender.businessName}
-             <br /><StarRating rating={sender.rating} /></TableRowColumn>;
+      return <TableRowColumn style ={trStyle}>
+              From: {sender.businessName}
+              <br />
+              <StarRating rating={sender.rating} />
+            </TableRowColumn>;
     }
   }
 
+  /**
+   * Renders the dates properties of a message:
+   *  # Message sent date;
+   *  # Due Date of an Invoice if the message attached with an Invoice.
+   * @return {node} of rendered table row with message dates.
+   */
   dueDate = () => {
-    if (this.props.message.invoice) {
-      return <TableRowColumn style ={trStyle}>{moment(this.props.message.invoice.dateIssued).format('YYYY-MM-DD')}<br/>{'Due: ' + moment(this.props.message.invoice.dateDue).format('YYYY-MM-DD') }</TableRowColumn>;
-    } else {
-      return <TableRowColumn style ={trStyle} />;
+    let {invoice, metaData} = this.props.message;
+    if (invoice) {
+      return <TableRowColumn style ={trStyle}>
+              {moment(invoice.dateIssued).format('YYYY-MM-DD')}
+              <br/>
+              {'Due: ' + moment(invoice.dateDue).format('YYYY-MM-DD') }
+             </TableRowColumn>;
+    }
+    else {
+      return <TableRowColumn style ={trStyle}>
+              {moment(metaData.dateCreated).format('YYYY-MM-DD')}
+            </TableRowColumn>;
     }
 
   }
