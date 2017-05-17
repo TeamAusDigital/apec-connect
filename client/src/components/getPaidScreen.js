@@ -15,6 +15,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import actions from 'state/actions';
 import moment from 'moment';
 import Immutable from 'immutable';
+import CircularProgress from 'material-ui/CircularProgress';
 
 /***
 
@@ -57,6 +58,10 @@ const lStyle = {
 const moneyDivStyle = {
   position: 'relative',
   display: 'block',
+};
+
+const loadingIconStyle = {
+  textAlign: 'center'
 };
 
 /**
@@ -135,6 +140,13 @@ export default class GetPaidScreen extends React.Component {
       },
       errors: {}
     };
+  }
+
+  componentWillReceiveProps(newProps) {
+    if(newProps.messages.sent && this.props.messages.isSending && !newProps.messages.isSending) {
+      this.props.dispatch(actions.showMessage('Your invoice has been sent.'));
+      this.props.router.push('/home');
+    }
   }
 
   /**
@@ -271,6 +283,14 @@ export default class GetPaidScreen extends React.Component {
     }
   }
 
+  sendOrLoading = () => {
+    if(this.props.messages.isSending) {
+      return <div style={loadingIconStyle}> <CircularProgress /> </div>;
+    } else {
+      return <RaisedButton labelStyle={lStyle} label='Send Invoice' fullWidth={true} backgroundColor={red} labelColor={white} onTouchTap={() => this.sendMessage()} />;
+    }
+  }
+
   render() {
     let {state, props} = this;
 
@@ -350,7 +370,7 @@ export default class GetPaidScreen extends React.Component {
 
             <br />
 
-            <RaisedButton labelStyle={lStyle} label='Send Invoice' fullWidth={true} backgroundColor={red} labelColor={white} onTouchTap={() => this.sendMessage()} />
+            {this.sendOrLoading()}
           </Paper>
         </Paper>
       </div>

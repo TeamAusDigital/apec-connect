@@ -44,10 +44,10 @@ const messages = handleActions({
     return Object.assign({}, state, {messages: action.payload, isFetching: false});
   },
   SEND_PARTICIPANT_MESSAGE: (state, action) => {
-    return Object.assign({}, state, {messageToSend: action.payload, isSending: true});
+    return Object.assign({}, state, {messageToSend: action.payload, isSending: true, sent: false});
   },
   HANDLE_SEND_PARTICIPANT_MESSAGE: (state, action) => {
-    return Object.assign({}, state, {isSending: false});
+    return Object.assign({}, state, {isSending: false, sent: true});
   },
   SELECT_PARTICIPANT_MESSAGE: (state, action) => {
     return Object.assign({}, state, {selectedMessage: action.payload});
@@ -61,6 +61,7 @@ const messages = handleActions({
     messages: [],
     messageToSend: {},
     isSending: false,
+    sent: false,
   }
 );
 

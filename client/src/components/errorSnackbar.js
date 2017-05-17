@@ -37,6 +37,7 @@ export default class ViewInvoice extends React.Component {
         bodyStyle={snackbarStyle}
         onRequestClose={::this.hideError}
         onActionTouchTap={::this.hideError}
+        autoHideDuration={5000}
         action='dismiss'/>
     );
   }
