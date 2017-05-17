@@ -12,7 +12,7 @@ describe('Authorisation reducer', () => {
   it('should log user in when authentication success and store the token', () => {
     expect(
       auth.authentication({}, {type: AUTH_RESPONSE, payload: { loggedIn: true, message: '', token: 'TOKEN' }})
-    ).toEqual({ loggedIn: true, errorMessage: '', token: 'TOKEN' });
+    ).toEqual({ loading: false, loggedIn: true, errorMessage: '', token: 'TOKEN' });
   });
 
   it('should not log user in when authentication failed and supply an error message', () => {
@@ -22,7 +22,7 @@ describe('Authorisation reducer', () => {
         payload: new Error('Wrong username or password'),
         error: true
       })
-    ).toEqual({ loggedIn: undefined, errorMessage: 'Wrong username or password', token: undefined });
+    ).toEqual({ loading: false, loggedIn: undefined, errorMessage: 'Wrong username or password', token: undefined });
   });
 
   it('should turn authentication loggedIn to NOT logged in and auth token has been cleared if participant not authenticated', () => {
@@ -30,6 +30,6 @@ describe('Authorisation reducer', () => {
       auth.authentication({}, {
         type: NOT_AUTHENTICATED
       })
-    ).toEqual({ loggedIn: false, token: null });
+    ).toEqual({ loading: false, loggedIn: false, token: null });
   });
 });
