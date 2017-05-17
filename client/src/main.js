@@ -1,5 +1,6 @@
 require('es6-promise').polyfill();
 require('babel-polyfill');
+require('flag-icon-css/css/flag-icon.min.css');
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();

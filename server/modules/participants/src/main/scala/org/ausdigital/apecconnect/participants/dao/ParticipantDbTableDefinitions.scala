@@ -32,13 +32,14 @@ trait ParticipantDbTableDefinitions extends BaseDbTableDefinitions {
     def businessName: Rep[String]         = column[String]("business_name")
     def email: Rep[Option[String]]        = column[Option[String]]("email")
     def phone: Rep[Option[String]]        = column[Option[String]]("phone")
+    def economy: Rep[String]              = column[String]("economy")
     def authToken: Rep[String]            = column[String]("auth_token")
     def username: Rep[String]             = column[String]("username")
     def rating: Rep[Option[Int]]          = column[Option[Int]]("rating")
     def isVerified: Rep[Boolean]          = column[Boolean]("is_verified")
     def accountStatus: Rep[AccountStatus] = column[AccountStatus]("account_status")
 
-    private[dao] def data = (identifier, businessName, email, phone, authToken, username, isVerified, rating, accountStatus).mapTo[ParticipantData]
+    private[dao] def data = (identifier, businessName, email, phone, economy, authToken, username, isVerified, rating, accountStatus).mapTo[ParticipantData]
 
     override def * : ProvenShape[Participant] = record(data)
   }

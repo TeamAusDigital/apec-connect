@@ -12,6 +12,7 @@ import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import Divider from 'material-ui/Divider';
 import Background from '../common/assets/bg-bottom-alpha-60.png';
 import StarRating from './starRating';
+import EconomyFlag from '../components/EconomyFlag';
 
 const textStyleBig = {
     fontSize: '28pt',
@@ -26,6 +27,7 @@ const textStyleSmall = {
 const divStyle = {
   height: '200px',
   overflow: 'hidden',
+  padding: '10px',
   backgroundImage: `url(${Background})`,
   position: 'relative',
   backgroundSize: '300px',
@@ -73,7 +75,13 @@ export default class MenuDrawer extends React.Component {
             <div style={textStyle}>
               <div style={textStyleBig}>{participant.businessName}</div>
               <br />
-              <div style={textStyleSmall}>{participant.username} <br/> <StarRating rating={participant.rating} /></div>
+              <div style={textStyleSmall}>
+                {participant.username}
+                <br/>
+                <StarRating rating={participant.rating} />
+                <br/>
+                <EconomyFlag economyCode={participant.economy} />
+              </div>
               <br />
             </div>
 

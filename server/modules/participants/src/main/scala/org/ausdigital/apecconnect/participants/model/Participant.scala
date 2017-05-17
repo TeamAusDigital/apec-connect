@@ -48,6 +48,7 @@ object Participant {
     businessName: String,
     email: Option[String],
     phone: Option[String],
+    economy: String,
     username: String,
     authToken: String,
     isVerified: Boolean = false,

@@ -21,11 +21,7 @@ import apis from 'apis';
  */
 export function* signUp (action) {
   try {
-    const token = yield call(apis.signUp, {
-      businessName: action.payload.businessName,
-      email: action.payload.email,
-      phone: action.payload.phone
-    });
+    const token = yield call(apis.signUp, action.payload);
     if(token) {
       yield put(actions.authResponse({token: token}));
       yield put(actions.getParticipant());
