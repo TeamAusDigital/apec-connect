@@ -60,7 +60,6 @@ const messages = handleActions({
     messages: [],
     messageToSend: {},
     isSending: false,
-    selectedMessage: {},
   }
 );
 

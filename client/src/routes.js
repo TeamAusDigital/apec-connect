@@ -21,7 +21,11 @@ import ErrorSnackbar from './components/errorSnackbar';
  * The main application component that contains the routing configuration.
  */
 @connect((state) => {
-  return {dispatch: state.dispatch, participant: state.participant};
+  return {
+    dispatch: state.dispatch,
+    participant: state.participant,
+    messages: state.messages,
+    };
 })
 class App extends React.Component {
 

@@ -68,6 +68,7 @@ export default class MessageScreen extends React.Component {
       },
       errors: {}
     };
+    this.businessName = '';
   };
   /**
      * Updates Message information.
@@ -126,13 +127,10 @@ export default class MessageScreen extends React.Component {
 
   }
 
-  getSelectedMessageText () {
+  componentWillMount () {
     if (this.props.messages.selectedMessage) {
-      let businessName = this.props.messages.selectedMessage.sender.businessName;
-      this.props.dispatch(actions.selectedParticipantMessage({}));
-      return businessName;
-    } else {
-      return '';
+      this.businessName = this.props.messages.selectedMessage.sender.businessName;
+      this.props.dispatch(actions.selectedParticipantMessage());
     }
   };
 
@@ -167,7 +165,7 @@ export default class MessageScreen extends React.Component {
               errorText={this.state.errors.participantError}
               onNewRequest={(selected) => this.onParticipantSelected(selected)}
               onUpdateInput={(value) => this.handleParticipantLookup(value)}
-              searchText={this.getSelectedMessageText()}
+              searchText={this.businessName}
             />
 
             <br/>

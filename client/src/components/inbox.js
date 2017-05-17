@@ -12,6 +12,8 @@ import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import InboxItem from './inboxItem';
 import Immutable from 'immutable';
 import moment from 'moment';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Message from 'material-ui/svg-icons/communication/message';
 
 import {
   Table,
@@ -34,24 +36,10 @@ const paperStyle = {
   textAlign: 'center',
   height: '100%'
 };
-
-const getPaidStyle = {
-  width: '50%',
-};
-
-const payStyle = {
-  width: '50%',
-};
-
-const inboxStyle ={
-};
-
-const businessNameStyle ={
-  fontSize: 48,
-};
-
-const userDetailsStyle = {
-  fontSize: 20,
+const buttonStyle = {
+  position: 'fixed',
+  bottom: '10px',
+  right: '25px',
 };
 
 const logoStyle ={
@@ -98,6 +86,10 @@ export default class Inbox extends React.Component {
     }, 5 * 1000);
   }
 
+  handleNewMessage = () => {
+    this.props.router.push('/sendMessage');
+  };
+
   render() {
 
     return (
@@ -139,6 +131,13 @@ export default class Inbox extends React.Component {
 
               </TableBody>
             </Table>
+            <div style={buttonStyle}>
+            <FloatingActionButton
+              onTouchTap={() => this.handleNewMessage()}
+            >
+              <Message />
+            </FloatingActionButton>
+            </div>
           </Paper>
         </Paper>
       </div>
