@@ -1,3 +1,48 @@
 body {
-  padding-top: 50px;
+    padding-top: 50px;
+}
+
+.btn-submit {
+    background-color: #85276B;
+    border-color: #6b1f56;
+    color: white;
+    margin-top: 5px;
+}
+
+.btn-submit:hover {
+    background-color: #6b1f56;
+    color: white;
+}
+
+.navbar {
+    font-size: 1.2em;
+}
+
+
+.navbar .navbar-nav > li > a {
+    color: #6b1f56;
+    padding: 15px 15px;
+}
+
+@media (min-width: 992px) {
+    .navbar {
+        font-size: 21px;
+    }
+
+    .navbar .navbar-nav > li > a {
+        color: #6b1f56;
+        padding: 15px 25px;
+    }
+}
+
+
+.navbar .navbar-nav > .active > a {
+    color: #6b1f56;
+}
+
+.brand {
+    margin-top: 8px;
+    margin-right: 25px;
+    font-size: 21px;
+    line-height: 33px;
 }
