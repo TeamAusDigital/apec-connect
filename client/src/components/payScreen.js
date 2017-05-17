@@ -7,6 +7,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {indigo,white} from './apecConnectTheme';
 import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import ToPayItem from '../components/toPayItem';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import actions from 'state/actions';
+import Immutable from 'immutable';
 
 /***
 
@@ -17,7 +21,8 @@ This is the basic elements for a main view in the app.
 const paperStyle = {
   padding: 10,
   textAlign: 'center',
-  height: '100vh',
+  height: '100%',
+  minHeight: '40vh',
   position: 'relative'
 };
 
@@ -48,7 +53,54 @@ const CompanyName = 'David\'s Hat Co.';
 const userName = 'DHat72';
 const userStarRating = 1;
 
+@withRouter
+@connect((state) => {
+  return {
+    dispatch: state.dispatch,
+    ui: state.ui,
+    participant: state.participant,
+    messages: state.messages,
+  };
+})
 export default class PayScreen extends React.Component {
+
+  constructor(props) {
+    super(props);
+  };
+
+  componentDidMount() {
+    let { dispatch } = this.props;
+
+    setTimeout(function () {
+      dispatch(actions.getParticipantMessages());
+    });
+  }
+
+  componentWillReceiveProps() {
+    clearTimeout(this.inboxRefreshTimeout);
+    this.refreshInbox();
+  }
+
+  refreshInbox = () => {
+    let { dispatch } = this.props;
+    this.inboxRefreshTimeout = setTimeout(function() {
+      dispatch(actions.getParticipantMessages());
+    }, 5 * 1000);
+  }
+
+  generateInboxItems = () => {
+    /**Create a list of messages WHERE
+     *  # Buyer === participant
+     *  # Invoice part exists
+     *  => If paid === true, disable PAY button
+    **/
+    return Immutable.List(this.props.messages.messages).map ((m, index) => {
+      if (m.invoice && (m.sender.identifier != this.props.participant.identifier) ){
+        return <ToPayItem key={index} message={m} keyID={index}/>;
+      }
+    });
+
+  }
 
   render() {
     return (
@@ -68,9 +120,7 @@ export default class PayScreen extends React.Component {
             style={paperStyle}
           >
             {/** container for to pay elements **/}
-            <ToPayItem message={'15 Beanie Hats'} amount={100.0}/>
-            <ToPayItem message={'3 Beret'} amount={91.15}/>
-            <ToPayItem message={'A Really long item name that may or may not wrap lets test it okay cool lets go'} amount={200.0}/>
+            {this.generateInboxItems()}
           </Paper>
           <br />
         </Paper>

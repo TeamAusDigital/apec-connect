@@ -77,7 +77,7 @@ export default class InboxItem extends React.Component {
       <TableRow
         {...otherProps}
         style ={trStyle}
-        onMouseDown={()=> this.props.router.push({pathname: '/viewInvoice', query:{key:this.props.keyID} })}>
+        onMouseDown={()=> this.props.router.push({pathname: '/viewInvoice', query:{key:this.props.keyID} })}
       >
         {this.displayName()}
         {this.dueDate()}

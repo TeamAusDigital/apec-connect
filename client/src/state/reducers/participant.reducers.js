@@ -48,6 +48,9 @@ const messages = handleActions({
   HANDLE_SEND_PARTICIPANT_MESSAGE: (state, action) => {
     return Object.assign({}, state, {isSending: false});
   },
+  SELECTED_PARTICIPANT_MESSAGE: (state, action) => {
+    return Object.assign({}, state, {selectedMessage: action.payload});
+  },
 },
   /**
     Initial State
@@ -57,6 +60,7 @@ const messages = handleActions({
     messages: [],
     messageToSend: {},
     isSending: false,
+    selectedMessage: {},
   }
 );
 

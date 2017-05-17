@@ -9,6 +9,7 @@ import {white,red} from './apecConnectTheme';
 import {Link} from 'react-router';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import actions from 'state/actions';
 
 const ItemStyle ={
   width: '75%',
@@ -49,7 +50,9 @@ const DivStyle ={
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    ui: state.ui
+    ui: state.ui,
+    participant: state.participant,
+    messages: state.messages,
   };
 })
 export default class ToPayItem extends React.Component {
@@ -65,6 +68,7 @@ export default class ToPayItem extends React.Component {
   };
 
   handleMsgButton = () => {
+    this.props.dispatch(actions.selectedParticipantMessage(this.props.message));
     this.props.router.push('/sendMessage');
   };
 
@@ -74,22 +78,25 @@ export default class ToPayItem extends React.Component {
         <div style = {ItemStyle}>
           <ListItem
             innerDivStyle ={ListItemStyle}
-            secondaryText ={this.props.message}
-            primaryText ={'$' + this.props.amount.toFixed(2)}
+            secondaryText ={this.props.message.message.message}
+            primaryText ={this.props.message.invoice.amount.currency + ' ' + this.props.message.invoice.amount.amount.toFixed(2)}
             rightIconButton={<IconButton onTouchTap={this.handleMsgButton}><CommunicationEmail/></IconButton>}
             secondaryTextLines={1}
+            onMouseDown={()=> this.props.router.push({pathname: '/viewInvoice', query:{key:this.props.keyID} })}
           />
         </div>
         <div style={cellDivStyle}>
-          <RaisedButton style={ButtonStyle} label={'Pay'} backgroundColor={red} labelColor={white}/>
+          <RaisedButton
+            style={ButtonStyle}
+            label={'Pay'}
+            backgroundColor={red}
+            labelColor={white}
+            disabled={this.props.message.invoice.isPaid}
+          />
         </div>
       </div>
     );
   };
 }
 
-ToPayItem.propTypes = {
-  message: PropTypes.string,
-  amount: PropTypes.number,
-};
 
