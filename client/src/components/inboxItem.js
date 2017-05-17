@@ -10,6 +10,7 @@ import {Link} from 'react-router';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import actions from 'state/actions';
 import EconomyFlag from '../components/EconomyFlag';
 
 import {
@@ -41,17 +42,12 @@ export default class InboxItem extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       displayName: '',
       starRating: 0,
     };
   };
 
-  /**
-   * Renders the "Who" part of the inbox item.
-   * @return {node} of rendered inbox item name table row.
-   */
   displayName = () => {
     let currentParticipant = this.props.participant;
     let {sender, receiver, isAnnoucement} = this.props.message;
@@ -112,7 +108,10 @@ export default class InboxItem extends React.Component {
       <TableRow
         {...otherProps}
         style ={trStyle}
-        onMouseDown={()=> this.props.router.push({pathname: '/viewInvoice', query:{key:this.props.keyID} })}
+        onMouseDown={()=> {
+          this.props.dispatch(actions.selectParticipantMessage(this.props.message));
+          this.props.router.push('/viewInvoice');
+          }}
       >
         {this.displayName()}
         {this.dueDate()}

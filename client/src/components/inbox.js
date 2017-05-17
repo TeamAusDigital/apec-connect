@@ -31,8 +31,12 @@ This is the basic elements for a main view in the app.
 
 ***/
 
+const colStyle = {
+  textAlign: 'center',
+}
+
 const paperStyle = {
-  padding: 10,
+  padding: '5px',
   textAlign: 'center',
   height: '100%'
 };
@@ -86,7 +90,12 @@ export default class Inbox extends React.Component {
 
     let messagesAndAnnouncements = announcements.concat(Immutable.List(messages)).sortBy((m) => m.message.metaData.dateCreated);
 
-    return messagesAndAnnouncements.map((message, index) => <InboxItem key={index} message={message} keyID={index} />) ;
+    const items = messagesAndAnnouncements.map((message, index) => <InboxItem key={index} message={message} keyID={index} />) ;
+    if (items.size > 0){
+      return items;
+    } else {
+      return <TableRow style={colStyle}><TableRowColumn colSpan={3} style={colStyle}> Inbox is Empty! </TableRowColumn></TableRow>;
+    }	
   }
 
   componentDidMount() {
@@ -119,6 +128,7 @@ export default class Inbox extends React.Component {
   };
 
   render() {
+
     return (
       <div>
         {/** AppBarMain contains the app bar and menu drawer **/}

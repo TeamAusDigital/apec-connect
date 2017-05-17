@@ -44,14 +44,16 @@ export default class ViewInvoice extends React.Component {
 
   constructor(props) {
       super(props);
+      this.messageInvoice = this.props.messages.selectedMessage;
 
-      this.messageIndex = this.props.location.query.key;
-
-      this.messageInvoice = this.props.messages.messages[this.messageIndex];
-
+      this.isInvoice = false;
+      if (this.messageInvoice.invoice) {
+        this.isInvoice = true;
+      }
+      console.log(this.isInvoice);
 
       this.sellerText = this.messageInvoice.sender.businessName;
-      this.sellerText = this.messageInvoice.sender.rating;
+      this.sellerStarRating = this.messageInvoice.sender.rating;
       if (this.props.participant.identifier === this.messageInvoice.sender.identifier) {
         this.sellerText = 'You';
         this.sellerStarRating = this.props.participant.rating;
@@ -62,7 +64,6 @@ export default class ViewInvoice extends React.Component {
         this.buyerText = 'You';
         this.buyerStarRating = this.props.participant.rating;
       }
-
 
   };
 
@@ -124,6 +125,35 @@ export default class ViewInvoice extends React.Component {
     }
   };
 
+  renderReceipt = () => {
+    if (this.isInvoice) {
+      return (
+        [<ListItem>InvoiceID: {this.messageInvoice.invoice.id} </ListItem>,
+
+        <ListItem>What: {this.messageInvoice.message.message} </ListItem>,
+        <ListItem>Amount: {this.messageInvoice.invoice.currencyCode}  {this.messageInvoice.invoice.amount.amount}</ListItem>,
+        <ListItem>Date sent: {moment(this.messageInvoice.invoice.dateIssued).format('YYYY-MM-DD')}</ListItem>,
+        <ListItem>Date due: {moment(this.messageInvoice.invoice.dateDue).format('YYYY-MM-DD')}</ListItem>,
+        <Divider />,
+        <br />,
+        this.payButton(),
+        this.acceptButton(),
+
+        <br />,
+
+        <Divider />,
+        <br />,
+        this.feedbackButton(),
+        this.receiptButton(),
+        ]
+      );
+    } else {
+      return (
+        <ListItem>{this.messageInvoice.message.message} </ListItem>
+      );
+    }
+  };
+
   render() {
 
     return (
@@ -145,22 +175,8 @@ export default class ViewInvoice extends React.Component {
             <ListItem>Seller: {this.sellerText} <StarRating rating={this.sellerStarRating}/></ListItem>
             <ListItem>Buyer: {this.buyerText} <StarRating rating={this.buyerStarRating}/></ListItem>
             <Divider />
-            <ListItem>InvoiceID: {this.messageInvoice.invoice.id} </ListItem>
-            <ListItem>What: {this.messageInvoice.message.message} </ListItem>
-            <ListItem>Amount: {this.messageInvoice.invoice.currencyCode}  {this.messageInvoice.invoice.amount.amount}</ListItem>
-            <ListItem>Date sent: {moment(this.messageInvoice.invoice.dateIssued).format('YYYY-MM-DD')}</ListItem>
-            <ListItem>Date due: {moment(this.messageInvoice.invoice.dateDue).format('YYYY-MM-DD')}</ListItem>
-            <Divider />
-            <br />
-            {this.payButton()}
-            {this.acceptButton()}
+            {this.renderReceipt()}
 
-            <br />
-
-            <Divider />
-            <br />
-            {this.feedbackButton()}
-            {this.receiptButton()}
           </List>
 
           </Paper>
