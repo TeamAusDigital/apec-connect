@@ -8,6 +8,7 @@ import {
   SHOW_ERROR,
   HIDE_ERROR,
   SELECT_CURRENCY,
+  SHOW_MESSAGE,
 } from './actionTypes';
 import { createActions } from 'redux-actions';
 
@@ -24,7 +25,7 @@ const uiActions = createActions(
   SELECT_CURRENCY,
   SHOW_ERROR,
   HIDE_ERROR,
-
+  SHOW_MESSAGE,
 );
 
 module.exports = uiActions;

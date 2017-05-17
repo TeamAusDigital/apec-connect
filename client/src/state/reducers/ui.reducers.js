@@ -6,6 +6,7 @@ import {
   SELECT_CURRENCY,
   SHOW_ERROR,
   HIDE_ERROR,
+  SHOW_MESSAGE,
 
 } from '../actions/actionTypes';
 
@@ -58,6 +59,12 @@ const ui = handleActions({
   HIDE_ERROR: (state, action) => {
     return Object.assign({}, state, {
       showError: false
+    });
+  },
+  SHOW_MESSAGE: (state, action) => {
+    return Object.assign({}, state, {
+      errorMessage: action.payload,
+      showError: true
     });
   },
 

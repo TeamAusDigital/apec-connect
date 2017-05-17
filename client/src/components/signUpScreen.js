@@ -17,6 +17,7 @@ import Background from '../common/assets/bg-bottom-alpha-60.png';
 import FontIcon from 'material-ui/FontIcon';
 import Immutable from 'immutable';
 import EconomyFlag, {ApecEconomyCodes} from '../components/EconomyFlag';
+import CircularProgress from 'material-ui/CircularProgress';
 
 /***`
 
@@ -61,9 +62,17 @@ const textFieldStyle = {
   position: 'relative',
 };
 
+const spinnerContainerStyle = {
+  textAlign: 'center'
+};
+
 @withRouter
 @connect((state) => {
-  return {dispatch: state.dispatch, ui: state.ui, participant: state.participant};
+  return {
+    dispatch: state.dispatch,
+    authentication: state.authentication,
+    participant: state.participant
+  };
 })
 
 /**
@@ -133,6 +142,14 @@ export default class SignUpScreen extends React.Component {
     }
   }
 
+  buttonOrSpinner = () => {
+    if(this.props.authentication.loading) {
+      return <div style={spinnerContainerStyle}> <CircularProgress /> </div>;
+    } else {
+      return <RaisedButton labelStyle={btnStyle} style={btnStyle} label='Sign Up Now' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>;
+    }
+  }
+
   render() {
     let {participant, validationErrors} = this.state;
 
@@ -195,7 +212,7 @@ export default class SignUpScreen extends React.Component {
                 />
             </div>
             <br/>
-            <RaisedButton labelStyle={btnStyle} style={btnStyle} label='Sign Up Now' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>
+            {this.buttonOrSpinner()}
             <br/>
           </div>
         </Paper>
