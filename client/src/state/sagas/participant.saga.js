@@ -79,6 +79,8 @@ export function* sendParticipantMessage(action) {
     if (invoice) {
       generatedInvoice = yield call(apis.createInvoice, action.payload.invoice);
       messageToSend = Object.assign({}, message, {invoiceId: generatedInvoice.id});
+    } else {
+      messageToSend = message;
     }
 
     yield call(apis.sendMessage, messageToSend);
@@ -105,6 +107,18 @@ export function* lookupParticipants(action) {
     yield put(actions.handleParticipantsResponse({error: error}));
   }
 }
+
+export function* selectedParticipantMessage(action) {
+  try {
+    let message = action.payload;
+    yield put(actions.handleSelectedParticipantMessage(message));
+  }
+  catch (error) {
+    yield put(actions.handleSelectedParticipantMessage({error: error}));
+  }
+
+};
+
 
 /**
  * Sagas that watches client specific actions.

@@ -8,6 +8,7 @@ import {
   HANDLE_PARTICIPANT_MESSAGES,
   SEND_PARTICIPANT_MESSAGE,
   HANDLE_SEND_PARTICIPANT_MESSAGE,
+  SELECTED_PARTICIPANT_MESSAGE,
 } from './actionTypes';
 import { createActions } from 'redux-actions';
 
@@ -24,6 +25,7 @@ const participantActions = createActions(
   HANDLE_SEND_PARTICIPANT_MESSAGE,
   LOOKUP_PARTICIPANTS,
   HANDLE_PARTICIPANTS_RESPONSE,
+  SELECTED_PARTICIPANT_MESSAGE,
 );
 
 module.exports = participantActions;
