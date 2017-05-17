@@ -20,10 +20,11 @@ let apiMiddleware = {
       store.dispatch(actions.notAuthenticated());
     }
     else if (res.status === 400) {
+
       res.json().then((e) => {
         if(e.messages.length) {
           let error = e.messages[0];
-          if (error.context) {
+          if (!Immutable.fromJS(error.context).isEmpty()) {
             store.dispatch(actions.showError({message: 'Please fill in required field.'}));
           }
           else {

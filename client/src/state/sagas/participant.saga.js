@@ -28,6 +28,9 @@ export function* signUp (action) {
       yield put(actions.authResponse({token: token}));
       yield put(actions.getParticipant());
     }
+    else {
+      yield put(actions.authResponse({loading: false}));
+    }
   }
   catch (error) {
     yield put(actions.authResponse({error: error}));
