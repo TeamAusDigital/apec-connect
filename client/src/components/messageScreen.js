@@ -82,7 +82,10 @@ export default class MessageScreen extends React.Component {
   /**
    * Updates the receiver ID for this Message.
    */
-  onParticipantSelected = (selected) => this.onMessageInfoChange({derived: Object.assign({}, this.state.message.derived, {receiverId: selected.identifier})});
+  onParticipantSelected = (selected) => {
+    this.businessName = selected.businessName;
+    this.onMessageInfoChange({derived: Object.assign({}, this.state.message.derived, {receiverId: selected.identifier})});
+  }
 
   /**
    * Fires action to lookup Participant based on the provided query.
