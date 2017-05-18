@@ -1,5 +1,5 @@
 import auth from '../../../src/state/reducers/auth.reducers';
-import { AUTH_RESPONSE, NOT_AUTHENTICATED } from '../../../src/state/actions/actionTypes';
+import { AUTH_SUCCESS, AUTH_FAILURE, NOT_AUTHENTICATED } from '../../../src/state/actions/actionTypes';
 
 describe('Authorisation reducer', () => {
 
@@ -11,18 +11,18 @@ describe('Authorisation reducer', () => {
 
   it('should log user in when authentication success and store the token', () => {
     expect(
-      auth.authentication({}, {type: AUTH_RESPONSE, payload: { loggedIn: true, message: '', token: 'TOKEN' }})
-    ).toEqual({ loading: false, loggedIn: true, errorMessage: '', token: 'TOKEN' });
+      auth.authentication({}, {type: AUTH_SUCCESS, payload: 'TOKEN'})
+    ).toEqual({ loading: false, loggedIn: true, token: 'TOKEN' });
   });
 
   it('should not log user in when authentication failed and supply an error message', () => {
     expect(
       auth.authentication({}, {
-        type: AUTH_RESPONSE,
-        payload: new Error('Wrong username or password'),
+        type: AUTH_FAILURE,
+        payload: 'Wrong username or password',
         error: true
       })
-    ).toEqual({ loading: false, loggedIn: undefined, errorMessage: 'Wrong username or password', token: undefined });
+    ).toEqual({ loading: false, loggedIn: false, errorMessage: 'Wrong username or password' });
   });
 
   it('should turn authentication loggedIn to NOT logged in and auth token has been cleared if participant not authenticated', () => {
@@ -30,6 +30,6 @@ describe('Authorisation reducer', () => {
       auth.authentication({}, {
         type: NOT_AUTHENTICATED
       })
-    ).toEqual({ loading: false, loggedIn: false, token: null });
+    ).toEqual({});
   });
 });
