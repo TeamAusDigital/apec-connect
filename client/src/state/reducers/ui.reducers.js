@@ -7,7 +7,10 @@ import {
   SHOW_ERROR,
   HIDE_ERROR,
   SHOW_MESSAGE,
-
+  NOTIFY_INVOICE_PAID,
+  ACCEPT_INVOICE_PAYMENT,
+  HANDLE_INVOICE_PAYMENT_NOTIFIED,
+  HANDLE_INVOICE_PAYMENT_ACCEPTED,
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -67,7 +70,26 @@ const ui = handleActions({
       showError: true
     });
   },
-
+  NOTIFY_INVOICE_PAID: (state, action) => {
+    return Object.assign({}, state, {
+      isNotifyingPayment: true
+    });
+  },
+  ACCEPT_INVOICE_PAYMENT: (state, action) => {
+    return Object.assign({}, state, {
+      isAcceptingPayment: true
+    });
+  },
+  HANDLE_INVOICE_PAYMENT_NOTIFIED: (state, action) => {
+    return Object.assign({}, state, {
+      isNotifyingPayment: false
+    });
+  },
+  HANDLE_INVOICE_PAYMENT_ACCEPTED: (state, action) => {
+    return Object.assign({}, state, {
+      isAcceptingPayment: false
+    });
+  },
 },
   /*** initial state  ***/
   {
@@ -75,10 +97,10 @@ const ui = handleActions({
     termsMenuValue: 1,
     acceptedPayments: [],
     alreadyUser: false,
-
     showError: false,
     errorMessage: '',
-
+    isNotifyingPayment: false,
+    isAcceptingPayment: false
   }
 );
 

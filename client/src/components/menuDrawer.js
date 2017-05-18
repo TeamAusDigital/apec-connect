@@ -80,7 +80,10 @@ export default class MenuDrawer extends React.Component {
                 <br/>
                 <StarRating rating={participant.rating} />
                 <br/>
-                <EconomyFlag economyCode={participant.economy} />
+                {
+                  participant.economy ?
+                    <EconomyFlag economyCode={participant.economy} /> : ''
+                }
               </div>
               <br />
             </div>

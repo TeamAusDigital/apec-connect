@@ -60,7 +60,7 @@ export default class InboxItem extends React.Component {
                <EconomyFlag economyCode='VN' />
              </TableRowColumn>;
     }
-    else if (sender.identifier === currentParticipant.identifier) {
+    else if (sender && (sender.identifier === currentParticipant.identifier)) {
       return <TableRowColumn style ={trStyle}>
               To: {receiver.businessName}
               <br />
@@ -85,7 +85,7 @@ export default class InboxItem extends React.Component {
   dueDate = () => {
     let {invoice} = this.props.message;
     let {metaData} = this.props.message.message;
-    
+
     if (invoice) {
       return <TableRowColumn style ={trStyle}>
               {moment(invoice.dateIssued).format('YYYY-MM-DD')}

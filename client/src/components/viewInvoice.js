@@ -13,7 +13,7 @@ import moment from 'moment';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import EconomyFlag from '../components/EconomyFlag';
-
+import CircularProgress from 'material-ui/CircularProgress';
 
 /***
 
@@ -30,9 +30,12 @@ const paperStyle = {
 const logoStyle ={
   width: '100%',
   maxHeight: '150px',
+  paddingBottom: '20px'
 };
 
-
+const loadingIconStyle = {
+  textAlign: 'center'
+};
 
 @withRouter
 @connect((state) => {
@@ -46,147 +49,161 @@ const logoStyle ={
 export default class ViewInvoice extends React.Component {
 
   constructor(props) {
-      super(props);
-      this.messageInvoice = this.props.messages.selectedMessage;
-
-
-      this.isInvoice = false;
-      if (this.messageInvoice.invoice) {
-        this.isInvoice = true;
-      }
-
-      this.sellerText = this.messageInvoice.sender.businessName;
-      this.sellerStarRating = this.messageInvoice.sender.rating;
-      if (this.props.participant.identifier === this.messageInvoice.sender.identifier) {
-        this.sellerText = 'You';
-        this.sellerStarRating = this.props.participant.rating;
-      }
-      this.buyerText = this.messageInvoice.receiver.businessName;
-      this.buyerStarRating = this.messageInvoice.receiver.rating;
-      if (this.props.participant.identifier === this.messageInvoice.receiver.identifier) {
-        this.buyerText = 'You';
-        this.buyerStarRating = this.props.participant.rating;
-      }
-
+    super(props);
   };
 
-  handlePay = () => {
-    /** Handle the payment action **/
+  handlePay = (invoice, message) => {
+    let {dispatch} = this.props;
+    dispatch(actions.notifyInvoicePaid({invoiceId: invoice.id, selectedMessageId: message.id}));
   };
 
-  handleAcceptPayment = () => {
-    this.invoiceAccepted=true;
-    this.forceUpdate();
+  handleAcceptPayment = (invoice, message) => {
+    let {dispatch} = this.props;
+    dispatch(actions.acceptInvoicePayment({invoiceId: invoice.id, selectedMessageId: message.id}));
   };
 
-  handleViewReceipt = () => {
-    this.props.router.push('/viewReceipt');
-  };
-
-  handleFeedback = () => {
-    this.props.router.push('/feedback');
-  };
+  listItemContent = (label, content) => {
+    return (<ListItem>
+              <div style={{float: 'left'}}>{label}:</div>
+              <div style={{float: 'right'}}>
+                {content}
+              </div>
+            </ListItem>);
+  }
 
   payButton = () => {
-    if (this.messageInvoice.sender.identifier != this.props.participant.identifier) {
+    let {sender, invoice, message} = this.props.messages.selectedMessage;
+    let {participant} = this.props;
+    let {isNotifyingPayment} = this.props.ui;
 
-      if (this.messageInvoice.invoice.isPaid) {
-        return(<RaisedButton label='Invoice Paid' disabled={true} fullWidth={true}/>);
-      } else {
-        return(<RaisedButton label='Pay' backgroundColor={red} labelColor={white} fullWidth={true} onTouchTap={this.handlePay}/>);
+    if (!isNotifyingPayment) {
+      if (sender && invoice && sender.identifier !== participant.identifier) {
+        if (invoice.isPaid) {
+          return(<RaisedButton label='Invoice Paid' disabled={true} fullWidth={true}/>);
+        }
+        else {
+          return(<RaisedButton label='Pay' backgroundColor={red} labelColor={white} fullWidth={true} onTouchTap={() => this.handlePay(invoice, message)}/>);
+        }
       }
-
-    } else {
-      return(<RaisedButton label='Awaiting Payment' disabled={true} fullWidth={true}/>);
+    }
+    else {
+      return <div style={loadingIconStyle}> <CircularProgress /> </div>;
     }
   };
 
   acceptButton = () => {
-    if (this.messageInvoice.sender.identifier === this.props.participant.identifier) {
+    let {sender, invoice, message} = this.props.messages.selectedMessage;
+    let {participant} = this.props;
+    let {isAcceptingPayment} = this.props.ui;
 
-      if (this.messageInvoice.invoice.isAccepted && this.messageInvoice.invoice.isPaid) {
-        return(<RaisedButton label='Awaiting Acceptance' disabled={true} fullWidth={true}/>);
-      } else {
-        return(<RaisedButton label='Accept Payment' primary={true} fullWidth={true} onTouchTap={this.handleAcceptPayment}/>);
+    if (!isAcceptingPayment) {
+      if (sender && invoice && sender.identifier === participant.identifier) {
+        if (!invoice.isAccepted && !invoice.isPaid) {
+          return(<RaisedButton label='Awaiting Payment' disabled={true} fullWidth={true}/>);
+        }
+        else if (!invoice.isAccepted && invoice.isPaid) {
+          return(<RaisedButton label='Accept Payment' primary={true} fullWidth={true} onTouchTap={() => this.handleAcceptPayment(invoice, message)}/>);
+        }
       }
-
-    } else {
-      return(<RaisedButton label='Awaiting Payment' disabled={true} fullWidth={true}/>);
     }
-
-  };
-
-  feedbackButton = () => {
-    if (this.messageInvoice.invoice.isAccepted && this.messageInvoice.invoice.isPaid) {
-      return(<RaisedButton label='Send Feedback' primary={true} fullWidth={true} onTouchTap={this.handleFeedback}/>);
-    } else {
-      return(<RaisedButton label='Send Feedback' disabled={true} fullWidth={true}/>);
-    }
-
-  };
-
-  receiptButton = () => {
-    if (this.messageInvoice.invoice.isAccepted && this.messageInvoice.invoice.isPaid) {
-      return(<RaisedButton label='View Receipt' disabled={false} fullWidth={true} onTouchTap={this.handleViewReceipt}/>);
-    } else {
-      return(<RaisedButton label='View Receipt' disabled={true} fullWidth={true}/>);
+    else {
+      return <div style={loadingIconStyle}> <CircularProgress /> </div>;
     }
   };
 
   renderReceipt = () => {
-    if (this.isInvoice) {
-      return (
-        [<ListItem>InvoiceID: {this.messageInvoice.invoice.id} </ListItem>,
-
-        <ListItem>What: {this.messageInvoice.message.message} </ListItem>,
-        <ListItem>Amount: {this.messageInvoice.invoice.currencyCode}  {this.messageInvoice.invoice.amount.amount}</ListItem>,
-        <ListItem>Date sent: {moment(this.messageInvoice.invoice.dateIssued).format('YYYY-MM-DD')}</ListItem>,
-        <ListItem>Date due: {moment(this.messageInvoice.invoice.dateDue).format('YYYY-MM-DD')}</ListItem>,
-        <Divider />,
-        <br />,
-        this.payButton(),
-        this.acceptButton(),
-
-        <br />,
-
-        <Divider />,
-        <br />,
-        this.feedbackButton(),
-        this.receiptButton(),
-        ]
-      );
-    } else {
-      return (
-        <ListItem>{this.messageInvoice.message.message} </ListItem>
-      );
-    }
-  };
-
-  render() {
+    let {sender, invoice, message} = this.props.messages.selectedMessage;
+    let {participant} = this.props;
 
     return (
       <div>
-        {/** AppBarMain contains the app bar and menu drawer **/}
+        {
+          invoice ? this.listItemContent('Invoice ID', invoice.id) : ''
+        }
+        {
+          invoice ? this.listItemContent('Amount', invoice.amount.currency + ' ' + invoice.amount.amount) : ''
+        }
+        {
+          invoice ? this.listItemContent('Date Issued', moment(invoice.dateIssued).format('YYYY-MM-DD'))
+                    :
+                    this.listItemContent('Date Sent', moment(message.metaData.dateCreated).format('YYYY-MM-DD'))
+        }
+        {
+          invoice ? this.listItemContent('Date Due', moment(invoice.dateDue).format('YYYY-MM-DD')) : ''
+        }
+        <ListItem>
+          <div style={{textAlign: 'left', width: '100%'}}>Message:</div>
+          <div style={{textAlign: 'left', paddingTop: '10px'}}>
+            {message ? message.message : ''}
+          </div>
+        </ListItem>
+
+        <br />
+
+        <Divider />
+
+        <div style={{padding: '10px 0'}}>
+          {this.payButton()}
+        </div>
+
+        <div style={{padding: '10px 0'}}>
+          {this.acceptButton()}
+        </div>
+
+        <div style={{padding: '10px 0'}}>
+          {
+            invoice ? <RaisedButton label='Send Feedback' disabled={!invoice.isAccepted || !invoice.isPaid} fullWidth={true}/> : ''
+          }
+        </div>
+      </div>
+    );
+  };
+
+  render() {
+    let {sender, receiver, invoice, message} = this.props.messages.selectedMessage;
+    let {participant} = this.props;
+
+    return (
+      <div>
         <AppBarMain title={'View Invoice'}/>
-        {/** Paper containing the logo **/}
         <Paper
           zDepth={1}
           style={paperStyle}
         >
           <img src={Logo} style={logoStyle} />
-          <br />
           <Paper
             zDepth={1}
             style={paperStyle}
           >
-          <List>
-            <ListItem>Seller: {this.sellerText} {this.messageInvoice.message.isAnnouncement ? <EconomyFlag economyCode={this.messageInvoice.sender.economy} /> : <StarRating rating={this.sellerStarRating}/>}</ListItem>
-            <ListItem>Buyer: {this.buyerText} <StarRating rating={this.buyerStarRating}/></ListItem>
-            <Divider />
-            {this.renderReceipt()}
-
-          </List>
-
+            <List>
+              <ListItem>
+                {
+                  invoice ?
+                    <div>
+                      <div>Seller: {sender.identifier === participant.identifier ? 'You' : sender.businessName}</div>
+                      <StarRating rating={sender.rating}/>
+                    </div>
+                    :
+                    <div>
+                      <span>Official Announcement</span>
+                      &nbsp;&nbsp;
+                      {/* FIXME: This is hard coded official economy code */}
+                      <EconomyFlag economyCode='VN' />
+                    </div>
+                }
+              </ListItem>
+              <ListItem>
+                {
+                  invoice ?
+                    <div>
+                      <div>Buyer: {receiver.identifier === participant.identifier ? 'You' : receiver.businessName}</div>
+                      <StarRating rating={receiver.rating}/>
+                    </div> : ''
+                }
+              </ListItem>
+              <Divider />
+              {this.renderReceipt()}
+            </List>
           </Paper>
         </Paper>
       </div>
