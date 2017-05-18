@@ -52,12 +52,22 @@ const logoStyle = {
   maxHeight: '150px'
 };
 
-const lStyle = {
+const labelStyle = {
   width: '100%',
-  fontSize: '28px',
-  verticalAlign: 'middle',
   textAlign: 'center',
-  lineHeight: '20vh',
+  color: white,
+  position: 'relative',
+  top: 'calc(50% - 29px)'
+}
+
+const translationStyle = {
+  display: 'block',
+  fontSize: '22px',
+}
+
+const labelTextStyle = {
+  textTransform: 'uppercase',
+  fontSize: '28px',
 };
 
 const flagStyle = {
@@ -93,9 +103,24 @@ export default class HomeScreen extends React.Component {
             <StarRating rating={rating}/>
           </div>
           <br/> {/** Action buttons  **/}
-          <RaisedButton labelStyle={lStyle} label='Get Paid' style={getPaidStyle} secondary={true} containerElement={< Link to = '/getPaid' />}/>
-          <RaisedButton labelStyle={lStyle} label='Pay' style={payStyle} primary={true} containerElement={< Link to = '/pay' />}/>
-          <RaisedButton labelStyle={lStyle} label='Inbox' style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} containerElement={< Link to = '/inbox' />}/>
+          <RaisedButton style={getPaidStyle} secondary={true} containerElement={< Link to = '/getPaid' />} icon={
+            <div style={labelStyle}>
+              <div style={labelTextStyle}>Get Paid</div>
+              <div style={translationStyle}>Được trả tiền</div>
+            </div>
+          }/>
+          <RaisedButton style={payStyle} primary={true} containerElement={< Link to = '/pay' />} icon={
+            <div style={labelStyle}>
+              <div style={labelTextStyle}>Pay</div>
+              <div style={translationStyle}>Trả tiền</div>
+            </div>
+          }/>
+          <RaisedButton style={inboxStyle} fullWidth={true} backgroundColor={indigo} labelColor={white} containerElement={< Link to = '/inbox' />} icon={
+            <div style={labelStyle}>
+              <div style={labelTextStyle}>Inbox</div>
+              <div style={translationStyle}>Hộp thư đến</div>
+            </div>
+          }/>
           <br/>
         </Paper>
       </div>
