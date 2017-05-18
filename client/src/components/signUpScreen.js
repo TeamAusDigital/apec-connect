@@ -66,7 +66,7 @@ const signUpBtnStyle = {
 const signUpLblStyle = {
   verticalAlign: 'middle',
   textAlign: 'center',
-  lineHeight: '50px',
+  lineHeight: '60px',
   fontSize: '35px',
 };
 
