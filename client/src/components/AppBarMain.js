@@ -17,20 +17,38 @@ import actions from 'state/actions';
 
 import {white} from './apecConnectTheme';
 
-const ContextHelp = (props) => (
-  <div>
-  <IconMenu
-    {...props}
-    iconButtonElement={
-      <IconButton><MoreVertIcon /></IconButton>
-    }
-    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-  >
-    <MenuItem primaryText='Help' />
-  </IconMenu>
-  </div>
-);
+@withRouter
+@connect((state) => {
+  return {
+    dispatch: state.dispatch,
+    ui: state.ui
+  };
+})
+export class ContextHelp extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const {router, params, location, routes, dispatch, ui, ...otherProps} = this.props;
+    return(
+      <div>
+      <IconMenu
+        {...otherProps}
+        iconButtonElement={
+          <IconButton><MoreVertIcon /></IconButton>
+        }
+        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+      >
+        <MenuItem primaryText='Help' onTouchTap={ () => this.props.dispatch(actions.showMessage('I\'m sorry Dave, I\'m afraid I can\'t help you with that'))}/>
+      </IconMenu>
+      </div>
+    );
+  }
+}
+
 ContextHelp.muiName = 'IconMenu';
 
 

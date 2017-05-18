@@ -9,6 +9,7 @@ import Logo from '../common/assets/APEC-CONNECT-LOGO.svg';
 import {Link} from 'react-router';
 import actions from 'state/actions';
 import {connect} from 'react-redux';
+import EconomyFlag from '../components/EconomyFlag';
 
 /***
 
@@ -42,7 +43,8 @@ const businessNameStyle = {
 };
 
 const userDetailsStyle = {
-  fontSize: 20
+  fontSize: 20,
+
 };
 
 const logoStyle = {
@@ -56,6 +58,10 @@ const lStyle = {
   verticalAlign: 'middle',
   textAlign: 'center',
   lineHeight: '20vh',
+};
+
+const flagStyle = {
+  marginRight: '3px',
 };
 
 @connect((state) => {
@@ -82,6 +88,7 @@ export default class HomeScreen extends React.Component {
 
           <div style={businessNameStyle}>{businessName}</div>
           <div style={userDetailsStyle}>
+            {this.props.participant.economy ? <EconomyFlag style={flagStyle} economyCode={this.props.participant.economy} /> : ''}
             {username}
             <StarRating rating={rating}/>
           </div>
