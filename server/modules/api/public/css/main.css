@@ -6,7 +6,6 @@ body {
     background-color: #85276B;
     border-color: #6b1f56;
     color: white;
-    margin-top: 5px;
 }
 
 .btn-submit:hover {
@@ -18,6 +17,36 @@ body {
     font-size: 1.2em;
 }
 
+.flag {
+    height: 40px;
+    margin-top: 5px;
+}
+
+.panel-footer {
+    text-align: right;
+}
+
+.brand {
+    margin-top: 8px;
+    margin-right: 25px;
+    margin-left: 15px;
+    font-size: 17px;
+    line-height: 33px;
+}
+
+.brand a {
+    color: #000;
+}
+
+.brand a:hover {
+    text-decoration: none;
+    color: #6b1f56;
+}
+
+.brand .text {
+    display: inline;
+    margin-top: 2px;
+}
 
 .navbar .navbar-nav > li > a {
     color: #6b1f56;
@@ -25,24 +54,17 @@ body {
 }
 
 @media (min-width: 992px) {
-    .navbar {
-        font-size: 21px;
-    }
 
     .navbar .navbar-nav > li > a {
         color: #6b1f56;
-        padding: 15px 25px;
+    }
+
+    .brand .text {
+        display: inline;
     }
 }
 
 
 .navbar .navbar-nav > .active > a {
     color: #6b1f56;
-}
-
-.brand {
-    margin-top: 8px;
-    margin-right: 25px;
-    font-size: 21px;
-    line-height: 33px;
 }

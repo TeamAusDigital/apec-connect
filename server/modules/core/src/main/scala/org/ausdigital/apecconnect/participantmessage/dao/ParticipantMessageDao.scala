@@ -80,4 +80,32 @@ class ParticipantMessageDao @Inject()(invoiceDao: InvoiceDao, participantDao: Pa
             )
         }
       }
+
+  def fetchAllWithInvoice()(implicit ec: ExecutionContext): DBIO[Seq[ParticipantMessageDetails]] =
+    baseQuery
+      .filter(_.invoiceId.nonEmpty)
+      .join(participantDao.baseQuery)
+      .on {
+        case (message, receiver) => message.receiverId === receiver.identifier
+      }
+      .join(participantDao.baseQuery)
+      .on {
+        case ((message, _), sender) => message.senderId === sender.identifier
+      }
+      .joinLeft(invoiceDao.baseQuery)
+      .on {
+        case (((message, _), _), invoice) => message.invoiceId === invoice.id
+      }
+      .result
+      .map {
+        _.map {
+          case (((message, receiver), sender), maybeInvoice) =>
+            ParticipantMessageDetails(
+              sender = Participant.publicParticipantView(sender),
+              receiver = Participant.publicParticipantView(receiver),
+              message = message,
+              invoice = maybeInvoice
+            )
+        }
+      }
 }

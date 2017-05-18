@@ -1,0 +1,46 @@
+@(invoices: Seq[(
+    org.ausdigital.apecconnect.invoice.model.Invoice.InvoiceData,
+    org.ausdigital.apecconnect.participants.model.Participant.ParticipantData,
+    org.ausdigital.apecconnect.participants.model.Participant.ParticipantData
+)])
+
+@main("Transactions", "transactions") { } {
+    <h1>Transactions</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Seller</th>
+            <th>Buyer</th>
+            <th>Issued</th>
+            <th>Due</th>
+            <th>Amount</th>
+            <th>Payment Options</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{invoices map { case (invoice, seller, buyer) =>
+            <tr>
+                <td>{seller.businessName} <small>({seller.username})</small></td>
+                <td>{buyer.businessName} <small>({buyer.username})</small></td>
+                <td>{invoice.dateIssued.toString(org.joda.time.format.DateTimeFormat.shortDate)}</td>
+                <td>{invoice.dateDue.toString(org.joda.time.format.DateTimeFormat.shortDate)}</td>
+                <td>{invoice.amount}</td>
+                <td>{invoice.paymentOptions}</td>
+                <td>{
+                    if(invoice.isAccepted) {
+                        "Accepted"
+                    } else if(invoice.isPaid) {
+                        "Paid"
+                    } else {
+                        "Requested"
+                    }
+                }</td>
+
+            </tr>
+        }}
+
+        </tbody>
+    </table>
+}

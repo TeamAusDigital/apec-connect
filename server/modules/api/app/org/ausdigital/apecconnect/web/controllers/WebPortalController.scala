@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import org.ausdigital.apecconnect.announcements.model.Announcement.AnnouncementData
 import org.ausdigital.apecconnect.announcements.services.AnnouncementService
+import org.ausdigital.apecconnect.participantmessage.services.ParticipantMessageService
 import org.ausdigital.apecconnect.participants.services.ParticipantService
 import play.api.data.Form
 import play.api.data.Forms._
@@ -16,7 +17,8 @@ import scala.concurrent.ExecutionContext
   */
 class WebPortalController @Inject() (
   participantService: ParticipantService,
-  announcementService: AnnouncementService
+  announcementService: AnnouncementService,
+  participantMessageService: ParticipantMessageService
 )(implicit ec: ExecutionContext) extends Controller {
 
   def index(): Action[AnyContent] = Action { request =>
@@ -25,7 +27,16 @@ class WebPortalController @Inject() (
 
   def participants(): Action[AnyContent] = Action.async { request =>
     participantService.allParticipants().map { participants =>
-      Ok(views.html.participants(participants))
+      Ok(views.html.businesses(participants))
+    }
+  }
+
+  def transactions(): Action[AnyContent] = Action.async { request =>
+    participantMessageService.fetchAllWithInvoice().map { messages =>
+      val transactions = messages flatMap { message =>
+        message.invoice.map(i => (i.data, message.sender.data, message.receiver.data))
+      }
+      Ok(views.html.transactions(transactions))
     }
   }
 
