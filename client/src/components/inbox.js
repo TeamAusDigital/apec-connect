@@ -125,6 +125,7 @@ export default class Inbox extends React.Component {
   }
 
   handleNewMessage = () => {
+    this.props.dispatch(actions.selectParticipantMessage());
     this.props.router.push('/sendMessage');
   };
 
