@@ -29,4 +29,8 @@ class ParticipantMessageService @Inject()(invoiceService: InvoiceService, invoic
       messagesReceived <- dao.queryMessageToParticipant(receiver = participant)
     } yield messagesSent ++ messagesReceived
   }
+
+  def fetchAllWithInvoice(): Future[Seq[ParticipantMessageDetails]] = dao.run {
+    dao.fetchAllWithInvoice()
+  }
 }

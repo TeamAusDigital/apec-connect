@@ -1,12 +1,13 @@
 @(participants: Seq[org.ausdigital.apecconnect.participants.model.Participant.Participant])
 
-@main("Participants", "participants") { } {
-    <h1>Participants</h1>
+@main("Businesses", "businesses") { } {
+    <h1>Businesses</h1>
 
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Business Name</th>
+                <th>Unique ID</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Rating</th>
@@ -17,6 +18,7 @@
         @{participants map { participant =>
             <tr>
                 <td>{participant.data.businessName}</td>
+                <td>{participant.data.username}</td>
                 <td>{participant.data.email.getOrElse("-")}</td>
                 <td>{participant.data.phone.getOrElse("-")}</td>
                 <td>{participant.data.rating.getOrElse("-")}</td>

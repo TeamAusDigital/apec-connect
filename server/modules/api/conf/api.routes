@@ -17,7 +17,8 @@ GET        /v1/announcements                          org.ausdigital.apecconnect
 
 # Administrative portal pages
 GET        /                                          org.ausdigital.apecconnect.web.controllers.WebPortalController.index()
-GET        /participants                              org.ausdigital.apecconnect.web.controllers.WebPortalController.participants()
+GET        /businesses                                org.ausdigital.apecconnect.web.controllers.WebPortalController.participants()
 GET        /announcements                             org.ausdigital.apecconnect.web.controllers.WebPortalController.announcements()
+GET        /transactions                              org.ausdigital.apecconnect.web.controllers.WebPortalController.transactions()
 POST       /announcements/create                      org.ausdigital.apecconnect.web.controllers.WebPortalController.sendAnnouncement()
-GET        /assets/*file                              controllers.Assets.at(path="/public", file)
+GET        /assets/*file                              controllers.Assets.versioned(path="/public", file)
