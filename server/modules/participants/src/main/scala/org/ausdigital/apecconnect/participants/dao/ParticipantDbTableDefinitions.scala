@@ -35,7 +35,7 @@ trait ParticipantDbTableDefinitions extends BaseDbTableDefinitions {
     def economy: Rep[String]              = column[String]("economy")
     def username: Rep[String]             = column[String]("username")
     def authToken: Rep[String]            = column[String]("auth_token")
-    def rating: Rep[Option[Int]]          = column[Option[Int]]("rating")
+    def rating: Rep[Int]                  = column[Int]("rating")
     def isVerified: Rep[Boolean]          = column[Boolean]("is_verified")
     def accountStatus: Rep[AccountStatus] = column[AccountStatus]("account_status")
 

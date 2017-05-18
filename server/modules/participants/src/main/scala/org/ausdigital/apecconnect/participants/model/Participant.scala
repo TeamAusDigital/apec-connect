@@ -52,7 +52,7 @@ object Participant {
     username: String,
     authToken: String,
     isVerified: Boolean = false,
-    rating: Option[Int] = None,
+    rating: Int = 1,
     accountStatus: AccountStatus = AccountStatus.Enabled
   )
 

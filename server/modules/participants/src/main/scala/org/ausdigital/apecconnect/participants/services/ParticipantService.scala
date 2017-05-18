@@ -45,6 +45,10 @@ class ParticipantService @Inject()(override val dao: ParticipantDao, ws: WSClien
     }
   }
 
+  def findByIdentifier(identifier: String): Future[Option[Participant]] = dao.run {
+    dao.findByIdentifier(identifier)
+  }
+
   def allParticipants(): Future[Seq[Participant]] = dao.run {
     dao.fetchAll().map { participants =>
       participants.map(Participant.publicParticipantView)

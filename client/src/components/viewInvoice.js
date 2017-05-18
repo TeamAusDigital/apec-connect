@@ -152,7 +152,7 @@ export default class ViewInvoice extends React.Component {
 
         <div style={{padding: '10px 0'}}>
           {
-            invoice ? <RaisedButton label='Send Feedback' disabled={!invoice.isAccepted || !invoice.isPaid} fullWidth={true}/> : ''
+            invoice ? <RaisedButton label='Send Feedback' disabled={!invoice.isAccepted || !invoice.isPaid} fullWidth={true} href='/feedback' /> : ''
           }
         </div>
       </div>
@@ -160,7 +160,7 @@ export default class ViewInvoice extends React.Component {
   };
 
   render() {
-    let {sender, receiver, invoice, message} = this.props.messages.selectedMessage;
+    let {sender, receiver, invoice, message, isAnnouncement} = this.props.messages.selectedMessage;
     let {participant} = this.props;
 
     return (
@@ -178,23 +178,23 @@ export default class ViewInvoice extends React.Component {
             <List>
               <ListItem>
                 {
-                  invoice ?
-                    <div>
-                      <div>Seller: {sender.identifier === participant.identifier ? 'You' : sender.businessName}</div>
-                      <StarRating rating={sender.rating}/>
-                    </div>
-                    :
+                  isAnnouncement ?
                     <div>
                       <span>Official Announcement</span>
                       &nbsp;&nbsp;
                       {/* FIXME: This is hard coded official economy code */}
                       <EconomyFlag economyCode='VN' />
                     </div>
+                    :
+                    <div>
+                      <div>Seller: {sender.identifier === participant.identifier ? 'You' : sender.businessName}</div>
+                      <StarRating rating={sender.rating}/>
+                    </div>
                 }
               </ListItem>
               <ListItem>
                 {
-                  invoice ?
+                  !isAnnouncement ?
                     <div>
                       <div>Buyer: {receiver.identifier === participant.identifier ? 'You' : receiver.businessName}</div>
                       <StarRating rating={receiver.rating}/>
