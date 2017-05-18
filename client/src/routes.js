@@ -2,11 +2,12 @@ import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import { connect } from 'react-redux';
 import actions from './state/actions';
-import Home from './routes/landing-page';
 import Scroll from 'react-scroll';
 import GetPaidScreen from './components/getPaidScreen';
 import PayScreen from './components/payScreen';
 import MainSplashScreen from './components/mainSplashScreen';
+import LoadingSplashScreen from './components/loadingSplashScreen';
+import LandingPage from './routes/landing-page';
 import SignUpScreen from './components/signUpScreen';
 import HomeScreen from './components/homeScreen';
 import Inbox from './components/inbox';
@@ -23,7 +24,6 @@ import ErrorSnackbar from './components/errorSnackbar';
 @connect((state) => {
   return {
     dispatch: state.dispatch,
-    participant: state.participant,
     messages: state.messages,
     };
 })
@@ -32,8 +32,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      rehydrated: false,
-      isParticipantRefreshed: false
+      rehydrated: false
     };
   }
 
@@ -64,19 +63,12 @@ class App extends React.Component {
 
     return (
       <div>
-        {
-          rehydrated ?
-            <div>
-              <div id='body'>
-                {this.props.children}
-              </div>
-              <ErrorSnackbar />
-            </div>
-          : ''
-        }
+        <div id='body'>
+          { rehydrated ? this.props.children : <LoadingSplashScreen /> }
+        </div>
+        <ErrorSnackbar />
       </div>
     );
-
   }
 }
 
@@ -87,12 +79,12 @@ const basicRoutes = (
 const routes = (
   <Route path='/' component={App}>
 
-    <IndexRoute component={Home} />
-    <Route path='/' component={Home} />
+    <IndexRoute component={LandingPage} />
+    <Route path='/' component={LandingPage} />
+    <Route path='/join' component={MainSplashScreen} />
     <Route path='/home' component={HomeScreen} />
     <Route path='/getPaid' component={GetPaidScreen} />
     <Route path='/pay' component={PayScreen} />
-    <Route path='/join' component={MainSplashScreen} />
     <Route path='/signUp' component={SignUpScreen} />
     <Route path='/inbox' component={Inbox} />
     <Route path='/viewInvoice' component={ViewInvoice} />
