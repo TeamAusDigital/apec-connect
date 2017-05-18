@@ -30,7 +30,7 @@ export default class EconomyFlag extends React.Component {
   render() {
     return (
      this.props.economyCode ?
-      <span className={'flag-icon ' + 'flag-icon-' + this.props.economyCode.toLowerCase()}></span> : <span></span>
+      <span style={this.props.style} className={'flag-icon ' + 'flag-icon-' + this.props.economyCode.toLowerCase()}></span> : <span></span>
     );
   }
 }
