@@ -53,12 +53,19 @@ const buttonStyle = {
   position: 'relative',
   width:'80%',
   margin: '0 auto',
+  fontSize: '35px',
+  height: '60px',
 };
+
 
 const lStyle = {
   width: '100%',
-  fontSize: '20px',
+  verticalAlign: 'middle',
+  textAlign: 'center',
+  lineHeight: '60px',
+  fontSize: '35px',
 };
+
 
 @withRouter
 @connect((state) => {
@@ -86,6 +93,7 @@ export default class MainSplashScreen extends React.Component {
               backgroundColor={red}
               labelColor={white}
               labelStyle={lStyle }
+              style={buttonStyle}
               fullWidth={true}
               containerElement={<Link to='/signUp' />}
             />
