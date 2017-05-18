@@ -26,7 +26,7 @@ const participant = handleActions({
     });
   },
   HANDLE_PARTICIPANT_RESPONSE: (state, action) => {
-    return action.payload;
+    return Object.assign({}, action.payload);
   },
   FORGET_USER: () => {
     return {};
