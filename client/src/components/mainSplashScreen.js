@@ -78,7 +78,7 @@ export default class MainSplashScreen extends React.Component {
       <div style={divStyle}>
 
         <div style={bStyle}>
-          <div style={textStyle}>This app was developed during the APEC App Challenge</div>
+          <div style={textStyle}>This app was developed during the Asia Foundation's 2017 App Challenge</div>
           <br/>
           <div style={buttonStyle}>
             <RaisedButton
