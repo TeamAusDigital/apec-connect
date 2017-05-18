@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import AutoComplete from 'material-ui/AutoComplete';
 import actions from 'state/actions';
 import Immutable from 'immutable';
+import CircularProgress from 'material-ui/CircularProgress';
 
 /***
 
@@ -24,6 +25,10 @@ const invoiceViewStyle ={
   position: 'relative',
   padding: '5px',
   height: '100%',
+};
+
+const loadingIconStyle = {
+  textAlign: 'center'
 };
 
 const feedbackStyle ={
@@ -92,6 +97,15 @@ export default class MessageScreen extends React.Component {
    */
   handleParticipantLookup = (query) => this.props.dispatch(actions.lookupParticipants(query));
 
+  /**
+   * After message sent, return to inbox
+   */
+  componentWillReceiveProps(newProps) {
+    if(newProps.messages.sent && this.props.messages.isSending && !newProps.messages.isSending) {
+      this.props.dispatch(actions.showMessage('Your message has been sent.'));
+      this.props.router.push('/inbox');
+    }
+  }
 
   sendMessage = () => {
     let {dispatch} = this.props;
@@ -134,6 +148,14 @@ export default class MessageScreen extends React.Component {
       this.props.dispatch(actions.selectParticipantMessage());
     }
   };
+
+  sendOrLoading = () => {
+    if(this.props.messages.isSending) {
+      return <div style={loadingIconStyle}> <CircularProgress /> </div>;
+    } else {
+      return <RaisedButton label={'Send Message'} backgroundColor={red} labelColor={white} fullWidth={true} onTouchTap={() => this.sendMessage()}/>;
+    }
+  }
 
   render() {
     let {state, props} = this;
@@ -185,13 +207,7 @@ export default class MessageScreen extends React.Component {
             <br/>
             <br/>
 
-            <RaisedButton
-              label={'Send Message'}
-              backgroundColor={red}
-              labelColor={white}
-              fullWidth={true}
-              onTouchTap={() => this.sendMessage()}
-            />
+            {this.sendOrLoading()}
 
           </Paper>
         </Paper>

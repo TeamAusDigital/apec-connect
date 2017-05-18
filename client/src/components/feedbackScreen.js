@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import actions from 'state/actions';
 import Immutable from 'immutable';
 import CircularProgress from 'material-ui/CircularProgress';
+import moment from 'moment';
 
 /***
 
@@ -80,8 +81,8 @@ export default class FeedbackScreen extends React.Component {
     this.invoiceID = selectedMessage.invoice.id;
     this.invoiceWhat = selectedMessage.message.message;
     this.invoiceAmount = selectedMessage.invoice.amount.amount;
-    this.invoiceSentDate = selectedMessage.invoice.issueDate;
-    this.invoiceDueDate = selectedMessage.invoice.dueDate;
+    this.invoiceSentDate = moment(selectedMessage.invoice.issueDate).format('YYYY-MM-DD');
+    this.invoiceDueDate = moment(selectedMessage.invoice.dueDate).format('YYYY-MM-DD');
 
     this.toName = this.props.participant.identifier === selectedMessage.sender.identifier ? selectedMessage.receiver.businessName : selectedMessage.sender.businessName;
     this.toID = this.props.participant.identifier === selectedMessage.sender.identifier ? selectedMessage.receiver.identifier : selectedMessage.sender.identifier;
@@ -152,12 +153,11 @@ export default class FeedbackScreen extends React.Component {
         let messageToSend = {
           message: {
             receiverId: message.derived.receiverId,
-            message: 'Feedback message (' + message.rating + '/3 stars): ' + message.content,
+            message: 'Feedback message (' + message.rating + '/3 stars): \n' + message.content,
+            rating: message.rating,
           }
         };
-         // update invoice feedback
-        // TODO fix this api call -> update invoice with rating
-        // TODO send a new message
+
         dispatch(actions.sendParticipantMessage(messageToSend));
       }
   };
@@ -192,8 +192,8 @@ export default class FeedbackScreen extends React.Component {
               style={invoiceViewStyle}
             >
               <div > {this.toName} </div>
-              <div style={divStyle}><div style={divStyle}>${this.invoiceAmount}</div > on <div style={divStyle}>{this.invoiceSentDate}</div >  </div>
-              <div> {this.invoiceWhat}</div>
+              <div style={divStyle}><div style={divStyle}>${this.invoiceAmount}</div > issued on <div style={divStyle}>{this.invoiceSentDate}</div >  </div>
+              <div> For: {this.invoiceWhat}</div>
             </Paper>
             <br/>
             <br/>
