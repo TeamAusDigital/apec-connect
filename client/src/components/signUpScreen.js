@@ -105,7 +105,8 @@ export default class SignUpScreen extends React.Component {
         phone: '',
         economy: 'VN'
       },
-      validationErrors: {}
+      validationErrors: {},
+      signUpEnabled: false,
     };
   }
 
@@ -121,9 +122,19 @@ export default class SignUpScreen extends React.Component {
     }
   }
 
+  checkEnableButton = () => {
+    let {businessName, email, phone} = this.state.participant;
+    if ( (businessName && email) || (businessName && phone) ) {
+      this.setState({signUpEnabled: true});
+    } else {
+      this.setState({signUpEnabled: false});
+    }
+  }
+
   onParticipantInfoChange = (participantInfo) => {
     let nextParticipant = Object.assign({}, this.state.participant, participantInfo);
     this.setState(Object.assign({}, this.state, {participant: nextParticipant}));
+    this.checkEnableButton();
   }
 
   onEconomyChange = (event, key, payload) => {
@@ -162,7 +173,7 @@ export default class SignUpScreen extends React.Component {
     if(this.props.authentication.loading) {
       return <div style={spinnerContainerStyle}> <CircularProgress /> </div>;
     } else {
-      return <RaisedButton labelStyle={signUpLblStyle} style={signUpBtnStyle} label='Sign Up Now' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>;
+      return <RaisedButton labelStyle={signUpLblStyle} style={signUpBtnStyle} disabled={!this.state.signUpEnabled} label='Sign Up Now' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>;
     }
   }
 
@@ -184,7 +195,11 @@ export default class SignUpScreen extends React.Component {
                   hintText='Business Name'
                   errorText={validationErrors.businessName}
                   floatingLabelText='Business Name'
-                  onChange={(event) => this.onParticipantInfoChange({businessName: event.target.value})}
+                  onChange={(event) => {
+                    this.onParticipantInfoChange({businessName: event.target.value});
+                    this.checkEnableButton();
+                    }
+                  }
                   value={participant.businessName}
                   style={{flex: '1'}}
                 />
@@ -201,13 +216,33 @@ export default class SignUpScreen extends React.Component {
                 AND
               </div>
 
-              <TextField style={textFieldStyle} hintText="Email Address" floatingLabelText="Email Address" type="email" onChange={(event) => this.onParticipantInfoChange({email: event.target.value})} value={participant.email}/>
+              <TextField
+                style={textFieldStyle}
+                hintText="Email Address"
+                floatingLabelText="Email Address"
+                type="email"
+                onChange={(event) => {
+                  this.onParticipantInfoChange({email: event.target.value});
+                  this.checkEnableButton();
+                  }
+                }
+                value={participant.email}/>
 
               <div style={textOrStyle}>
                 OR
               </div>
 
-              <TextField style={textFieldStyle} hintText="Mobile Phone Number" floatingLabelText="Mobile Phone Number" type="tel" onChange={(event) => this.onParticipantInfoChange({phone: event.target.value})} value={participant.phone}/>
+              <TextField style={textFieldStyle}
+                hintText="Mobile Phone Number"
+                floatingLabelText="Mobile Phone Number"
+                type="tel"
+                onChange={(event) => {
+                  this.onParticipantInfoChange({phone: event.target.value});
+                  this.checkEnableButton();
+                  }
+                }
+                value={participant.phone}
+              />
 
               <div style={textStyle}>
                 OR
