@@ -89,7 +89,11 @@ lazy val api = (project in file("modules/api"))
     wartremoverExcluded += crossTarget.value / "routes" / "main" / "controllers" / "ReverseRoutes.scala",
     wartremoverExcluded += crossTarget.value / "routes" / "main" / "controllers" / "javascript" / "JavaScriptReverseRoutes.scala",
     // Exclude generated classes from coverage.
-    coverageExcludedPackages := """.*controllers\..*Reverse.*;.*api.Routes.*;"""
+    coverageExcludedPackages := """.*controllers\..*Reverse.*;.*api.Routes.*;""",
+    play.sbt.routes.RoutesKeys.routesImport ++= Seq(
+      "org.ausdigital.apecconnect.db.model.RecordId._",
+      "org.ausdigital.apecconnect.invoice.model.Invoice._"
+    )
   )
   .dependsOn(
     core         % Dependencies.CompileAndTest,

@@ -11,6 +11,8 @@ POST       /v1/participants/current/messages/create   org.ausdigital.apecconnect
 
 # Invoices related routes.
 POST       /v1/participants/current/invoices/create   org.ausdigital.apecconnect.invoices.controllers.InvoicesController.createInvoice()
+POST       /v1/invoices/:invoiceId/paid               org.ausdigital.apecconnect.invoices.controllers.InvoicesController.invoicePaid(invoiceId: InvoiceId)
+POST       /v1/invoices/:invoiceId/accept             org.ausdigital.apecconnect.invoices.controllers.InvoicesController.acceptInvoicePayment(invoiceId: InvoiceId)
 
 # Announcement related routes
 GET        /v1/announcements                          org.ausdigital.apecconnect.announcements.controllers.AnnouncementsController.announcements()
