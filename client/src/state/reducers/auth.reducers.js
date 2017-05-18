@@ -1,8 +1,13 @@
 import {
-  AUTH_RESPONSE,
-  NOT_AUTHENTICATED,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
   SIGN_UP,
+  FORGET_USER,
 } from '../actions/actionTypes';
+
+import {
+  REHYDRATE
+} from 'redux-persist/constants';
 
 import { handleActions } from 'redux-actions';
 
@@ -15,19 +20,27 @@ const authentication = handleActions({
       loading: true
     });
   },
-  AUTH_RESPONSE: (state, action) => {
-    return Object.assign({}, state, {
-      errorMessage: action.error?action.payload.message:'',
-      loggedIn: action.payload.loggedIn,
-      token: action.payload.token,
+  AUTH_SUCCESS: (state, action) => {
+    return {
+      loggedIn: true,
+      token: action.payload,
       loading: false
-    });
+    };
   },
-  NOT_AUTHENTICATED: (state, action) => {
-    return Object.assign({}, state, {
+  AUTH_FAILURE: (state, action) => {
+    return {
       loggedIn: false,
-      token: null,
+      errorMessage: action.payload,
       loading: false
+    };
+  },
+  FORGET_USER: () => {
+    return { }
+  },
+  REHYDRATE: (state, action) => {
+    // Only retain the token from the previous state, attempt re-auth
+    return Object.assign({}, {
+      token: action.payload.authentication.token,
     });
   }
 }, {});

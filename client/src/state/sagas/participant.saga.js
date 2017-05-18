@@ -26,15 +26,14 @@ export function* signUp (action) {
   try {
     const token = yield call(apis.signUp, action.payload);
     if(token) {
-      yield put(actions.authResponse({token: token}));
-      yield put(actions.getParticipant());
+      yield put(actions.authSuccess(token));
     }
     else {
       yield put(actions.authResponse({loading: false}));
     }
   }
   catch (error) {
-    yield put(actions.authResponse({error: error}));
+    yield put(actions.authFailure(error));
   }
 }
 

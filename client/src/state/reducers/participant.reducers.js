@@ -11,6 +11,7 @@ import {
   HANDLE_ANNOUNCEMENTS,
   SELECT_PARTICIPANT_MESSAGE,
   HANDLE_SELECT_PARTICIPANT_MESSAGE,
+  FORGET_USER,
 } from '../actions/actionTypes';
 
 import { handleActions } from 'redux-actions';
@@ -19,21 +20,18 @@ import { handleActions } from 'redux-actions';
  * Participant property that is stored in the application state (store).
  */
 const participant = handleActions({
-  GET_PARTICIPANT: (state, action) => {
-    return Object.assign({}, state, {isFetching: true});
+  GET_PARTICIPANT: (state) => {
+    return Object.assign({}, state, {
+      isFetching: true
+    });
   },
   HANDLE_PARTICIPANT_RESPONSE: (state, action) => {
-    return Object.assign({}, action.payload, {isFetching: false});
+    return action.payload;
+  },
+  FORGET_USER: () => {
+    return {};
   }
-
-},
-  /**
-    Initial State
-  **/
-  {
-    isFetching: false,
-  }
-);
+}, {});
 
 
 /**

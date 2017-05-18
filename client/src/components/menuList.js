@@ -42,9 +42,9 @@ export default class MenuList extends React.Component {
   );
 
   handleForgetMe = () => {
-    this.props.dispatch(actions.notAuthenticated());
     this.props.dispatch(actions.forgetUser());
     this.props.dispatch(actions.closeMainMenu());
+    this.props.router.push('/join');
   };
 
   render() {

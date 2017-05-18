@@ -1,6 +1,8 @@
 import {
   NOT_AUTHENTICATED,
-  AUTH_RESPONSE
+  SIGN_IN,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
 } from './actionTypes';
 import { createActions } from 'redux-actions';
 
@@ -9,7 +11,9 @@ import { createActions } from 'redux-actions';
  */
 const authActions = createActions(
   NOT_AUTHENTICATED,
-  AUTH_RESPONSE
+  SIGN_IN,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
 );
 
 module.exports = authActions;
