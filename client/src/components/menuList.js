@@ -41,6 +41,9 @@ export default class MenuList extends React.Component {
     this.props.ui.mainMenuOpen ?  actions.closeMainMenu() : actions.openMainMenu()
   );
 
+  handleAbout = () => this.props.dispatch(actions.showMessage('This app was developed during the Asia Foundation\'s 2017 App Challenge'));
+
+
   handleForgetMe = () => {
     this.props.dispatch(actions.forgetUser());
     this.props.dispatch(actions.closeMainMenu());
@@ -59,7 +62,7 @@ export default class MenuList extends React.Component {
         </List>
         <Divider />
         <List>
-          <ListItem primaryText="About" rightIcon={< ActionInfo />}/>
+          <ListItem primaryText="About" rightIcon={< ActionInfo />} onTouchTap={()=> this.handleAbout()}/>
           <ListItem primaryText='Forget Me' rightIcon={< PowerSettingsNew />} onTouchTap={() => this.handleForgetMe()}/>
         </List>
       </div>
