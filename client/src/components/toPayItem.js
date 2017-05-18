@@ -68,7 +68,7 @@ export default class ToPayItem extends React.Component {
   };
 
   handleMsgButton = () => {
-    this.props.dispatch(actions.selectedParticipantMessage(this.props.message));
+    this.props.dispatch(actions.selectParticipantMessage(this.props.message));
     this.props.router.push('/sendMessage');
   };
 

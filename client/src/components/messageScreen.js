@@ -131,7 +131,7 @@ export default class MessageScreen extends React.Component {
   componentWillMount () {
     if (this.props.messages.selectedMessage) {
       this.businessName = this.props.messages.selectedMessage.sender.businessName;
-      this.props.dispatch(actions.selectedParticipantMessage());
+      this.props.dispatch(actions.selectParticipantMessage());
     }
   };
 
