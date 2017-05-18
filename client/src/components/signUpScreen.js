@@ -34,10 +34,8 @@ const paperStyle = {
 
 const divStyle = {
   height: '100%',
-  backgroundImage: `url(${Background})`,
   backgroundSize: 'cover',
   position: 'relative',
-
 };
 
 const textStyle = {
@@ -45,7 +43,7 @@ const textStyle = {
   margin: '0 auto',
   position: 'relative',
   fontWeight: 'bold',
-  display: 'block'
+  display: 'block',
 };
 
 const logoStyle = {
@@ -56,10 +54,28 @@ const logoStyle = {
 const btnStyle = {
   width: '100%',
   fontSize: '20px',
+  verticalAlign: 'middle',
+};
+
+const signUpBtnStyle = {
+  width: '100%',
+  fontSize: '40px',
+  height: '60px',
+};
+
+const signUpLblStyle = {
+  verticalAlign: 'middle',
+  textAlign: 'center',
+  lineHeight: '50px',
+  fontSize: '35px',
 };
 
 const textFieldStyle = {
   position: 'relative',
+};
+
+const textOrStyle = {
+  marginBottom: '-22px',
 };
 
 const spinnerContainerStyle = {
@@ -146,7 +162,7 @@ export default class SignUpScreen extends React.Component {
     if(this.props.authentication.loading) {
       return <div style={spinnerContainerStyle}> <CircularProgress /> </div>;
     } else {
-      return <RaisedButton labelStyle={btnStyle} style={btnStyle} label='Sign Up Now' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>;
+      return <RaisedButton labelStyle={signUpLblStyle} style={signUpBtnStyle} label='Sign Up Now' onTouchTap={() => this.handleSignUp()} backgroundColor={red} labelColor={white}/>;
     }
   }
 
@@ -163,7 +179,7 @@ export default class SignUpScreen extends React.Component {
           <div style={divStyle}>
             <div style={textStyle}>
 
-              <div style={{display: 'flex', marginBottom: '30px'}}>
+              <div style={{display: 'flex', marginBottom: '30px', alignItems: 'flex-end'}}>
                 <TextField
                   hintText='Business Name'
                   errorText={validationErrors.businessName}
@@ -173,7 +189,6 @@ export default class SignUpScreen extends React.Component {
                   style={{flex: '1'}}
                 />
                 <SelectField
-                  floatingLabelText='Economy'
                   value={participant.economy}
                   onChange={this.onEconomyChange}
                   style={{width: '90px'}}
@@ -188,7 +203,7 @@ export default class SignUpScreen extends React.Component {
 
               <TextField style={textFieldStyle} hintText="Email Address" floatingLabelText="Email Address" type="email" onChange={(event) => this.onParticipantInfoChange({email: event.target.value})} value={participant.email}/>
 
-              <div style={textStyle}>
+              <div style={textOrStyle}>
                 OR
               </div>
 
