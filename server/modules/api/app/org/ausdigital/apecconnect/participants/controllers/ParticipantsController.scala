@@ -91,13 +91,17 @@ class ParticipantsController @Inject()(
   }
 
   /**
-    * Creates a Participant message, with current authentiacted Participant as sender.
+    * Creates a Participant message, with current authenticated Participant as sender.
+    * The receiver's rating will be calculated based on the message's rating element.
     * @return 200 OK with created message, or 404 if not Participant found, or 400 bad request if message creation failed.
     */
   def createParticipantMessage(): Action[PendingParticipantMessage] = participantAction.async(BodyParsers.whitelistingJson[PendingParticipantMessage]) { implicit request =>
     for {
-      participant <- participantService.findById(request.identity.id)                                               ?| JsonApiResponse.notFoundResponse("Cannot find sender Participant to create message.")
+      participant <- participantService.findById(request.identity.id)                                                                         ?| JsonApiResponse.notFoundResponse("Cannot find sender Participant to create message.")
       message     <- participantMessageService.create(ParticipantMessage.messageTransportToMessageData(participant.identifier, request.body)) ?| nelAsResponse
+      receiver    <- participantService.findByIdentifier(request.body.receiverId)                                                             ?| JsonApiResponse.notFoundResponse("Cannot find Participant for receiver.")
+      newRating   <- participantMessageService.extractRatingFromMessages(receiver)                                                            ?| JsonApiResponse.internalServerErrorResponse("Failed to extract rating for Participant.")
+      _           <- participantService.update(receiver.copy(data = receiver.data.copy(rating = newRating)))                                  ?| JsonApiResponse.internalServerErrorResponse("Failed to update reciever rating.")
     } yield JsonApiResponse.buildResponse(s"Successfully created message [${message.id}]", message)
   }
 
@@ -107,11 +111,10 @@ class ParticipantsController @Inject()(
     */
   def participantMessages(): Action[AnyContent] = participantAction.async { implicit request =>
     for {
-      participant <- participantService.findById(request.identity.id) ?| JsonApiResponse.notFoundResponse("Cannot find Participant.")
-      messages <- participantMessageService.queryParticipantMessages(participant) ?| JsonApiResponse.internalServerErrorResponse("Failed to find Participant messages.")
+      participant <- participantService.findById(request.identity.id)                ?| JsonApiResponse.notFoundResponse("Cannot find Participant.")
+      messages    <- participantMessageService.queryParticipantMessages(participant) ?| JsonApiResponse.internalServerErrorResponse("Failed to find Participant messages.")
     } yield JsonApiResponse.buildResponse(s"Found messages for Participant [${request.identity.id}].", messages)
   }
-
 
   /**
     * Generating random username based on provided business name.

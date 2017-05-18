@@ -125,7 +125,6 @@ export default class FeedbackScreen extends React.Component {
 
 
   handleLeaveFeedback = () => {
-    console.log('Feedback!');
     let {dispatch} = this.props;
       let {message} = this.state;
 
@@ -240,5 +239,3 @@ export default class FeedbackScreen extends React.Component {
     );
   }
 }
-
-

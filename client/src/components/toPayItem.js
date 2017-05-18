@@ -73,6 +73,8 @@ export default class ToPayItem extends React.Component {
   };
 
   render() {
+    let {dispatch} = this.props;
+
     return (
       <div style={DivStyle}>
         <div style = {ItemStyle}>
@@ -82,7 +84,10 @@ export default class ToPayItem extends React.Component {
             primaryText ={this.props.message.invoice.amount.currency + ' ' + this.props.message.invoice.amount.amount.toFixed(2)}
             rightIconButton={<IconButton onTouchTap={this.handleMsgButton}><CommunicationEmail/></IconButton>}
             secondaryTextLines={1}
-            onMouseDown={()=> this.props.router.push({pathname: '/viewInvoice', query:{key:this.props.keyID} })}
+            onMouseDown={()=> {
+              dispatch(actions.selectParticipantMessage(this.props.message));
+              this.props.router.push('/viewInvoice');
+            }}
           />
         </div>
         <div style={cellDivStyle}>
@@ -92,11 +97,13 @@ export default class ToPayItem extends React.Component {
             backgroundColor={red}
             labelColor={white}
             disabled={this.props.message.invoice.isPaid}
+            onMouseDown={()=> {
+              dispatch(actions.selectParticipantMessage(this.props.message));
+              this.props.router.push('/viewInvoice');
+            }}
           />
         </div>
       </div>
     );
   };
 }
-
-
