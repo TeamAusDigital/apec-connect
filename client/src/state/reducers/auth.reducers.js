@@ -35,7 +35,7 @@ const authentication = handleActions({
     };
   },
   FORGET_USER: () => {
-    return { }
+    return { };
   },
   REHYDRATE: (state, action) => {
     // Only retain the token from the previous state, attempt re-auth
