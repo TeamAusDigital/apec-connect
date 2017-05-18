@@ -49,7 +49,7 @@ const userDetailsStyle = {
 
 const logoStyle = {
   width: '100%',
-  maxHeight: '150px'
+  maxHeight: '150px',
 };
 
 const labelStyle = {
@@ -58,12 +58,12 @@ const labelStyle = {
   color: white,
   position: 'relative',
   top: 'calc(50% - 29px)'
-}
+};
 
 const translationStyle = {
   display: 'block',
   fontSize: '22px',
-}
+};
 
 const labelTextStyle = {
   textTransform: 'uppercase',
