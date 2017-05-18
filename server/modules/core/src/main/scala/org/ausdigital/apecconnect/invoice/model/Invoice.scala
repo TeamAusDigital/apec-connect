@@ -42,7 +42,6 @@ object Invoice {
                                isPaid: Boolean,
                                isAccepted: Boolean,
                                amount: Money,
-                               currencyCode: String,
                                paymentReference: Option[String],
                                paymentOptions: Seq[PaymentOption],
                                paymentMethod: Option[PaymentOption])
@@ -67,7 +66,6 @@ object Invoice {
     isPaid = pending.isPaid,
     isAccepted = pending.isAccepted,
     amount = pending.amount,
-    currencyCode = pending.amount.getCurrencyUnit.getCode,
     paymentReference = pending.paymentReference,
     paymentOptions = pending.paymentOptions,
     paymentMethod = pending.paymentMethod

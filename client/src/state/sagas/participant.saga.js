@@ -13,6 +13,8 @@ import {
   GET_ANNOUNCEMENTS,
   SELECT_PARTICIPANT_MESSAGE,
   HANDLE_SELECT_PARTICIPANT_MESSAGE,
+  NOTIFY_INVOICE_PAID,
+  ACCEPT_INVOICE_PAYMENT,
 } from 'state/actions/actionTypes';
 import Immutable from 'immutable';
 import apis from 'apis';
@@ -138,6 +140,43 @@ export function* getAnnouncements() {
   }
 }
 
+export function* handleInvoiceState(action) {
+  try {
+    let {invoiceId, selectedMessageId} = action.payload;
+    let messages;
+    switch(action.type) {
+      case NOTIFY_INVOICE_PAID:
+        yield call(apis.invoicePaid, invoiceId);
+
+        let messages = yield call(apis.fetchMessages);
+
+        updatedMessage = Immutable.List(messages).find((m) => m.message.id === selectedMessageId);
+
+        yield put(actions.selectParticipantMessage(updatedMessage));
+
+        break;
+      case ACCEPT_INVOICE_PAYMENT:
+        yield call(apis.acceptInvoicePayment, invoiceId);
+
+        messages = yield call(apis.fetchMessages);
+
+        let updatedMessage = Immutable.List(messages).find((m) => m.message.id === selectedMessageId);
+
+        yield put(actions.selectParticipantMessage(updatedMessage));
+        break;
+      default:
+        updatedVendor = new Error(`Unknown action type [${action.type}]`);
+    }
+  }
+  catch (error) {
+    throw error;
+  }
+  finally {
+    yield put(actions.handleInvoicePaymentNotified());
+    yield put(actions.handleInvoicePaymentAccepted());
+  }
+}
+
 /**
  * Sagas that watch Participant specific actions.
  */
@@ -150,5 +189,6 @@ export default function* participantSaga () {
     takeLatest(LOOKUP_PARTICIPANTS, lookupParticipants),
     takeLatest(GET_ANNOUNCEMENTS, getAnnouncements),
     takeLatest(SELECT_PARTICIPANT_MESSAGE, selectParticipantMessage),
+    takeLatest([NOTIFY_INVOICE_PAID, ACCEPT_INVOICE_PAYMENT], handleInvoiceState)
   ]);
 }

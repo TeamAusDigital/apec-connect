@@ -89,7 +89,7 @@ export default class Inbox extends React.Component {
       };
     });
 
-    let messagesAndAnnouncements = announcements.concat(Immutable.List(messages)).sortBy((m) => m.message.metaData.dateCreated);
+    let messagesAndAnnouncements = announcements.concat(Immutable.List(messages)).sortBy((m) => -m.message.metaData.dateCreated);
 
     const items = messagesAndAnnouncements.map((message, index) => <InboxItem key={index} message={message} keyID={index} />) ;
     if (items.size > 0){

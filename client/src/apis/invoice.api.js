@@ -21,6 +21,28 @@ function createInvoice(invoice) {
   }).then((response) => response.result);
 }
 
+function invoicePaid(invoiceId) {
+  return fetchIt.fetch(`/api/v1/invoices/${invoiceId}/paid`, {
+    method: 'POST',
+    body: JSON.stringify({}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => response.result);
+}
+
+function acceptInvoicePayment(invoiceId) {
+  return fetchIt.fetch(`/api/v1/invoices/${invoiceId}/accept`, {
+    method: 'POST',
+    body: JSON.stringify({}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => response.result);
+}
+
 module.exports = {
-  createInvoice
+  createInvoice,
+  invoicePaid,
+  acceptInvoicePayment,
 };
