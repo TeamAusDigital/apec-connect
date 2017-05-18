@@ -147,21 +147,14 @@ export function* handleInvoiceState(action) {
     switch(action.type) {
       case NOTIFY_INVOICE_PAID:
         yield call(apis.invoicePaid, invoiceId);
-
         let messages = yield call(apis.fetchMessages);
-
         updatedMessage = Immutable.List(messages).find((m) => m.message.id === selectedMessageId);
-
         yield put(actions.selectParticipantMessage(updatedMessage));
-
         break;
       case ACCEPT_INVOICE_PAYMENT:
         yield call(apis.acceptInvoicePayment, invoiceId);
-
         messages = yield call(apis.fetchMessages);
-
         let updatedMessage = Immutable.List(messages).find((m) => m.message.id === selectedMessageId);
-
         yield put(actions.selectParticipantMessage(updatedMessage));
         break;
       default:
