@@ -50,9 +50,9 @@ export default class InboxItem extends React.Component {
 
   displayName = () => {
     let currentParticipant = this.props.participant;
-    let {sender, receiver, isAnnoucement} = this.props.message;
+    let {sender, receiver, isAnnouncement} = this.props.message;
 
-    if (isAnnoucement) {
+    if (isAnnouncement) {
       // FIXME: All announcements are hard coded from VN government for now.
       return <TableRowColumn style ={trStyle}>
                Vietnam Officials
