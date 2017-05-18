@@ -84,8 +84,6 @@ export default class ViewInvoice extends React.Component {
   };
 
   handleFeedback = () => {
-    //this.props.dispatch(actions.selectParticipantMessage(this.messageInvoice));
-    console.log(this.props.messages.selectedMessage);
     this.props.router.push('/feedback');
   };
 
@@ -119,11 +117,11 @@ export default class ViewInvoice extends React.Component {
   };
 
   feedbackButton = () => {
-    //if (this.messageInvoice.invoice.isAccepted && this.messageInvoice.invoice.isPaid) {
+    if (this.messageInvoice.invoice.isAccepted && this.messageInvoice.invoice.isPaid) {
       return(<RaisedButton label='Send Feedback' primary={true} fullWidth={true} onTouchTap={this.handleFeedback}/>);
-    //} else {
-    //  return(<RaisedButton label='Send Feedback' disabled={true} fullWidth={true}/>);
-    //}
+    } else {
+      return(<RaisedButton label='Send Feedback' disabled={true} fullWidth={true}/>);
+    }
 
   };
 
