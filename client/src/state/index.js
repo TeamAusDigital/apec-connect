@@ -17,13 +17,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const combinedReducers = combineReducers(reducers);
 
-const rootReducer = (state, action) {
+const rootReducer = (state, action) => {
   if (action.type === FORGET_USER) {
     state = undefined;
   }
 
   return combinedReducers(state, action);
-}
+};
 
 const store = createStore(
   rootReducer,

@@ -114,13 +114,13 @@ const officials = handleActions({
   },
   HANDLE_ANNOUNCEMENTS: (state, action) => {
     return Object.assign({}, state, {announcements: action.payload.announcements, error: action.payload.error, isFetching: false});
+  },
   REHYDRATE: (state, action) => {
     // Don't restore 'fetching' state, as callback will never come
     return Object.assign({}, action.payload.officials, {
       isFetching: false
     });
   },
-  }
 },
   {
     isFetching: false,
