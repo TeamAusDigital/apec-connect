@@ -42,7 +42,7 @@ const messages = handleActions({
     return Object.assign({}, state, {isFetching: true});
   },
   HANDLE_PARTICIPANT_MESSAGES: (state, action) => {
-    return Object.assign({}, state, {messages: action.payload, isFetching: false});
+    return Object.assign({}, state, {messages: action.payload.messages, error: action.payload.error, isFetching: false});
   },
   SEND_PARTICIPANT_MESSAGE: (state, action) => {
     return Object.assign({}, state, {messageToSend: action.payload, isSending: true, sent: false});
@@ -77,9 +77,13 @@ const matchedParticipants = handleActions({
     return Object.assign({}, state, {isFetching: true});
   },
   HANDLE_PARTICIPANTS_RESPONSE: (state, action) => {
-    return Object.assign({}, state, {participants: action.payload, isFetching: false});
+    return Object.assign({}, state, {participants: action.payload.participants, error: action.payload.error, isFetching: false});
   }
-}, {isFetching: false, participants: []});
+},
+  {
+    isFetching: false,
+    participants: [],
+  });
 
 /**
  * Officials object that will be stored in the store, it contains any official agencies inforamtion:
@@ -90,9 +94,13 @@ const officials = handleActions({
     return Object.assign({}, state, {isFetching: true});
   },
   HANDLE_ANNOUNCEMENTS: (state, action) => {
-    return Object.assign({}, state, {announcements: action.payload, isFetching: false});
+    return Object.assign({}, state, {announcements: action.payload.announcements, error: action.payload.error, isFetching: false});
   }
-}, {isFetching: false, announcements: []});
+},
+  {
+    isFetching: false,
+    announcements: [],
+  });
 
 module.exports = {
   participant,
