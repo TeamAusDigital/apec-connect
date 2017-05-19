@@ -41,7 +41,7 @@ export default class MenuList extends React.Component {
     this.props.ui.mainMenuOpen ?  actions.closeMainMenu() : actions.openMainMenu()
   );
 
-  handleAbout = () => this.props.dispatch(actions.showMessage('This app was developed during the Asia Foundation\'s 2017 App Challenge'));
+  handleAbout = () => this.props.dispatch(actions.showMessage('This app was developed during the 2017 APEC App Challenge'));
 
 
   handleForgetMe = () => {
