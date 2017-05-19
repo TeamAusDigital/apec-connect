@@ -3,6 +3,7 @@ import reducers from './reducers';
 import saga from './sagas';
 import createSagaMiddleware from 'redux-saga';
 import {persistStore, autoRehydrate} from 'redux-persist';
+import FORGET_USER from './actions/actionTypes';
 
 /**
  * Main configuration of redux
@@ -14,8 +15,18 @@ setTimeout(function() { sagaMiddleware.run(saga); });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const combinedReducers = combineReducers(reducers);
+
+const rootReducer = (state, action) {
+  if (action.type === FORGET_USER) {
+    state = undefined;
+  }
+
+  return combinedReducers(state, action);
+}
+
 const store = createStore(
-  combineReducers(reducers),
+  rootReducer,
   {},
   composeEnhancers(
     applyMiddleware(sagaMiddleware),

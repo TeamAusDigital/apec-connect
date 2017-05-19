@@ -11,8 +11,12 @@ import {
   HANDLE_ANNOUNCEMENTS,
   SELECT_PARTICIPANT_MESSAGE,
   HANDLE_SELECT_PARTICIPANT_MESSAGE,
-  FORGET_USER,
 } from '../actions/actionTypes';
+
+
+import {
+  REHYDRATE
+} from 'redux-persist/constants';
 
 import { handleActions } from 'redux-actions';
 
@@ -28,8 +32,11 @@ const participant = handleActions({
   HANDLE_PARTICIPANT_RESPONSE: (state, action) => {
     return Object.assign({}, action.payload);
   },
-  FORGET_USER: () => {
-    return {};
+  REHYDRATE: (state, action) => {
+    // Don't restore 'fetching' state, as callback will never come
+    return Object.assign({}, action.payload.participant, {
+      isFetching: false
+    });
   }
 }, {});
 
@@ -56,6 +63,12 @@ const messages = handleActions({
   HANDLE_SELECT_PARTICIPANT_MESSAGE: (state, action) => {
     return Object.assign({}, state, {selectedMessage: action.payload, isFetching: false});
   },
+  REHYDRATE: (state, action) => {
+    // Don't restore 'fetching' state, as callback will never come
+    return Object.assign({}, action.payload.messages, {
+      isFetching: false
+    });
+  },
 },
   /**
     Initial State
@@ -78,6 +91,12 @@ const matchedParticipants = handleActions({
   },
   HANDLE_PARTICIPANTS_RESPONSE: (state, action) => {
     return Object.assign({}, state, {participants: action.payload.participants, error: action.payload.error, isFetching: false});
+  },
+  REHYDRATE: (state, action) => {
+    // Don't restore 'fetching' state, as callback will never come
+    return Object.assign({}, action.payload.matchedParticipants, {
+      isFetching: false
+    });
   }
 },
   {
@@ -95,6 +114,12 @@ const officials = handleActions({
   },
   HANDLE_ANNOUNCEMENTS: (state, action) => {
     return Object.assign({}, state, {announcements: action.payload.announcements, error: action.payload.error, isFetching: false});
+  REHYDRATE: (state, action) => {
+    // Don't restore 'fetching' state, as callback will never come
+    return Object.assign({}, action.payload.officials, {
+      isFetching: false
+    });
+  },
   }
 },
   {

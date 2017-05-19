@@ -13,6 +13,10 @@ import {
   HANDLE_INVOICE_PAYMENT_ACCEPTED,
 } from '../actions/actionTypes';
 
+import {
+  REHYDRATE
+} from 'redux-persist/constants';
+
 import { handleActions } from 'redux-actions';
 
 const ui = handleActions({
@@ -40,11 +44,6 @@ const ui = handleActions({
   REMEMBER_USER: (state, action) => {
     return Object.assign({}, state, {
       alreadyUser: true
-    });
-  },
-  FORGET_USER: (state, action) => {
-    return Object.assign({}, state, {
-      alreadyUser: false
     });
   },
   SELECT_CURRENCY: (state, action) => {
@@ -88,6 +87,13 @@ const ui = handleActions({
   HANDLE_INVOICE_PAYMENT_ACCEPTED: (state, action) => {
     return Object.assign({}, state, {
       isAcceptingPayment: false
+    });
+  },
+  REHYDRATE: (state, action) => {
+    // Don't restore 'fetching' state, as callback will never come
+    return Object.assign({}, action.payload.officials, {
+      isNotifyingPayment: false,
+      isAcceptingPayment: false,
     });
   },
 },
