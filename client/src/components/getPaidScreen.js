@@ -98,6 +98,8 @@ const currencyTypes = [
   {value: 'USD', text: 'USD'}
 ];
 
+const nonDecimalCurrencies = ['VND'];
+
 @withRouter
 @connect((state) => {
   return {
@@ -262,6 +264,9 @@ export default class GetPaidScreen extends React.Component {
     if (!invoice.amount.amount) {
       nextErrors = Object.assign({}, nextErrors, {amountError: 'Please enter an amount for the Invoice.'});
     }
+    else if (nonDecimalCurrencies.includes(invoice.amount.currency) && !Number.isInteger(Number(invoice.amount.amount))) {
+      nextErrors = Object.assign({}, nextErrors, {amountError: `${invoice.amount.currency} is a non-decimal currency, please enter a whole number amount.`});
+    }
     else {
       nextErrors = Object.assign({}, nextErrors, {amountError: null});
     }
@@ -312,7 +317,7 @@ export default class GetPaidScreen extends React.Component {
                 fullWidth={true}
                 filter={AutoComplete.caseInsensitiveFilter}
                 style={textFieldStyle}
-                hintText='Person you are paying'
+                hintText='Who should pay you?'
                 floatingLabelText='Who'
                 dataSourceConfig={{ text: 'businessName', value: 'identifier',}}
                 dataSource={matchedParticipants}
@@ -332,7 +337,7 @@ export default class GetPaidScreen extends React.Component {
                 style = {textFieldStyle}
                 fullWidth={true}
                 errorText={this.state.errors.amountError}
-                hintText='Amount to pay'
+                hintText='Amount to be paid?'
                 floatingLabelText='How much'
                 onChange={(event) => this.onInvoiceInfoChange({amount: Object.assign({}, this.state.invoice.amount, {amount: event.target.value})})} />
             </div>
@@ -341,7 +346,7 @@ export default class GetPaidScreen extends React.Component {
               fullWidth={true}
               style = {textFieldStyle}
               hintText='What for'
-              floatingLabelText='What did you purchase'
+              floatingLabelText='What was purchased'
               multiLine={true}
               rows={1}
               rowsMax={4}
