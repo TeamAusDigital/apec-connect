@@ -63,10 +63,10 @@ export function* getParticipantMessages () {
   try {
     const messages = yield call(apis.fetchMessages);
     let sortedMessages = Immutable.List(messages).sortBy((m) => -m.message.metaData.dateCreated).toArray();
-    yield put(actions.handleParticipantMessages(sortedMessages));
+    yield put(actions.handleParticipantMessages({messages: sortedMessages}));
   }
   catch (error) {
-    yield put(actions.handleParticipantMessages({error: error}));
+    yield put(actions.handleParticipantMessages({messages: [], error: error}));
   }
 }
 
@@ -104,10 +104,10 @@ export function* lookupParticipants(action) {
 
     const matchedParticipants = yield call(apis.lookupParticipants, query);
 
-    yield put(actions.handleParticipantsResponse(matchedParticipants));
+    yield put(actions.handleParticipantsResponse({participants: matchedParticipants}));
   }
   catch (error) {
-    yield put(actions.handleParticipantsResponse({error: error}));
+    yield put(actions.handleParticipantsResponse({participants: [], error: error}));
   }
 }
 
@@ -132,11 +132,11 @@ export function* selectParticipantMessage(action) {
 export function* getAnnouncements() {
   try {
     const announcements = yield call(apis.fetchAnnouncements);
-    let sortedAnnouncements = Immutable.List(announcements).sortBy((annouce) => -annouce.metaData.dateCreated).toArray();
-    yield put(actions.handleAnnouncements(sortedAnnouncements));
+    let sortedAnnouncements = Immutable.List(announcements).sortBy((announce) => -announce.metaData.dateCreated).toArray();
+    yield put(actions.handleAnnouncements({announcements: sortedAnnouncements}));
   }
   catch (error) {
-    yield put(actions.handleAnnouncements({error: error}));
+    yield put(actions.handleAnnouncements({announcements: [], error: error}));
   }
 }
 
