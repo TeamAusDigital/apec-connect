@@ -1,6 +1,6 @@
 {
   "name": "apec-connect-client",
-  "description": "D61+ Expert Connect - Client",
+  "description": "APEC CONNECT -client",
   "private": true,
   "ignore": [
     "**/.*",
